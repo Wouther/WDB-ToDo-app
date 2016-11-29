@@ -28,27 +28,6 @@ ToDoList.prototype.remove = function(index) {
    this.list.splice(index, 1);
 }
 
-ToDoList.prototype.sortAccordingToPrio = function() {
-
-  var withPrio = [];
-  var withoutPrio = [];
-
-  for (i = 0; i < this.list.length; i++) {
-    if (this.list[i].getPriority() === true) {
-      withPrio.push(this.list[i]);
-    } else {
-      withoutPrio.push(this.list[i]);
-    }
-  }
-
-    //TODO : sort the sublists according to due date?
-
-  var returnedList = withPrio.concat(withoutPrio);
-  var returnedToDoList = new ToDoList();
-  returnedToDoList.list = returnedList;
-  return returnedToDoList;
-}
-
 ToDoList.prototype.sortAccordingToDueDate = function() {
 
   var returnedList = [];
@@ -80,6 +59,27 @@ ToDoList.prototype.sortAccordingToDueDate = function() {
     placeAtRightPlaceInList(returnedList, this.list[i]);
   }
 
+  var returnedToDoList = new ToDoList();
+  returnedToDoList.list = returnedList;
+  return returnedToDoList;
+}
+
+ToDoList.prototype.sortAccordingToPrio = function() {
+
+  var withPrio = [];
+  var withoutPrio = [];
+
+  for (i = 0; i < this.list.length; i++) {
+    if (this.list[i].getPriority() === true) {
+      withPrio.push(this.list[i]);
+    } else {
+      withoutPrio.push(this.list[i]);
+    }
+  }
+
+    //TODO : sort the sublists according to due date?
+
+  var returnedList = withPrio.concat(withoutPrio);
   var returnedToDoList = new ToDoList();
   returnedToDoList.list = returnedList;
   return returnedToDoList;
