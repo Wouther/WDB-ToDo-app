@@ -25,7 +25,6 @@ ToDoList.prototype.remove = function(index) {
    console.log("Index out of bounds error in ToDoList get class.");
    return undefined;
   }
-
    this.list.splice(index, 1);
 }
 

@@ -32,8 +32,13 @@ var returnToDoListHTML = function(todoItem, index) {
   var returnString = '<li id="listitem' + index + '">';
   returnString = returnString + createElementStringWithClass("button", "removeButton", "removeToDo", index, "Remove todo item");
   returnString = returnString + createElementString("h3", "toDoTitle", index, todoItem.getTitle());
-  returnString = returnString + createElementString("h4", "toDoDueDate", index, todoItem.getDueDate());
+  returnString = returnString + createElementString("h4", "toDoDueDate", index, todoItem.getDueDateString());
   returnString = returnString + createElementString("h4", "toDoPrio", index, todoItem.getPriorityString());
   returnString = returnString + "</li>";
 return returnString;
+}
+
+
+var returnOptionForDayOfTheMonth = function(day) {
+  return '<option value="' + day + '">' + day + "</option>";
 }
