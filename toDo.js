@@ -47,15 +47,13 @@ ToDoItem.prototype.setDescription = function(desc) {
   this.description = desc;
 }
 
+ToDoItem.prototype.togglePrio = function() {
+  this.priority = !this.priority;
+}
+
 ToDoItem.prototype.getPriorityString = function() {
   if (this.priority === true) {
     return "Prio";
   }
   return "No prio";
 }
-
-blankToDo = new ToDoItem();
-blankToDo.setTitle("Your title here");
-blankToDo.setDueDate("30/11/16 12:00");
-blankToDo.setPriority(false);
-blankToDo.setDescription("");
