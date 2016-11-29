@@ -1,7 +1,7 @@
-var ToDoList = function() {
-this.list = [];
-}
-
-ToDoList.prototype.add = function() {
-
-}
+// var ToDoList = function() {
+// this.list = [];
+// }
+//
+// ToDoList.prototype.add = function() {
+//
+// }
