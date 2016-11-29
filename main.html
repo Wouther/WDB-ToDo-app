@@ -7,7 +7,15 @@
   <title>Secretary</title>
   <meta name="description" content="Secretary ToDo application for elderly people">
   <meta name="author" content="Minor group 50">
+      <script src="lib/jquery-3.1.1.min.js"></script>
+      <script src="lib/moment.js"></script>
+      <script src="toDo.js"></script>
+      <script src="toDoListClass.js"></script>
+      <script src="dataOnLoad.js"></script>
       <script src="mainPageScript.js"></script>
+      <script>
+    moment().format();
+</script>
 
   <!--Not used yet: <link rel="stylesheet" href="css/stylesheet.css">-->
 </head>
@@ -20,37 +28,36 @@
       <h2>Welcome user!</h2>
     </div>
     <div id="leftTop">
-      <input type="text" name="searchField" value="Search" /><br />
+      <input id="searchField" type="text" name="searchField" value="Search" /><br />
       <button id="sortDate">Sort date</button>
       <button id="sortPriority">Sort priority</button>
     </div>
     <div id="leftBottom">
-      <ul>
+      <ul id="toDoItemList">
         <li><button id="removeTodo">Remove todo</button>
           <h3 id="todoTitle">Todo title 1</h3>
           <h4 id="dueDate">28/11/16 13:00</h4>
           <h4 id="priority">Prio</h4>
             <button id="setDone"> Done</button>
-
           </li>
         </ul>
       </div>
       <div id="right">
-        <input type="text" name="toDoItemTitle" value="ToDoItem1" /><br />
-        <button id="setPriority">Star</button>
+        <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle"/><br />
+        <button id="detailsSetPriority">Star</button>
         <div>
-        <h3 id="todoTitle">Due date:</h3>
-          <h4 id="dueDate">28/11/16 13:00</h4>
-        <button id="setDone">Set due date</button>
+        <h3 id="detailsDueDateHeader">Due date:</h3>
+          <h4 id="detailsDueDate">28/11/16 13:00</h4>
+        <button id="setDoneButton">Set due date</button>
       </div>
       <div>
-        <h3 id="todoTitle">Reminder:</h3>
-          <h4 id="reminderDate">28/11/16 13:00</h4>
-        <button id="Reminder">Set reminder</button>
+        <h3 id="detailsReminderHeader">Reminder:</h3>
+          <h4 id="detailsReminderText">28/11/16 13:00</h4>
+        <button id="detailsReminderButton">Set reminder</button>
       </div>
 
       <h5>Description</h5>
-      <textarea rows="4" cols="5" id="descriptionText">Lorem ipsum sasjdsajdusahdjashjdasdjashdsa </textarea>
+      <textarea rows="4" cols="5" id="detailsDescriptionText">Lorem ipsum sasjdsajdusahdjashjdasdjashdsa </textarea>
 
         </div>
 
