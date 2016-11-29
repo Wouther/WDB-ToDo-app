@@ -9,8 +9,8 @@ var reprintToDoList = function() {
   $("#toDoItemList").empty();
   //Add all to do items
 
-  for (i = 0; i < toDoList.length(); i++) {
-    $("#toDoItemList").append(returnToDoListHTML(toDoList.get(i), i));
+  for (i = 0; i < shownToDoList.length(); i++) {
+    $("#toDoItemList").append(returnToDoListHTML(shownToDoList.get(i), i));
   }
 }
 
@@ -18,7 +18,7 @@ var reprintToDoList = function() {
 //Needs fixing, currently deleting the todo also triggers this (?)
 var reprintCurrentSelectedInDetails = function(index) {
 
-  var currToDo = toDoList.get(index);
+  var currToDo = shownToDoList.get(index);
 
   if (!currToDo) {
     return;
@@ -46,15 +46,15 @@ var reprintCurrentSelectedInDetails = function(index) {
 var addToDoItem = function() {
   var toAdd = new ToDoItem();
   toAdd.setTitle("Untitled");
-  toDoList.add(toAdd);
-  reprintCurrentSelectedInDetails(toDoList.length() - 1);
-  currentActiveIndex = toDoList.length() - 1;
+  shownToDoList.add(toAdd);
+  reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
+  currentActiveIndex = shownToDoList.length() - 1;
   reprintToDoList();
 }
 
 //Changes a todo title
 var changeToDoTitle = function(value) {
-  toDoList.get(currentActiveIndex).setTitle(value);
+  shownToDoList.get(currentActiveIndex).setTitle(value);
   //TODO: other stuff, HTTP PUT request(?)
 }
 
@@ -63,7 +63,7 @@ var resetOptionsDueDate = function() {
     return;
   }
 
-  var currToDo = toDoList.get(currentActiveIndex);
+  var currToDo = shownToDoList.get(currentActiveIndex);
   var numberOfDays = currToDo.getDueDate().daysInMonth();
 
   //Empty the dropdown menu
@@ -78,25 +78,25 @@ var resetOptionsDueDate = function() {
 
 //Changes a todo due date/ month
 var changeDueDateYear = function(value) {
-  toDoList.get(currentActiveIndex).setDueDateYear(value);
+  shownToDoList.get(currentActiveIndex).setDueDateYear(value);
   //Change options for days of the month
   resetOptionsDueDate();
-  $("#detailsDueDateMonth").val(toDoList.get(currentActiveIndex).getDueDate().month() + 1);
-  $("#detailsDueDateDay").val(toDoList.get(currentActiveIndex).getDueDate().date());
+  $("#detailsDueDateMonth").val(shownToDoList.get(currentActiveIndex).getDueDate().month() + 1);
+  $("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
   //TODO: other stuff, HTTP PUT request(?)
 }
 
 //Changes a todo due date/ month
 var changeDueDateMonth = function(value) {
-  toDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
+  shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
   resetOptionsDueDate();
-  $("#detailsDueDateDay").val(toDoList.get(currentActiveIndex).getDueDate().date());
+  $("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
   //TODO: other stuff, HTTP PUT request(?)
 }
 
 //Changes a todo due date/ month
 var changeDueDateDateOfMonth = function(value) {
-  toDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
+  shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
   //TODO: other stuff, HTTP PUT request(?)
 }
 
@@ -113,7 +113,7 @@ $(document).ready(function(){
     var index = returnIndexFromString($(this).attr('id'));
 
     //Remove this element
-    toDoList.remove(index);
+    shownToDoList.remove(index);
 
     //If the removed element was focused in the detailed view, we set the focus to -1
     if (currentActiveIndex === index) {
@@ -149,7 +149,7 @@ $(document).ready(function(){
 
   $("#detailsSetPriority").click(function(){
     if (currentActiveIndex !== -1) {
-      toDoList.get(currentActiveIndex).togglePrio();
+      shownToDoList.get(currentActiveIndex).togglePrio();
       reprintToDoList();
       reprintCurrentSelectedInDetails(currentActiveIndex);
     }
@@ -157,12 +157,17 @@ $(document).ready(function(){
 
   $("#detailsDescriptionText").change(function() {
     if (currentActiveIndex !== -1) {
-      toDoList.get(currentActiveIndex).setDescription($(this).val());
+      shownToDoList.get(currentActiveIndex).setDescription($(this).val());
     }
   });
 
   $("#sortPriority").click(function(){
-    toDoList = toDoList.sortAccordingToPrio();
+    shownToDoList = shownToDoList.sortAccordingToPrio();
+    reprintToDoList();
+  });
+
+  $("#sortDate").click(function(){
+    shownToDoList = shownToDoList.sortAccordingToDueDate();
     reprintToDoList();
   });
 
