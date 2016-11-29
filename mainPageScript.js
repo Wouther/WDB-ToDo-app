@@ -81,6 +81,8 @@ var changeDueDateYear = function(value) {
   toDoList.get(currentActiveIndex).setDueDateYear(value);
   //Change options for days of the month
   resetOptionsDueDate();
+  $("#detailsDueDateMonth").val(toDoList.get(currentActiveIndex).getDueDate().month() + 1);
+  $("#detailsDueDateDay").val(toDoList.get(currentActiveIndex).getDueDate().date());
   //TODO: other stuff, HTTP PUT request(?)
 }
 
