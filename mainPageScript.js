@@ -8,8 +8,9 @@ var reprintToDoList = function() {
   //Remove everything that is already in the list
   $("#toDoItemList").empty();
   //Add all to do items
-  for (i = 0; i < toDoList.length; i++) {
-    $("#toDoItemList").append(returnToDoListHTML(toDoList[i], i));
+
+  for (i = 0; i < toDoList.length(); i++) {
+    $("#toDoItemList").append(returnToDoListHTML(toDoList.get(i), i));
   }
 }
 
@@ -17,7 +18,7 @@ var reprintToDoList = function() {
 //Needs fixing, currently deleting the todo also triggers this
 var reprintCurrentSelectedInDetails = function(index) {
 
-  var currToDo = toDoList[index];
+  var currToDo = toDoList.get(index);
 
   if (!currToDo) {
     console.log("ToDo item removed");
@@ -43,9 +44,9 @@ var reprintCurrentSelectedInDetails = function(index) {
 var addToDoItem = function() {
   var toAdd = new ToDoItem();
   toAdd.setTitle("Untitled");
-  toDoList.push(toAdd);
-  reprintCurrentSelectedInDetails(toDoList.length - 1);
-    currentActiveIndex = toDoList.length - 1;
+  toDoList.add(toAdd);
+  reprintCurrentSelectedInDetails(toDoList.length() - 1);
+  currentActiveIndex = toDoList.length() - 1;
   reprintToDoList();
 }
 
@@ -60,7 +61,7 @@ $(document).ready(function(){
     var index = returnIndexFromString($(this).attr('id'));
 
     //Remove this element
-    toDoList.splice(index, 1);
+    toDoList.remove(index);
 
     //If the removed element was focused, we set the focus to -1
     if (currentActiveIndex === index) {
@@ -88,14 +89,14 @@ $(document).ready(function(){
 
   $("#detailsTitle").change(function() {
     if (currentActiveIndex !== -1) {
-      toDoList[currentActiveIndex].setTitle($(this).val());
+      toDoList.get(currentActiveIndex).setTitle($(this).val());
       reprintToDoList();
     }
   });
 
   $("#detailsSetPriority").click(function(){
     if (currentActiveIndex !== -1) {
-      toDoList[currentActiveIndex].togglePrio();
+      toDoList.get(currentActiveIndex).togglePrio();
       reprintToDoList();
       reprintCurrentSelectedInDetails(currentActiveIndex);
     }
@@ -103,9 +104,16 @@ $(document).ready(function(){
 
   $("#detailsDescriptionText").change(function() {
     if (currentActiveIndex !== -1) {
-      toDoList[currentActiveIndex].setDescription($(this).val());
+      toDoList.get(currentActiveIndex).setDescription($(this).val());
     }
   });
+
+
+  $("#sortPriority").click(function(){
+    toDoList = toDoList.sortAccordingToPrio();
+    reprintToDoList();
+  });
+
 
 
 

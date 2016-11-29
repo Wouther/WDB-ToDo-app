@@ -22,4 +22,7 @@ toDoItem3.setDueDate("2/1/2017 12:00");
 toDoItem3.setDescription("THIS IS a description for item 3\ asdasdasdasdasasd333333\n 33333333");
 
 
-var toDoList = [toDoItem1, toDoItem2, toDoItem3];
+var toDoList = new ToDoList();
+toDoList.add(toDoItem1);
+toDoList.add(toDoItem2);
+toDoList.add(toDoItem3);
