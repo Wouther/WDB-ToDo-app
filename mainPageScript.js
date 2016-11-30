@@ -57,6 +57,20 @@ var changeToDoTitle = function(value) {
   //TODO: other stuff, HTTP PUT request(?), change stuff in database
 }
 
+var filterShownToDosOnTitle = function(value) {
+
+  //IF the searchbox is empty, we need to show all todo's again
+  if (!value) {
+    shownToDoList = jQuery.extend(true, {}, toDoList);
+  } else { //else, filter based on string
+    shownToDoList = toDoList.subsetBasedOnTitle(value);
+
+  }
+
+  reprintToDoList();
+  currentActiveIndex = -1;
+}
+
 //Resets the dropwdown menu options, based on current year/month selected.
 var resetOptionsDueDate = function() {
   if (currentActiveIndex === -1) {
@@ -140,6 +154,11 @@ $(document).ready(function(){
 
   $("#addToDo").click(function(){
       addToDoItem();
+  });
+
+  $("#searchField").change(function(){
+    var newValue = $(this).val();
+    filterShownToDosOnTitle(newValue);
   });
 
   $("#detailsTitle").change(function() {

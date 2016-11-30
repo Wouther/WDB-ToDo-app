@@ -1,5 +1,9 @@
 var ToDoList = function() {
 this.list = [];
+this.id = null;
+this.owner = null;
+this.creationDate = null;
+this.name = null;
 }
 
 ToDoList.prototype.add = function(todo) {
@@ -83,4 +87,17 @@ ToDoList.prototype.sortAccordingToPrio = function() {
   var returnedToDoList = new ToDoList();
   returnedToDoList.list = returnedList;
   return returnedToDoList;
+}
+
+//Returns the portion of the list that contains only a string in the title
+ToDoList.prototype.subsetBasedOnTitle = function(string) {
+  var returnedList = new ToDoList();
+
+  for (i = 0; i < this.list.length; i++) {
+    if (this.get(i).getTitle().search(string) !== -1) {
+      returnedList.add(this.get(i));
+    }
+  }
+
+  return returnedList;
 }

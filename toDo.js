@@ -1,14 +1,47 @@
 
 //Constructor
 var ToDoItem = function() {
+  this.id = "";
   this.title = "";
+  this.creationDate = moment();
   this.dueDate = moment();
+  //Set default due date to be in 1 week.
+  this.dueDate.add(7, 'days');
   this.priority = false;
   this.description = "";
   this.reminder = "";
+  this.completed = false;
+  this.completionDate = null;
 };
 
 //Getters and setters
+
+ToDoItem.prototype.equals = function(otherToDo) {
+
+  if (typeof(otherToDo) !== "object") {
+    return false;
+  }
+
+  if (this.id === otherToDo.id) {
+    return true;
+  }
+  return false;
+}
+
+ToDoItem.prototype.setAsCompleted = function(date) {
+  this.completionDate = date;
+  this.completed = true;
+}
+
+ToDoItem.prototype.removeCompleted = function() {
+  //Remove the completedDate if it is present
+  if (this.completionDate) {
+      this.completionDate = null;
+  }
+
+  this.completed = false;
+}
+
 ToDoItem.prototype.getTitle = function() {
   return this.title;
 }
