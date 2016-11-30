@@ -10,7 +10,7 @@ var ToDoItem = function() {
  	this.description = "";
  	//TODO: reminder
  	this.hasReminder = false;
- 	this.reminder = "";
+ 	this.reminder = null;
  	this.completed = false;
  	this.completionDate = null;
 };
