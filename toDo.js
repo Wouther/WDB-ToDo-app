@@ -48,6 +48,10 @@ ToDoItem.prototype.removeCompleted = function() {
   this.completed = false;
 }
 
+ToDoItem.prototype.getCompleted = function() {
+  return this.completed;
+}
+
 ToDoItem.prototype.getTitle = function() {
   return this.title;
 }
@@ -61,7 +65,11 @@ ToDoItem.prototype.getDueDate = function() {
 }
 
 ToDoItem.prototype.getDueDateString = function() {
-  return this.dueDate.format();
+  return this.dueDate.format('llll');
+}
+
+ToDoItem.prototype.getCompletionDateString = function() {
+  return this.completionDate.format('llll');
 }
 
 ToDoItem.prototype.setDueDate = function(date) {

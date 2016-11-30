@@ -25,6 +25,18 @@ var createElementStringWithClass = function(type, classToSet, name, index, conte
   return '<' + type + ' ' + makeIDWithElementIndex(name, index) + " " + makeClassString(classToSet) +  '>' + content + '</' + type + '>';
 }
 
+var createStringForDoneButton = function(todoitem, index) {
+  var returnString = "";
+  if (todoitem.getCompleted() === true) {
+    returnString = returnString + createElementStringWithClass("button", "doneButtonList", "doneButtonList", index, "Done. Click to undo") + "<br>";
+    returnString = returnString + "Completed on: " + createElementString("h4", "toDoCompletedDate", index, todoitem.getCompletionDateString());
+    return returnString;
+  } else {
+    returnString = returnString + createElementStringWithClass("button", "doneButtonList", "doneButtonList", index, "Set as done.");
+    return returnString;
+  }
+}
+
 /* Returns a single to Do list item STring ready to be inserted into HTML.
 */
 var returnToDoListHTML = function(todoItem, index) {
@@ -33,6 +45,7 @@ var returnToDoListHTML = function(todoItem, index) {
   returnString = returnString + createElementString("h3", "toDoTitle", index, todoItem.getTitle());
   returnString = returnString + createElementString("h4", "toDoDueDate", index, todoItem.getDueDateString());
   returnString = returnString + createElementString("h4", "toDoPrio", index, todoItem.getPriorityString());
+  returnString = returnString + createStringForDoneButton(todoItem, index);
   returnString = returnString + "</li>";
 return returnString;
 }

@@ -91,6 +91,17 @@ var resetOptionsDueDate = function() {
 
 }
 
+var toggleDone = function(index) {
+
+  var currToDo = shownToDoList.get(index);
+   if (!currToDo.getCompleted()) {
+     currToDo.setAsCompleted(moment());
+   } else {
+     currToDo.removeCompleted();
+   }
+   reprintToDoList();
+}
+
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateYear = function(value) {
   shownToDoList.get(currentActiveIndex).setDueDateYear(value);
@@ -154,6 +165,12 @@ $(document).ready(function(){
     currentActiveIndex = index;
     reprintCurrentSelectedInDetails(index);
     //Redraw description in html?
+  });
+
+  $("#toDoItemList").on("click", ".doneButtonList", function(){
+    console.log("kom ik hier");
+    var index = returnIndexFromString($(this).attr('id'));
+    toggleDone(index);
   });
 
   $("#addToDo").click(function(){
