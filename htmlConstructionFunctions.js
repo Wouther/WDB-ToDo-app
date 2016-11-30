@@ -2,7 +2,6 @@ var returnIndexFromString = function(string) {
 return string.replace( /^\D+/g, ''); // replace all leading non-digits with nothing
 }
 
-
 var makeIDWithElementIndex = function(name, index) {
   return 'id="' + name + index + '"';
 }
@@ -26,7 +25,7 @@ var createElementStringWithClass = function(type, classToSet, name, index, conte
   return '<' + type + ' ' + makeIDWithElementIndex(name, index) + " " + makeClassString(classToSet) +  '>' + content + '</' + type + '>';
 }
 
-/* Returns a single to Do list item STring
+/* Returns a single to Do list item STring ready to be inserted into HTML.
 */
 var returnToDoListHTML = function(todoItem, index) {
   var returnString = '<li id="listitem' + index + '">';

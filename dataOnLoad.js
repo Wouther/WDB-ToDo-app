@@ -33,6 +33,9 @@ toDoList.add(toDoItem1);
 toDoList.add(toDoItem2);
 toDoList.add(toDoItem3);
 
+// How to 'clone' the list into this shownToDoList without reference to the old object?
+// in the future, it would be good to keep two separate lists: the complete list retrieved from the DB,
+// and the list that is currently shown on the page.
 var shownToDoList = new ToDoList();
 shownToDoList.add(toDoItem1);
 shownToDoList.add(toDoItem2);

@@ -1,14 +1,12 @@
 
-
-//Set to -1 if no to do is focused
+//Set to -1 if no to do is focused, this is default on starting the page
 var currentActiveIndex = -1;
 
 //REPRINTS THE todo list according to values in the ToDoList object
 var reprintToDoList = function() {
   //Remove everything that is already in the list
   $("#toDoItemList").empty();
-  //Add all to do items
-
+  //Add all to do items from internal object
   for (i = 0; i < shownToDoList.length(); i++) {
     $("#toDoItemList").append(returnToDoListHTML(shownToDoList.get(i), i));
   }
@@ -16,6 +14,7 @@ var reprintToDoList = function() {
 
 //CHanges HTML of the detailed view to reflect the current selected todo
 //Needs fixing, currently deleting the todo also triggers this (?)
+// however, I believe it works a it is supposed to now.
 var reprintCurrentSelectedInDetails = function(index) {
 
   var currToDo = shownToDoList.get(index);
@@ -31,15 +30,15 @@ var reprintCurrentSelectedInDetails = function(index) {
     $("#detailsSetPriority").html("No prio. Click to set to prio.");
   }
 
-  //$("#detailsDueDate").html(currToDo.getDueDate());
+  //Update duedate dropdown values
   $("#detailsDueDateYear").val(currToDo.getDueDate().year());
-  resetOptionsDueDate();
   $("#detailsDueDateMonth").val(currToDo.getDueDate().month() + 1);
+  resetOptionsDueDate();
   $("#detailsDueDateDay").val(currToDo.getDueDate().date());
 
+  //Description
   $("#detailsDescriptionText").val(currToDo.getDescription());
 
-  //$("#detailsReminderText").html(currToDo.getReminderDate());
 }
 
 //Adds a new toDo Item
@@ -52,12 +51,13 @@ var addToDoItem = function() {
   reprintToDoList();
 }
 
-//Changes a todo title
+//Changes a todo title in the internal object.
 var changeToDoTitle = function(value) {
   shownToDoList.get(currentActiveIndex).setTitle(value);
-  //TODO: other stuff, HTTP PUT request(?)
+  //TODO: other stuff, HTTP PUT request(?), change stuff in database
 }
 
+//Resets the dropwdown menu options, based on current year/month selected.
 var resetOptionsDueDate = function() {
   if (currentActiveIndex === -1) {
     return;
@@ -76,7 +76,7 @@ var resetOptionsDueDate = function() {
 
 }
 
-//Changes a todo due date/ month
+//Changes a todo due date/ month in the internal object and on the page
 var changeDueDateYear = function(value) {
   shownToDoList.get(currentActiveIndex).setDueDateYear(value);
   //Change options for days of the month
@@ -86,7 +86,7 @@ var changeDueDateYear = function(value) {
   //TODO: other stuff, HTTP PUT request(?)
 }
 
-//Changes a todo due date/ month
+//Changes a todo due date/ month in the internal object and on the page
 var changeDueDateMonth = function(value) {
   shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
   resetOptionsDueDate();
@@ -94,7 +94,7 @@ var changeDueDateMonth = function(value) {
   //TODO: other stuff, HTTP PUT request(?)
 }
 
-//Changes a todo due date/ month
+//Changes a todo due date/ month in the internal object
 var changeDueDateDateOfMonth = function(value) {
   shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
   //TODO: other stuff, HTTP PUT request(?)
@@ -110,6 +110,7 @@ $(document).ready(function(){
 //On is used instead of onclick, so that newly created DOM elements will also have these event handlers
   $("#toDoItemList").on("click", ".removeButton", function(){
 
+    //Get the list elemenent index
     var index = returnIndexFromString($(this).attr('id'));
 
     //Remove this element
@@ -121,12 +122,14 @@ $(document).ready(function(){
     }
 
     //Redraw todo list in html
-    //TODO: Could be replaced by only removing one single element!
+    //TODO: Could be replaced by only removing one single element! But that is not trivial,
+    //because then the ID's of all the elements after the removed one also need to be changed.
     reprintToDoList();
 
   });
 
   //CLICKING ON A TASK DISPLAYS DETAILS IN HTML BELOW (LATER RIGHT SIDE)
+  //Current click event set on the li, list item, in the future: a div?
   $("#toDoItemList").on("click", "li", function(){
 
     var index = returnIndexFromString($(this).attr('id'));

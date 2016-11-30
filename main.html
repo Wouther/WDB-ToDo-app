@@ -7,16 +7,18 @@
   <title>Secretary</title>
   <meta name="description" content="Secretary ToDo application for elderly people">
   <meta name="author" content="Minor group 50">
+      <!-- external libraries -->
       <script src="lib/jquery-3.1.1.min.js"></script>
       <script src="lib/moment.js"></script>
+      <!-- custom js 'classes' -->
       <script src="toDo.js"></script>
       <script src="toDoListClass.js"></script>
+      <!-- Helper functions used to make html to insert into the page -->
       <script src="htmlConstructionFunctions.js"></script>
+      <!-- Fake 'data' to make the list contain something on loading page. Should be replaced by loading from the DB later. -->
       <script src="dataOnLoad.js"></script>
+      <!-- Main script for the page -->
       <script src="mainPageScript.js"></script>
-      <script>
-    moment().format();
-</script>
 
   <!--Not used yet: <link rel="stylesheet" href="css/stylesheet.css">-->
 </head>
@@ -64,7 +66,7 @@
           <option value="11">11</option>
           <option value="12">12</option>
         </select>
-        <input type="text" name="detailsDueDateYear" value="2016" id="detailsDueDateYear"/><br/>
+        <input type="text" name="detailsDueDateYear" id="detailsDueDateYear" maxlength="4"/><br/>
       </div>
       <div>
         <h3 id="detailsReminderHeader">Reminder:</h3>
