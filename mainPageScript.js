@@ -1,15 +1,14 @@
-
 //Set to -1 if no to do is focused, this is default on starting the page
 var currentActiveIndex = -1;
 
 //REPRINTS THE todo list according to values in the ToDoList object
 var reprintToDoList = function() {
-  //Remove everything that is already in the list
-  $("#toDoItemList").empty();
-  //Add all to do items from internal object
-  for (i = 0; i < shownToDoList.length(); i++) {
-    $("#toDoItemList").append(returnToDoListHTML(shownToDoList.get(i), i));
-  }
+ 	//Remove everything that is already in the list
+ 	$("#toDoItemList").empty();
+ 	//Add all to do items from internal object
+ 	for (i = 0; i < shownToDoList.length(); i++) {
+ 	 	$("#toDoItemList").append(returnToDoListHTML(shownToDoList.get(i), i));
+ 	}
 }
 
 //CHanges HTML of the detailed view to reflect the current selected todo
@@ -17,226 +16,224 @@ var reprintToDoList = function() {
 // however, I believe it works a it is supposed to now.
 var reprintCurrentSelectedInDetails = function(index) {
 
-  var currToDo = shownToDoList.get(index);
+ 	var currToDo = shownToDoList.get(index);
 
-  if (!currToDo) {
-    return;
-  }
-  $("#detailsTitle").val(currToDo.getTitle());
+ 	if (!currToDo) {
+ 	 	return;
+ 	}
+ 	$("#detailsTitle").val(currToDo.getTitle());
 
-  if (currToDo.getPriority()) {
-    $("#detailsSetPriority").html("Has prio. Click to set to no prio.");
-  } else {
-    $("#detailsSetPriority").html("No prio. Click to set to prio.");
-  }
+ 	if (currToDo.getPriority()) {
+ 	 	$("#detailsSetPriority").html("Has prio. Click to set to no prio.");
+ 	} else {
+ 	 	$("#detailsSetPriority").html("No prio. Click to set to prio.");
+ 	}
 
-  //Update duedate dropdown values
-  $("#detailsDueDateYear").val(currToDo.getDueDate().year());
-  $("#detailsDueDateMonth").val(currToDo.getDueDate().month() + 1);
-  resetOptionsDueDate();
-  $("#detailsDueDateDay").val(currToDo.getDueDate().date());
+ 	//Update duedate dropdown values
+ 	$("#detailsDueDateYear").val(currToDo.getDueDate().year());
+ 	$("#detailsDueDateMonth").val(currToDo.getDueDate().month() + 1);
+ 	resetOptionsDueDate();
+ 	$("#detailsDueDateDay").val(currToDo.getDueDate().date());
 
-  //Description
-  $("#detailsDescriptionText").val(currToDo.getDescription());
+ 	//Description
+ 	$("#detailsDescriptionText").val(currToDo.getDescription());
 
 }
 
 //Adds a new toDo Item
 var addToDoItem = function() {
-  var toAdd = new ToDoItem();
-  toAdd.setTitle("Untitled");
-  shownToDoList.add(toAdd);
-  toDoList.add(toAdd);
-  reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
-  currentActiveIndex = shownToDoList.length() - 1;
-  reprintToDoList();
+ 	var toAdd = new ToDoItem();
+ 	toAdd.setTitle("Untitled");
+ 	shownToDoList.add(toAdd);
+ 	toDoList.add(toAdd);
+ 	reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
+ 	currentActiveIndex = shownToDoList.length() - 1;
+ 	reprintToDoList();
 }
 
 //Changes a todo title in the internal object.
 var changeToDoTitle = function(value) {
-  shownToDoList.get(currentActiveIndex).setTitle(value);
-  //TODO: other stuff, HTTP PUT request(?), change stuff in database
+ 	shownToDoList.get(currentActiveIndex).setTitle(value);
+ 	//TODO: other stuff, HTTP PUT request(?), change stuff in database
 }
 
 var filterShownToDosOnTitle = function(value) {
 
-  //IF the searchbox is empty, we need to show all todo's again
-  if (!value) {
-    shownToDoList = jQuery.extend(true, {}, toDoList);
-  } else { //else, filter based on string
-    shownToDoList = toDoList.subsetBasedOnTitle(value);
+ 	//IF the searchbox is empty, we need to show all todo's again
+ 	if (!value) {
+ 	 	shownToDoList = jQuery.extend(true, {}, toDoList);
+ 	} else { //else, filter based on string
+ 	 	shownToDoList = toDoList.subsetBasedOnTitle(value);
+ 	}
 
-  }
-
-  reprintToDoList();
-  currentActiveIndex = -1;
+ 	reprintToDoList();
+ 	currentActiveIndex = -1;
 }
 
 //Resets the dropwdown menu options, based on current year/month selected.
 var resetOptionsDueDate = function() {
-  if (currentActiveIndex === -1) {
-    return;
-  }
+ 	if (currentActiveIndex === -1) {
+ 	 	return;
+ 	}
 
-  var currToDo = shownToDoList.get(currentActiveIndex);
-  var numberOfDays = currToDo.getDueDate().daysInMonth();
+ 	var currToDo = shownToDoList.get(currentActiveIndex);
+ 	var numberOfDays = currToDo.getDueDate().daysInMonth();
 
-  //Empty the dropdown menu
-  $("#detailsDueDateDay").empty();
-  //Add all to do items
+ 	//Empty the dropdown menu
+ 	$("#detailsDueDateDay").empty();
+ 	//Add all to do items
 
-  for (i = 1; i < numberOfDays + 1; i++) {
-    $("#detailsDueDateDay").append(returnOptionForDayOfTheMonth(i));
-  }
+ 	for (i = 1; i < numberOfDays + 1; i++) {
+ 	 	$("#detailsDueDateDay").append(returnOptionForDayOfTheMonth(i));
+ 	}
 
 }
 
 var toggleDone = function(index) {
-
-  var currToDo = shownToDoList.get(index);
-   if (!currToDo.getCompleted()) {
-     currToDo.setAsCompleted(moment());
-   } else {
-     currToDo.removeCompleted();
-   }
-   reprintToDoList();
+ 	var currToDo = shownToDoList.get(index);
+ 	if (!currToDo.getCompleted()) {
+ 	 	currToDo.setAsCompleted(moment());
+ 	} else {
+ 	 	currToDo.removeCompleted();
+ 	}
+ 	reprintToDoList();
 }
 
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateYear = function(value) {
-  shownToDoList.get(currentActiveIndex).setDueDateYear(value);
-  //Change options for days of the month
-  resetOptionsDueDate();
-  $("#detailsDueDateMonth").val(shownToDoList.get(currentActiveIndex).getDueDate().month() + 1);
-  $("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
-  //TODO: other stuff, HTTP PUT request(?)
+ 	shownToDoList.get(currentActiveIndex).setDueDateYear(value);
+ 	//Change options for days of the month
+ 	resetOptionsDueDate();
+ 	$("#detailsDueDateMonth").val(shownToDoList.get(currentActiveIndex).getDueDate().month() + 1);
+ 	$("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
+ 	//TODO: other stuff, HTTP PUT request(?)
 }
 
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateMonth = function(value) {
-  shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
-  resetOptionsDueDate();
-  $("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
-  //TODO: other stuff, HTTP PUT request(?)
+ 	shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
+ 	resetOptionsDueDate();
+ 	$("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
+ 	//TODO: other stuff, HTTP PUT request(?)
 }
 
 //Changes a todo due date/ month in the internal object
 var changeDueDateDateOfMonth = function(value) {
-  shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
-  //TODO: other stuff, HTTP PUT request(?)
+ 	shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
+ 	//TODO: other stuff, HTTP PUT request(?)
 }
 
 //Executed when document has finished loading
-$(document).ready(function(){
+$(document).ready(function() {
 
-//Print the initial list
-  reprintToDoList();
+ 	//Print the initial list
+ 	reprintToDoList();
 
-//CLICKING ON REMOVE BUTTON HANDLER
-//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
-  $("#toDoItemList").on("click", ".removeButton", function(){
+ 	//CLICKING ON REMOVE BUTTON HANDLER
+ 	//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
+ 	$("#toDoItemList").on("click", ".removeButton", function() {
 
-    //Get the list elemenent index
-    var index = returnIndexFromString($(this).attr('id'));
+ 	 	//Get the list elemenent index
+ 	 	var index = returnIndexFromString($(this).attr('id'));
 
-    //remove from original list
-    toDoList.removeById(shownToDoList.get(index).getId());
+ 	 	//remove from original list
+ 	 	toDoList.removeById(shownToDoList.get(index).getId());
 
-    //Remove this element from shown list
-    shownToDoList.remove(index);
+ 	 	//Remove this element from shown list
+ 	 	shownToDoList.remove(index);
 
-    //If the removed element was focused in the detailed view, we set the focus to -1
-    if (currentActiveIndex === index) {
-      currentActiveIndex = -1;
-    }
+ 	 	//If the removed element was focused in the detailed view, we set the focus to -1
+ 	 	if (currentActiveIndex === index) {
+ 	 	 	currentActiveIndex = -1;
+ 	 	}
 
-    //Redraw todo list in html
-    //TODO: Could be replaced by only removing one single element! But that is not trivial,
-    //because then the ID's of all the elements after the removed one also need to be changed.
-    reprintToDoList();
+ 	 	//Redraw todo list in html
+ 	 	//TODO: Could be replaced by only removing one single element! But that is not trivial,
+ 	 	//because then the ID's of all the elements after the removed one also need to be changed.
+ 	 	reprintToDoList();
 
-  });
+ 	});
 
-  //CLICKING ON A TASK DISPLAYS DETAILS IN HTML BELOW (LATER RIGHT SIDE)
-  //Current click event set on the li, list item, in the future: a div?
-  $("#toDoItemList").on("click", "li", function(){
+ 	//CLICKING ON A TASK DISPLAYS DETAILS IN HTML BELOW (LATER RIGHT SIDE)
+ 	//Current click event set on the li, list item, in the future: a div?
+ 	$("#toDoItemList").on("click", "li", function() {
 
-    var index = returnIndexFromString($(this).attr('id'));
-    currentActiveIndex = index;
-    reprintCurrentSelectedInDetails(index);
-    //Redraw description in html?
-  });
+ 	 	var index = returnIndexFromString($(this).attr('id'));
+ 	 	currentActiveIndex = index;
+ 	 	reprintCurrentSelectedInDetails(index);
+ 	 	//Redraw description in html?
+ 	});
 
-  $("#toDoItemList").on("click", ".doneButtonList", function(){
-    console.log("kom ik hier");
-    var index = returnIndexFromString($(this).attr('id'));
-    toggleDone(index);
-  });
+ 	$("#toDoItemList").on("click", ".doneButtonList", function() {
+ 	 	console.log("kom ik hier");
+ 	 	var index = returnIndexFromString($(this).attr('id'));
+ 	 	toggleDone(index);
+ 	});
 
-  $("#addToDo").click(function(){
-      addToDoItem();
-  });
+ 	$("#addToDo").click(function() {
+ 	 	addToDoItem();
+ 	});
 
-  $("#searchField").change(function(){
-    var newValue = $(this).val();
-    filterShownToDosOnTitle(newValue);
-  });
+ 	$("#searchField").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	filterShownToDosOnTitle(newValue);
+ 	});
 
-  $("#detailsTitle").change(function() {
-    if (currentActiveIndex !== -1) {
-      var changedValue = $(this).val();
-      changeToDoTitle(changedValue);
-      reprintToDoList();
-    }
-  });
+ 	$("#detailsTitle").change(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	var changedValue = $(this).val();
+ 	 	 	changeToDoTitle(changedValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
 
-  $("#detailsSetPriority").click(function(){
-    if (currentActiveIndex !== -1) {
-      shownToDoList.get(currentActiveIndex).togglePrio();
-      reprintToDoList();
-      reprintCurrentSelectedInDetails(currentActiveIndex);
-    }
-  });
+ 	$("#detailsSetPriority").click(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	shownToDoList.get(currentActiveIndex).togglePrio();
+ 	 	 	reprintToDoList();
+ 	 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
+ 	 	}
+ 	});
 
-  $("#detailsDescriptionText").change(function() {
-    if (currentActiveIndex !== -1) {
-      shownToDoList.get(currentActiveIndex).setDescription($(this).val());
-    }
-  });
+ 	$("#detailsDescriptionText").change(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	shownToDoList.get(currentActiveIndex).setDescription($(this).val());
+ 	 	}
+ 	});
 
-  $("#sortPriority").click(function(){
-    shownToDoList = shownToDoList.sortAccordingToPrio();
-    reprintToDoList();
-  });
+ 	$("#sortPriority").click(function() {
+ 	 	shownToDoList = shownToDoList.sortAccordingToPrio();
+ 	 	reprintToDoList();
+ 	});
 
-  $("#sortDate").click(function(){
-    shownToDoList = shownToDoList.sortAccordingToDueDate();
-    reprintToDoList();
-  });
+ 	$("#sortDate").click(function() {
+ 	 	shownToDoList = shownToDoList.sortAccordingToDueDate();
+ 	 	reprintToDoList();
+ 	});
 
-  $("#detailsDueDateDay").change(function(){
-    var newValue = $(this).val();
-    if (currentActiveIndex !== -1) {
-      changeDueDateDateOfMonth(newValue);
-      reprintToDoList();
-    }
-  });
+ 	$("#detailsDueDateDay").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	changeDueDateDateOfMonth(newValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
 
-  $("#detailsDueDateMonth").change(function(){
-    var newValue = $(this).val();
-    if (currentActiveIndex !== -1) {
-      changeDueDateMonth(newValue);
-      reprintToDoList();
-    }
-  });
+ 	$("#detailsDueDateMonth").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	changeDueDateMonth(newValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
 
-  $("#detailsDueDateYear").change(function(){
-    var newValue = $(this).val();
-    if (currentActiveIndex !== -1) {
-      changeDueDateYear(newValue);
-      reprintToDoList();
-    }
-  });
+ 	$("#detailsDueDateYear").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	changeDueDateYear(newValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
 
 
 });

@@ -1,60 +1,63 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
 
-  <title>Secretary</title>
-  <meta name="description" content="Secretary ToDo application for elderly people">
-  <meta name="author" content="Minor group 50">
-      <!-- external libraries -->
-      <script src="lib/jquery-3.1.1.min.js"></script>
-      <script src="lib/moment.js"></script>
-      <!-- Custom general JS functions -->
-      <script src="helperFunctionsJS.js"></script>
-      <!-- custom js 'classes' -->
-      <script src="toDo.js"></script>
-      <script src="toDoListClass.js"></script>
-      <!-- Helper functions used to make html to insert into the page -->
-      <script src="htmlConstructionFunctions.js"></script>
-      <!-- Fake 'data' to make the list contain something on loading page. Should be replaced by loading from the DB later. -->
-      <script src="dataOnLoad.js"></script>
-      <!-- Main script for the page -->
-      <script src="mainPageScript.js"></script>
+    <title>Secretary</title>
+    <meta name="description" content="Secretary ToDo application for elderly people">
+    <meta name="author" content="Minor group 50">
+    <!-- external libraries -->
+    <script src="lib/jquery-3.1.1.min.js"></script>
+    <script src="lib/moment.js"></script>
+    <!-- Custom general JS functions -->
+    <script src="helperFunctionsJS.js"></script>
+    <!-- custom js 'classes' -->
+    <script src="toDo.js"></script>
+    <script src="toDoListClass.js"></script>
+    <!-- Helper functions used to make html to insert into the page -->
+    <script src="htmlConstructionFunctions.js"></script>
+    <!-- Fake 'data' to make the list contain something on loading page. Should be replaced by loading from the DB later. -->
+    <script src="dataOnLoad.js"></script>
+    <!-- Main script for the page -->
+    <script src="mainPageScript.js"></script>
 
-  <!--Not used yet: <link rel="stylesheet" href="css/stylesheet.css">-->
+    <!--Not used yet: <link rel="stylesheet" href="css/stylesheet.css">-->
 </head>
 
 <body>
-  <div id="content">
-    <div id="header">
-      <button id="addToDo">Add todo</button>
-      <h1>Secretary</h1>
-      <h2>Welcome user!</h2>
-    </div>
-    <div id="leftTop">
-      <input id="searchField" type="text" name="searchField" placeholder="Search"/><br />
-      <button id="sortDate">Sort date</button>
-      <button id="sortPriority">Sort priority</button>
-    </div>
-    <div id="leftBottom">
-      <ul id="toDoItemList">
-        <li><button id="removeTodo">Remove todo</button>
-          <h3 id="todoTitle">Todo title 1</h3>
-          <h4 id="dueDate">28/11/16 13:00</h4>
-          <h4 id="priority">Prio</h4>
-            <button id="setDone"> Done</button>
-          </li>
-        </ul>
-      </div>
-      <div id="right">
-        <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle"/><br />
-        <button id="detailsSetPriority">Star</button>
-        <div>
-        <h3>Due date:</h3>
-        <select id="detailsDueDateDay">
+    <div id="content">
+        <div id="header">
+            <button id="addToDo">Add todo</button>
+            <h1>Secretary</h1>
+            <h2>Welcome user!</h2>
+        </div>
+        <div id="leftTop">
+            <h2>ToDo List</h2>
+            <input id="searchField" type="text" name="searchField" placeholder="Search" /><br />
+            <button id="sortDate">Sort date</button>
+            <button id="sortPriority">Sort priority</button>
+        </div>
+        <div id="leftBottom">
+            <ul id="toDoItemList">
+                <li><button id="removeTodo">Remove todo</button>
+                    <h3 id="todoTitle">Todo title 1</h3>
+                    <h4 id="dueDate">28/11/16 13:00</h4>
+                    <h4 id="priority">Prio</h4>
+                    <button id="setDone"> Done</button>
+                </li>
+            </ul>
+        </div>
+        <div id="right">
+            <h2>Details</h2>
+            <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle" /><br />
+            <button id="detailsSetPriority">Star</button>
+            <div>
+                <h3>Due date:</h3>
+                <select id="detailsDueDateDay">
         </select>
-        <select id="detailsDueDateMonth">
+                <select id="detailsDueDateMonth">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -68,20 +71,21 @@
           <option value="11">11</option>
           <option value="12">12</option>
         </select>
-        <input type="text" name="detailsDueDateYear" id="detailsDueDateYear" maxlength="4"/><br/>
-      </div>
-      <div>
-        <h3 id="detailsReminderHeader">Reminder:</h3>
-          <h4 id="detailsReminderText">28/11/16 13:00</h4>
-        <button id="detailsReminderButton">Set reminder</button>
-      </div>
+                <input type="text" name="detailsDueDateYear" id="detailsDueDateYear" maxlength="4" /><br/>
+            </div>
+            <div>
+                <h3 id="detailsReminderHeader">Reminder:</h3>
+                <h4 id="detailsReminderText">28/11/16 13:00</h4>
+                <button id="detailsReminderButton">Set reminder</button>
+            </div>
 
-      <h5>Description</h5>
-      <textarea rows="4" cols="5" id="detailsDescriptionText">Lorem ipsum sasjdsajdusahdjashjdasdjashdsa </textarea>
+            <h5>Description</h5>
+            <textarea rows="4" cols="5" id="detailsDescriptionText">Lorem ipsum sasjdsajdusahdjashjdasdjashdsa </textarea>
 
         </div>
 
-      </div>
+    </div>
 
-    </body>
-    </html>
+</body>
+
+</html>
