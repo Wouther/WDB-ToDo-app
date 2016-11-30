@@ -1,7 +1,7 @@
 
 //Constructor
 var ToDoItem = function() {
-  this.id = "";
+  this.id = generateID();
   this.title = "";
   this.creationDate = moment();
   this.dueDate = moment();
@@ -14,8 +14,6 @@ var ToDoItem = function() {
   this.completionDate = null;
 };
 
-//Getters and setters
-
 ToDoItem.prototype.equals = function(otherToDo) {
 
   if (typeof(otherToDo) !== "object") {
@@ -26,6 +24,14 @@ ToDoItem.prototype.equals = function(otherToDo) {
     return true;
   }
   return false;
+}
+
+ToDoItem.prototype.getId = function() {
+  return this.id;
+}
+
+ToDoItem.prototype.setId = function(newid) {
+  this.id = newid;
 }
 
 ToDoItem.prototype.setAsCompleted = function(date) {

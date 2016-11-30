@@ -20,6 +20,7 @@ toDoItem2.setDueDateMonth(1);
 toDoItem2.setDueDateDateOfMonth(3);
 toDoItem2.setDescription("THIS IS a description for item 2\ asdasdasdasdasasd11111\n 2222222222222");
 
+
 toDoItem3.setTitle("Title of third to do item");
 toDoItem3.setPriority(false);
 toDoItem3.setDueDateYear(2018);

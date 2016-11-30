@@ -46,6 +46,7 @@ var addToDoItem = function() {
   var toAdd = new ToDoItem();
   toAdd.setTitle("Untitled");
   shownToDoList.add(toAdd);
+  toDoList.add(toAdd);
   reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
   currentActiveIndex = shownToDoList.length() - 1;
   reprintToDoList();
@@ -127,7 +128,10 @@ $(document).ready(function(){
     //Get the list elemenent index
     var index = returnIndexFromString($(this).attr('id'));
 
-    //Remove this element
+    //remove from original list
+    toDoList.removeById(shownToDoList.get(index).getId());
+
+    //Remove this element from shown list
     shownToDoList.remove(index);
 
     //If the removed element was focused in the detailed view, we set the focus to -1

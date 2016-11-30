@@ -101,3 +101,12 @@ ToDoList.prototype.subsetBasedOnTitle = function(string) {
 
   return returnedList;
 }
+
+ToDoList.prototype.removeById = function(idparam) {
+  for (i=0; i < this.list.length; i++) {
+    if (this.get(i).getId() === idparam) {
+        this.remove(i);
+        return;
+    }
+  }
+}
