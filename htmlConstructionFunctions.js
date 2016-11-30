@@ -37,7 +37,6 @@ var returnToDoListHTML = function(todoItem, index) {
 return returnString;
 }
 
-
 var returnOptionForDayOfTheMonth = function(day) {
   return '<option value="' + day + '">' + day + "</option>";
 }
