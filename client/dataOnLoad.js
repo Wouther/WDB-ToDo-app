@@ -8,7 +8,7 @@ var toDoItem3 = new ToDoItem();
 
 toDoItem1.setTitle("Title of first to do item");
 toDoItem1.setPriority(false);
-toDoItem1.setDueDateYear(2016);
+toDoItem1.setDueDateYear(2020);
 toDoItem1.setDueDateMonth(12);
 toDoItem1.setDueDateDateOfMonth(2);
 toDoItem1.setDescription("THIS IS a description for item 1\ asdasdasdasdasasd11111\n 111111111111111111");

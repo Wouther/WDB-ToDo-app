@@ -1,0 +1,23 @@
+{
+  "name": "wdb-todo-app-50",
+  "version": "1.0.0",
+  "description": "To do app for the elderly.",
+  "main": "servercode.js",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wouther/WDB-ToDo-app.git"
+  },
+  "author": "Wouther Bons Margreet Hoekstra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wouther/WDB-ToDo-app/issues"
+  },
+  "homepage": "https://github.com/Wouther/WDB-ToDo-app#readme"
+}
