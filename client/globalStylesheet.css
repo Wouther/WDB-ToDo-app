@@ -1,0 +1,9 @@
+* {
+    font-family: Times, serif;
+    font-size: 100%;
+}
+
+header > h1 {
+    font-size: 3em;
+    font-variant: small-caps;
+}

@@ -9,8 +9,8 @@
     <meta name="author" content="Minor group 50">
     <script src="entryPageScript.js"></script>
 
-
-    <!--Not used yet: <link rel="stylesheet" href="css/stylesheet.css">-->
+    <link rel="stylesheet" href="globalStylesheet.css">
+    <link rel="stylesheet" href="entryPageStylesheet.css">
 </head>
 
 <body>
@@ -24,8 +24,10 @@
         <form action="todo.js">
             <input type="text" name="username" value="Username" />
             <input type="text" name="password" value="Password" />
-            <input type="submit" value="Login" />
-            <input type="submit" value="Register" />
+            <div id="buttons">
+                <input type="submit" value="Login" />
+                <input type="submit" value="Register" />
+            </div>
         </form>
     </section>
 

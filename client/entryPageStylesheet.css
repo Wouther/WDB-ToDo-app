@@ -1,0 +1,49 @@
+body {
+}
+
+body > * {
+    margin: auto; /* center */
+    width: 30em;
+}
+
+body > header {
+    text-align: center;
+}
+
+section#content {
+    text-align: center;
+    padding: 1em;
+    color: #FFFFFF;
+    background-color: #000000;
+}
+
+section#content input {
+    box-sizing: border-box; /* prevent elements from becoming larger than their box due to padding/margin. */
+    padding: 0.5em;
+    margin: 0.5em 0em 0.5em 0em;
+}
+
+section#content input[type=text] {
+    width: 100%;
+}
+
+section#content #buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+section#content #buttons * {
+    flex-grow: 1;
+    margin: 1em;
+}
+
+section#content #buttons *:first-child {
+    margin-left: 0em;
+}
+
+section#content #buttons *:last-child {
+    margin-right: 0em;
+}
