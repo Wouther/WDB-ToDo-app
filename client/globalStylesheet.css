@@ -29,6 +29,14 @@ button, input, select, textarea {
     margin: 0.5em 0;
 }
 
+input[type=text], textarea {
+    background: #F0F0F0 url('img/edit.png') no-repeat right 0.3em center;
+}
+
+textarea {
+    background-position: right 0.3em top 0.3em;
+}
+
 /*
     Toolbar. Styles children as a horizontal toolbar that fills the width of
     the parent. Optionally uses as much space as possible for the main tool.
