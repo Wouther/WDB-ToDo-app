@@ -23,7 +23,6 @@ ToDoList.prototype.length = function() {
  	return this.list.length;
 };
 
-
 ToDoList.prototype.remove = function(index) {
  	if (index > (this.list.length - 1)) {
  	 	console.log("Index out of bounds error in ToDoList get class.");
@@ -32,40 +31,31 @@ ToDoList.prototype.remove = function(index) {
  	this.list.splice(index, 1);
 }
 
+var compareFunctionDueDate = function(a, b) {
+ 	 	if (a.getDueDate().isBefore(b.getDueDate())) {
+ 	 	 	return -1;
+ 	 	} else if (!a.getDueDate().isBefore(b.getDueDate())) {
+ 	 	 	return 1;
+ 	 	} else {
+ 	 	 	return 0;
+ 	 	}
+ 	}
+ 	//TODO not functional
+var compareFunctionPrio = function(a, b) {
+ 	if (a.priority === true && b.priority === false) {
+ 	 	return -1;
+ 	} else if (a.priority === false && b.priority === true) {
+ 	 	return 1;
+ 	} else {
+ 	 	return 0;
+ 	}
+}
+
 ToDoList.prototype.sortAccordingToDueDate = function() {
-
- 	var returnedList = [];
-
- 	var placeAtRightPlaceInList = function(list, value) {
-
- 	 	if (list.length === 0) {
- 	 	 	list.push(value);
- 	 	 	return;
- 	 	}
-
- 	 	if (!list[0].getDueDate().isBefore(value.getDueDate())) {
- 	 	 	list.splice(0, 0, value);
- 	 	 	return;
- 	 	}
-
- 	 	for (j = 0; j < list.length - 1; j++) {
-
- 	 	 	if (list[j].getDueDate().isBefore(value.getDueDate()) && !list[j + 1].getDueDate().isBefore(value.getDueDate())) {
- 	 	 	 	list.splice(j, 0, value);
- 	 	 	 	return;
- 	 	 	}
- 	 	}
- 	 	list.push(value);
- 	 	return;
- 	}
-
- 	for (i = 0; i < this.list.length; i++) {
- 	 	placeAtRightPlaceInList(returnedList, this.list[i]);
- 	}
-
- 	var returnedToDoList = new ToDoList();
- 	returnedToDoList.list = returnedList;
- 	return returnedToDoList;
+ 	this.list.sort(compareFunctionDueDate);
+ 	var listReturned = new ToDoList();
+ 	listReturned.list = this.list.sort(compareFunctionDueDate);
+ 	return listReturned;
 }
 
 ToDoList.prototype.sortAccordingToPrio = function() {
@@ -80,12 +70,12 @@ ToDoList.prototype.sortAccordingToPrio = function() {
  	 	 	withoutPrio.push(this.list[i]);
  	 	}
  	}
-
  	//TODO : sort the sublists according to due date?
 
  	var returnedList = withPrio.concat(withoutPrio);
  	var returnedToDoList = new ToDoList();
- 	returnedToDoList.list = returnedList;
+ 	this.list.sort(compareFunctionPrio);
+ 	returnedToDoList.list = this.list;
  	return returnedToDoList;
 }
 
