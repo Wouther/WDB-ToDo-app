@@ -64,37 +64,44 @@
     <div id="rightColumn">
         <article id="details">
             <h2>Details</h2>
-            <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle" />
-            <button id="detailsSetPriority">Star</button>
-            <section class="date">
-                <h3>Due date:</h3>
-                <select id="detailsDueDateDay">
-                </select>
-                <select id="detailsDueDateMonth">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                </select>
-                <input type="text" name="detailsDueDateYear" id="detailsDueDateYear" maxlength="4" />
+
+            <div class="toolbar">
+                <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle" class="mainTool" />
+                <button id="detailsSetPriority">Star</button>
+            </div>
+
+            <section class="toolbar date">
+                <h3>Due:</h3>
+                <div class="mainTool">
+                    <select id="detailsDueDateDay">
+                    </select>
+                    <select id="detailsDueDateMonth">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <input type="text" name="detailsDueDateYear" id="detailsDueDateYear" maxlength="4" />
+                </div>
             </section>
-            <section class="date">
+
+            <section class="toolbar date">
                 <h3>Reminder:</h3>
-                <h4 id="detailsReminderText">28/11/16 13:00</h4>
+                <div id="detailsReminderText" class="mainTool">28/11/16 13:00</div>
                 <button id="detailsReminderButton">Set reminder</button>
             </section>
 
             <section id="description">
-                <h5>Description:</h5>
-                <textarea rows="4" cols="5" id="detailsDescriptionText">
+                <h3>Description:</h3>
+                <textarea id="detailsDescriptionText">
                     Lorem ipsum sasjdsajdusahdjashjdasdjashdsa
                 </textarea>
             </section>

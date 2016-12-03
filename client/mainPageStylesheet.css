@@ -92,13 +92,6 @@ body > header h1 {
     margin: 0.5em 0;
 }
 
-#toDoItemList {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
-
 #toDoItemList > li {
     list-style-type: none;
     display: flex;
@@ -132,4 +125,40 @@ body > header h1 {
     Item details.
 */
 
-/* TODO */
+#details {
+    padding: 0.5em 0.5em;
+}
+
+#details > * { /* All boxes should stretch to the width. */
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0.5em 0;
+    padding: 0.5em 0.5em;
+}
+
+#details > .date {
+    padding: 0.5em;
+    background: #000000;
+    color: #FFFFFF;
+}
+
+#details > .date > * {
+    margin: 0 0.1em;
+}
+
+#details > .date > *:first-child {
+    margin-left: 0;
+}
+
+#details > .date > *:last-child {
+    margin-right: 0;
+}
+
+#details #description > * {
+    margin: 0.3em 0;
+}
+
+#details #detailsDescriptionText {
+    width: 100%;
+    min-height: 5em;
+}
