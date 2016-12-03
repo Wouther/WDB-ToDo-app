@@ -1,0 +1,55 @@
+body > header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0.5em;
+}
+
+body > header * {
+    flex-basis: 0;
+    flex-grow: 1;
+    margin: 0 0.1em;
+}
+
+body > header *:first-child {
+    margin-left: 0.5em;
+    text-align: left;
+}
+
+body > header *:last-child {
+    margin-right: 0.5em;
+    text-align: right;
+}
+
+body > header h1 {
+    text-align: center;
+}
+
+body > #leftColumn, body > #rightColumn {
+    box-sizing: border-box;
+    float: left;
+    width: calc(50% - 0.1em);
+    margin: 0 0.1em;
+    padding: 0;
+}
+
+body > #leftColumn {
+    margin-left: 0em;
+}
+
+body > #rightColumn {
+    margin-right: 0em;
+}
+
+body > #rightColumn::after {
+    clear: right;
+    content: "";
+    display: block;
+}
+
+body > #leftColumn > *, body > #leftColumn > nav > *, body > #rightColumn > * { /* All boxes in the columns should stretch to the columns' width. */
+    box-sizing: border-box;
+    width: 100%;
+}

@@ -30,75 +30,80 @@
 <body>
 
     <header id="header">
+        <h2>&nbsp;</h2><!--No content on left side of header yet-->
         <h1>Secretary</h1>
         <h2>Welcome user!</h2>
     </header>
 
-    <nav id="leftTop">
-        <header>
-            <h2>ToDo List</h2>
-        </header>
-        <section class="left">
-            <button id="addToDo">Add todo</button>
-        </section>
-        <section id="search">
-            <input id="searchField" type="text" name="searchField" placeholder="Search" />
-        </section
-        <section class="right">
-            <button id="sortDate">Sort date</button>
-            <button id="sortPriority">Sort priority</button>
-        </section>
-    </nav>
+    <div id="leftColumn">
+        <nav id="leftTop">
+            <header>
+                <h2>ToDo List</h2>
+            </header>
+            <section class="left">
+                <button id="addToDo">Add todo</button>
+            </section>
+            <section id="search">
+                <input id="searchField" type="text" name="searchField" placeholder="Search" />
+            </section>
+            <section class="right">
+                <button id="sortDate">Sort date</button>
+                <button id="sortPriority">Sort priority</button>
+            </section>
+        </nav>
 
-    <section id="leftBottom">
-        <ul id="toDoItemList">
-            <li>
-                <button id="removeTodo">Remove todo</button>
-                <h3 id="todoTitle">Todo title 1</h3>
-                <h4 id="dueDate">28/11/16 13:00</h4>
-                <h4 id="priority">Prio</h4>
-                <button id="setDone"> Done</button>
-            </li>
-        </ul>
-    </section>
+        <section id="leftBottom">
+            <ul id="toDoItemList">
+                <li>
+                    <button id="removeTodo">Remove todo</button>
+                    <h3 id="todoTitle">Todo title 1</h3>
+                    <h4 id="dueDate">28/11/16 13:00</h4>
+                    <h4 id="priority">Prio</h4>
+                    <button id="setDone"> Done</button>
+                </li>
+            </ul>
+        </section>
+    </div>
 
-    <article id="right">
-        <h2>Details</h2>
-        <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle" />
-        <button id="detailsSetPriority">Star</button>
-        <section class="date">
-            <h3>Due date:</h3>
-            <select id="detailsDueDateDay">
-            </select>
-            <select id="detailsDueDateMonth">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-            <input type="text" name="detailsDueDateYear" id="detailsDueDateYear" maxlength="4" />
-        </section>
-        <section class="date">
-            <h3>Reminder:</h3>
-            <h4 id="detailsReminderText">28/11/16 13:00</h4>
-            <button id="detailsReminderButton">Set reminder</button>
-        </section>
+    <div id="rightColumn">
+        <article id="details">
+            <h2>Details</h2>
+            <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle" />
+            <button id="detailsSetPriority">Star</button>
+            <section class="date">
+                <h3>Due date:</h3>
+                <select id="detailsDueDateDay">
+                </select>
+                <select id="detailsDueDateMonth">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+                <input type="text" name="detailsDueDateYear" id="detailsDueDateYear" maxlength="4" />
+            </section>
+            <section class="date">
+                <h3>Reminder:</h3>
+                <h4 id="detailsReminderText">28/11/16 13:00</h4>
+                <button id="detailsReminderButton">Set reminder</button>
+            </section>
 
-        <section id="description">
-            <h5>Description:</h5>
-            <textarea rows="4" cols="5" id="detailsDescriptionText">
-                Lorem ipsum sasjdsajdusahdjashjdasdjashdsa
-            </textarea>
-        </section>
-    </article>
+            <section id="description">
+                <h5>Description:</h5>
+                <textarea rows="4" cols="5" id="detailsDescriptionText">
+                    Lorem ipsum sasjdsajdusahdjashjdasdjashdsa
+                </textarea>
+            </section>
+        </article>
+    </div>
 
 </body>
 
