@@ -38,12 +38,6 @@ main > header h2 {
     margin: 0.5em 0;
 }
 
-main input {
-    box-sizing: border-box; /* prevent elements from becoming larger than their box due to padding/margin. */
-    padding: 0.5em;
-    margin: 0.5em 0;
-}
-
 main input[type=text] {
     width: 100%;
 }
