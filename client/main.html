@@ -29,36 +29,32 @@
 
 <body>
 
-    <header id="header">
+    <header id="header" class="toolbar">
         <h2>&nbsp;</h2><!--No content on left side of header yet-->
         <h1>Secretary</h1>
         <h2>Welcome user!</h2>
     </header>
 
     <div id="leftColumn">
-        <nav id="leftTop">
+        <nav class="toolbar">
+            <button id="addToDo">Add todo</button>
+            <input id="searchField" class="mainTool" type="text" name="searchField" placeholder="Search" />
+            <button id="sortDate">Sort date</button>
+            <button id="sortPriority">Sort priority</button>
+        </nav>
+
+        <section id="listSection">
             <header>
                 <h2>ToDo List</h2>
             </header>
-            <section class="left">
-                <button id="addToDo">Add todo</button>
-            </section>
-            <section id="search">
-                <input id="searchField" type="text" name="searchField" placeholder="Search" />
-            </section>
-            <section class="right">
-                <button id="sortDate">Sort date</button>
-                <button id="sortPriority">Sort priority</button>
-            </section>
-        </nav>
-
-        <section id="leftBottom">
             <ul id="toDoItemList">
                 <li>
                     <button id="removeTodo">Remove todo</button>
-                    <h3 id="todoTitle">Todo title 1</h3>
-                    <h4 id="dueDate">28/11/16 13:00</h4>
-                    <h4 id="priority">Prio</h4>
+                    <section class="overview">
+                        <h3 id="todoTitle">Todo title 1</h3>
+                        <h4 id="dueDate">28/11/16 13:00</h4>
+                        <h4 id="priority">Prio</h4>
+                    </section>
                     <button id="setDone"> Done</button>
                 </li>
             </ul>

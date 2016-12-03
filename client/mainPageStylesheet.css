@@ -1,16 +1,15 @@
+/*
+    Page header.
+*/
+
 body > header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     margin: 0;
     padding: 0.5em;
 }
 
 body > header * {
-    flex-basis: 0;
-    flex-grow: 1;
     margin: 0 0.1em;
+    flex: 1 1 0 !important; /* Asserts equally sized children. (Overrides .toolbar) */
 }
 
 body > header *:first-child {
@@ -27,29 +26,110 @@ body > header h1 {
     text-align: center;
 }
 
-body > #leftColumn, body > #rightColumn {
+/*
+    Two-column layout.
+*/
+
+#leftColumn, #rightColumn {
     box-sizing: border-box;
     float: left;
-    width: calc(50% - 0.1em);
-    margin: 0 0.1em;
+    width: calc(50% - 0.5em);
+    margin: 0 0.5em;
     padding: 0;
 }
 
-body > #leftColumn {
+#leftColumn {
     margin-left: 0em;
 }
 
-body > #rightColumn {
+#rightColumn {
     margin-right: 0em;
 }
 
-body > #rightColumn::after {
+#rightColumn::after {
     clear: right;
     content: "";
     display: block;
 }
 
-body > #leftColumn > *, body > #leftColumn > nav > *, body > #rightColumn > * { /* All boxes in the columns should stretch to the columns' width. */
+#leftColumn > *, #rightColumn > * { /* All boxes in the columns should stretch to the columns' width. */
     box-sizing: border-box;
     width: 100%;
+    border: 0.1em solid #000000;
+    margin: 0.5em 0;
 }
+
+#leftColumn > nav {
+    padding: 0.5em 0.5em;
+}
+
+#leftColumn > nav > * {
+    margin: 0.3em 0.3em;
+}
+
+/*
+    Navigation toolbar (sorting, searching, etc.).
+*/
+
+/* TODO */
+
+/*
+    Item list.
+*/
+
+#listSection {
+    padding: 0.5em 0.5em;
+}
+
+#listSection > * { /* All boxes in the list should stretch to the list's width. */
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#listSection > header {
+    margin: 0.5em 0;
+}
+
+#toDoItemList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#toDoItemList > li {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+    background: #000000;
+    color: #FFFFFF;
+}
+
+#toDoItemList > li > * {
+    flex-basis: auto;
+    flex-grow: 0;
+    margin: 0 0.1em;
+}
+
+#toDoItemList > li > *:first-child {
+    margin-left: 0;
+}
+
+#toDoItemList > li > *:last-child {
+    margin-right: 0;
+}
+
+#toDoItemList > li > .overview {
+    flex-grow: 1;
+}
+
+/*
+    Item details.
+*/
+
+/* TODO */

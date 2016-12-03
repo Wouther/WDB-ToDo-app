@@ -1,3 +1,7 @@
+/*
+    Fonts and headers.
+*/
+
 * {
     font-family: Times, serif;
     font-size: 106%;
@@ -10,4 +14,27 @@ h1 {
 
 h2 {
     font-size: 1.5em;
+}
+
+/*
+    Toolbar. Styles children as a horizontal toolbar that fills the width of
+    the parent. Optionally uses as much space as possible for the main tool.
+    If there is no main tool, all tools will get equal space. Multiple main
+    tools are possible; the space will then be equaly distributed among them.
+*/
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolbar > * {
+    flex-basis: auto;
+    flex-grow: 0;
+}
+
+.toolbar > *.mainTool {
+    flex-grow: 1;
 }
