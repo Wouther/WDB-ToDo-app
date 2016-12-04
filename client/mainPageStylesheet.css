@@ -66,7 +66,9 @@ body > header h1 {
     Navigation toolbar (sorting, searching, etc.).
 */
 
-/* TODO */
+#leftColumn > nav #addToDo::before {
+    content: "\f0fe"; /* plus sign in square (fa-plus-square) */
+}
 
 /*
     Item list.
@@ -113,8 +115,16 @@ body > header h1 {
     margin-right: 0;
 }
 
+#toDoItemList > li > #removeTodo::before {
+    content: "\f146"; /* minus sign in square (fa-minus-square) */
+}
+
 #toDoItemList > li > .overview {
     flex-grow: 1;
+}
+
+#toDoItemList > li > #setDone::before {
+    content: "\f14a"; /* check sign in square (fa-check-square) */
 }
 
 /*
