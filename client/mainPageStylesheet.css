@@ -8,7 +8,6 @@ body > header {
 }
 
 body > header * {
-    margin: 0 0.1em;
     flex: 1 1 0 !important; /* Asserts equally sized children. (Overrides .toolbar) */
 }
 
@@ -61,10 +60,6 @@ body > header h1 {
 
 #leftColumn > nav {
     padding: 0.5em 0.5em;
-}
-
-#leftColumn > nav > * {
-    margin: 0.3em 0.3em;
 }
 
 /*
@@ -137,22 +132,18 @@ body > header h1 {
     padding: 0.5em 0.5em;
 }
 
+#details #detailsSetPriority::before { /* low priority and default */
+    content: "\f006"; /* star outline (fa-star-o) */
+}
+
+#details #detailsSetPriority.high::before { /* high priority */
+    content: "\f005"; /* filled star (fa-star) */
+}
+
 #details > .date {
     padding: 0.5em;
     background: #000000;
     color: #FFFFFF;
-}
-
-#details > .date > * {
-    margin: 0 0.1em;
-}
-
-#details > .date > *:first-child {
-    margin-left: 0;
-}
-
-#details > .date > *:last-child {
-    margin-right: 0;
 }
 
 #details #description > * {
