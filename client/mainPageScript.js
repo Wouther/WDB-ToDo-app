@@ -135,18 +135,10 @@ $(document).ready(function() {
  	//Get all todos from server
  	var getToDoList = $.get("/todos", function(req, res) {})
  	 	.done(function(res) {
+
  	 	 	//Put the gained to do list in client memory todo list
- 	 	 	returnedTodos = new ToDoList();
- 	 	 	for (i = 0; i < res.length; i++) {
- 	 	 	 	var todo = new ToDoItem();
- 	 	 	 	for (var k in res[i]) todo[k] = res[i][k];
- 	 	 	 	if (k = "dueDate") {
- 	 	 	 	 	todo.dueDate = moment.utc(res[i].dueDate);
- 	 	 	 	}
- 	 	 	 	returnedTodos.add(todo);
- 	 	 	}
- 	 	 	allToDosInMemory.list = returnedTodos.list;
- 	 	 	shownToDoList.list = returnedTodos.list;
+ 	 	 	allToDosInMemory.list = getToDoListObjectFromServerJSON(res).list;
+ 	 	 	shownToDoList.list = allToDosInMemory.list;
  	 	 	reprintToDoList();
  	 	});
 
