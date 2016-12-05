@@ -166,7 +166,7 @@ body > header h1 {
     content: "\f006"; /* star outline (fa-star-o) */
 }
 
-#details #detailsSetPriority.high::before { /* high priority */
+#details #detailsSetPriority[data-priority="high"]::before { /* high priority */
     content: "\f005"; /* filled star (fa-star) */
 }
 
