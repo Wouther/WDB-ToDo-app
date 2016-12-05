@@ -257,6 +257,10 @@ $(document).ready(function() {
  	 	console.log("Fetching the todo list from the server.");
  	 	$.getJSON("todos", function(data) {
  	 	 	//DO SOMETHING WITH THE RETRIEVED TO DOS HERE
+ 	 	 	//3 TYPES OF CHANGES:
+ 	 	 	//  todo was added on server
+ 	 	 	//  todo was deleted on server
+ 	 	 	// todo was changed on server
  	 	 	console.log(data);
  	 	});
  	}, 2000);

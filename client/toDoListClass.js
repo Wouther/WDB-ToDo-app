@@ -35,12 +35,7 @@ var getToDoListObjectFromServerJSON = function(res) {
  	returnedTodos = new ToDoList();
 
  	for (i = 0; i < res.length; i++) {
- 	 	var todo = new ToDoItem();
- 	 	for (var k in res[i]) todo[k] = res[i][k];
- 	 	if (k = "dueDate") {
- 	 	 	todo.dueDate = moment.utc(res[i].dueDate);
- 	 	}
- 	 	returnedTodos.add(todo);
+ 	 	returnedTodos.add(getToDoItemfromServerJSON(res[i]));
  	}
  	return returnedTodos;
 }

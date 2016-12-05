@@ -130,6 +130,15 @@ ToDoItem.prototype.getPriorityString = function() {
  	return "No prio";
 }
 
+var getToDoItemfromServerJSON = function(res) {
+ 	var todo = new ToDoItem();
+ 	for (var k in res) todo[k] = res[k];
+ 	if (k = "dueDate") {
+ 	 	todo.dueDate = moment.utc(res.dueDate);
+ 	}
+ 	return todo;
+}
+
 /* Returns HTML for a todo item to be inserted into the todos overview
  */
 ToDoItem.prototype.getHTML = function(index) {
