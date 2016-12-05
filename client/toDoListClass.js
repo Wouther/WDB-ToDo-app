@@ -120,7 +120,15 @@ ToDoList.prototype.getByID = function(idparam) {
   return null;
 }
 
+/* Equals function for the list. returns false if the other item is not a list,
+or the lists are of different length.
 
+If the lists are of the same length, returns the id's of the todo's that are
+different in content.
+
+Returns true if the lists are equal.
+
+*/
 ToDoList.prototype.equals = function(otherList) {
 
   if (typeof(otherList) !== "object") {
@@ -139,8 +147,12 @@ ToDoList.prototype.equals = function(otherList) {
     if (foundItem && foundItem.equals(this.get(i))) {
 
     } else {
-      
+      changedToDosArray.push(foundItem.id);
     }
   }
 
+  if (changedToDosArray.length === 0) {
+    return true;
+  }
+  return changedToDosArray;
 }
