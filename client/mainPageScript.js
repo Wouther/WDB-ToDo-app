@@ -146,112 +146,115 @@ $(document).ready(function() {
  	 	 	shownToDoList.list = returnedTodos.list;
  	 	 	reprintToDoList();
  	 	});
-});
-//Print the initial list
+
+ 	//Print the initial list
 
 
-//CLICKING ON REMOVE BUTTON HANDLER
-//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
-$("#toDoItemList").on("click", ".removeButton", function() {
+ 	//CLICKING ON REMOVE BUTTON HANDLER
+ 	//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
+ 	$("#toDoItemList").on("click", ".removeButton", function() {
 
- 	//Get the list elemenent index
- 	var index = returnIndexFromString($(this).attr('id'));
+ 	 	//Get the list elemenent index
+ 	 	var index = returnIndexFromString($(this).attr('id'));
 
- 	//remove from original list
- 	toDoList.removeById(shownToDoList.get(index).getId());
+ 	 	//remove from original list
+ 	 	toDoList.removeById(shownToDoList.get(index).getId());
 
- 	//Remove this element from shown list
- 	shownToDoList.remove(index);
+ 	 	//Remove this element from shown list
+ 	 	shownToDoList.remove(index);
 
- 	//If the removed element was focused in the detailed view, we set the focus to -1
- 	if (currentActiveIndex === index) {
- 	 	currentActiveIndex = -1;
- 	}
+ 	 	//If the removed element was focused in the detailed view, we set the focus to -1
+ 	 	if (currentActiveIndex === index) {
+ 	 	 	currentActiveIndex = -1;
+ 	 	}
 
- 	//Redraw todo list in html
- 	//TODO: Could be replaced by only removing one single element! But that is not trivial,
- 	//because then the ID's of all the elements after the removed one also need to be changed.
- 	reprintToDoList();
-
-});
-
-//CLICKING ON A TASK DISPLAYS DETAILS IN HTML BELOW (LATER RIGHT SIDE)
-//Current click event set on the li, list item, in the future: a div?
-$("#toDoItemList").on("click", "li", function() {
-
- 	var index = returnIndexFromString($(this).attr('id'));
- 	currentActiveIndex = index;
- 	reprintCurrentSelectedInDetails(index);
- 	//Redraw description in html?
-});
-
-$("#toDoItemList").on("click", ".doneButtonList", function() {
- 	console.log("kom ik hier");
- 	var index = returnIndexFromString($(this).attr('id'));
- 	toggleDone(index);
-});
-
-$("#addToDo").click(function() {
- 	addToDoItem();
-});
-
-$("#searchField").change(function() {
- 	var newValue = $(this).val();
- 	filterShownToDosOnTitle(newValue);
-});
-
-$("#detailsTitle").change(function() {
- 	if (currentActiveIndex !== -1) {
- 	 	var changedValue = $(this).val();
- 	 	changeToDoTitle(changedValue);
+ 	 	//Redraw todo list in html
+ 	 	//TODO: Could be replaced by only removing one single element! But that is not trivial,
+ 	 	//because then the ID's of all the elements after the removed one also need to be changed.
  	 	reprintToDoList();
- 	}
-});
 
-$("#detailsSetPriority").click(function() {
- 	if (currentActiveIndex !== -1) {
- 	 	shownToDoList.get(currentActiveIndex).togglePrio();
+ 	});
+
+ 	//CLICKING ON A TASK DISPLAYS DETAILS IN HTML BELOW (LATER RIGHT SIDE)
+ 	//Current click event set on the li, list item, in the future: a div?
+ 	$("#toDoItemList").on("click", "li", function() {
+
+ 	 	var index = returnIndexFromString($(this).attr('id'));
+ 	 	currentActiveIndex = index;
+ 	 	reprintCurrentSelectedInDetails(index);
+ 	 	//Redraw description in html?
+ 	});
+
+ 	$("#toDoItemList").on("click", ".doneButtonList", function() {
+ 	 	console.log("kom ik hier");
+ 	 	var index = returnIndexFromString($(this).attr('id'));
+ 	 	toggleDone(index);
+ 	});
+
+ 	$("#addToDo").click(function() {
+ 	 	console.log("Clicked add to do");
+ 	 	addToDoItem();
+ 	});
+
+ 	$("#searchField").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	filterShownToDosOnTitle(newValue);
+ 	});
+
+ 	$("#detailsTitle").change(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	var changedValue = $(this).val();
+ 	 	 	changeToDoTitle(changedValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
+
+ 	$("#detailsSetPriority").click(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	shownToDoList.get(currentActiveIndex).togglePrio();
+ 	 	 	reprintToDoList();
+ 	 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
+ 	 	}
+ 	});
+
+ 	$("#detailsDescriptionText").change(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	shownToDoList.get(currentActiveIndex).setDescription($(this).val());
+ 	 	}
+ 	});
+
+ 	$("#sortPriority").click(function() {
+ 	 	shownToDoList = shownToDoList.sortAccordingToPrio();
  	 	reprintToDoList();
- 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
- 	}
-});
+ 	});
 
-$("#detailsDescriptionText").change(function() {
- 	if (currentActiveIndex !== -1) {
- 	 	shownToDoList.get(currentActiveIndex).setDescription($(this).val());
- 	}
-});
-
-$("#sortPriority").click(function() {
- 	shownToDoList = shownToDoList.sortAccordingToPrio();
- 	reprintToDoList();
-});
-
-$("#sortDate").click(function() {
- 	shownToDoList = shownToDoList.sortAccordingToDueDate();
- 	reprintToDoList();
-});
-
-$("#detailsDueDateDay").change(function() {
- 	var newValue = $(this).val();
- 	if (currentActiveIndex !== -1) {
- 	 	changeDueDateDateOfMonth(newValue);
+ 	$("#sortDate").click(function() {
+ 	 	shownToDoList = shownToDoList.sortAccordingToDueDate();
  	 	reprintToDoList();
- 	}
-});
+ 	});
 
-$("#detailsDueDateMonth").change(function() {
- 	var newValue = $(this).val();
- 	if (currentActiveIndex !== -1) {
- 	 	changeDueDateMonth(newValue);
- 	 	reprintToDoList();
- 	}
-});
+ 	$("#detailsDueDateDay").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	changeDueDateDateOfMonth(newValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
 
-$("#detailsDueDateYear").change(function() {
- 	var newValue = $(this).val();
- 	if (currentActiveIndex !== -1) {
- 	 	changeDueDateYear(newValue);
- 	 	reprintToDoList();
- 	}
+ 	$("#detailsDueDateMonth").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	changeDueDateMonth(newValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
+
+ 	$("#detailsDueDateYear").change(function() {
+ 	 	var newValue = $(this).val();
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	changeDueDateYear(newValue);
+ 	 	 	reprintToDoList();
+ 	 	}
+ 	});
+
 });
