@@ -29,6 +29,7 @@ body > header h1 {
     Two-column layout.
 */
 
+@media only screen and (min-width: 1201px) {
     #leftColumn, #rightColumn {
         box-sizing: border-box;
         float: left;
@@ -51,6 +52,7 @@ body > header h1 {
     }
 }
 
+@media only screen and (max-width: 1200px) {
     #leftColumn, #rightColumn {
         width: 100%;
         margin: 0.5em 0;
