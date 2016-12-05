@@ -2,6 +2,10 @@
     Page header.
 */
 
+body {
+    min-width: 500px;
+}
+
 body > header {
     margin: 0;
     padding: 0.5em;
@@ -174,6 +178,10 @@ body > header h1 {
     padding: 0.5em;
     background: #000000;
     color: #FFFFFF;
+}
+
+#details > .date input[type=text]:focus {
+    animation-name: select-field-darkbg;
 }
 
 #details #description > * {

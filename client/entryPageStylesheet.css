@@ -12,6 +12,7 @@ body {
 }
 
 body > * {
+    min-width: 500px;
     width: 30em;
 }
 
@@ -60,4 +61,8 @@ main #buttons *:first-child {
 
 main #buttons *:last-child {
     margin-right: 0;
+}
+
+main input[type=text]:focus {
+    animation-name: select-field-darkbg;
 }

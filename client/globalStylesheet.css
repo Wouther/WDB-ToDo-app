@@ -72,8 +72,26 @@ button, input, select, textarea {
     margin: 0.5em 0;
 }
 
+@keyframes select-field-lightbg {
+    from { border-color: #C0C0C0; background-color: #F0F0F0; box-shadow: none; }
+    to { border-color: #FFFF66; background-color: #FFFFCC; box-shadow: 0 0 0.3em #606060; }
+}
+
+@keyframes select-field-darkbg {
+    from { border-color: #C0C0C0; background-color: #F0F0F0; box-shadow: none; }
+    to { border-color: #FFFFCC; background-color: #FFFFCC; box-shadow: 0 0 0.6em #CFCFCF; }
+}
+
 input[type=text], textarea {
     background: #F0F0F0 url('img/edit.png') no-repeat right 0.3em center;
+    border: 0.05em solid #C0C0C0;
+    outline: none; /* overwrite browser default */
+}
+
+input[type=text]:focus, textarea:focus {
+    animation-name: select-field-lightbg; /* default highlighting for on light backgrounds, overwrite for darker ones */
+    animation-duration: 0.33s;
+    animation-fill-mode: both;
 }
 
 textarea {
