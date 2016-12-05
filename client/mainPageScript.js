@@ -1,3 +1,6 @@
+var shownToDoList = new ToDoList();
+var allToDosInMemory = new ToDoList();
+
 //Set to -1 if no to do is focused, this is default on starting the page
 var currentActiveIndex = -1;
 
@@ -6,7 +9,7 @@ var reprintToDoList = function() {
  	//Remove everything that is already in the list
  	$("#toDoItemList").empty();
  	//Add all to do items from internal object
- 	for (i = 0; i < shownToDoList.length(); i++) {
+ 	for (i = 0; i < shownToDoList.list.length; i++) {
  	 	$("#toDoItemList").append(returnToDoListHTML(shownToDoList.get(i), i));
  	}
 }
@@ -126,114 +129,129 @@ var changeDueDateDateOfMonth = function(value) {
 //Executed when document has finished loading
 $(document).ready(function() {
 
- 	//Print the initial list
+ 	//Get all todos from server
+ 	var getToDoList = $.get("/todos", function(req, res) {})
+ 	 	.done(function(res) {
+ 	 	 	//Put the gained to do list in client memory todo list
+ 	 	 	returnedTodos = new ToDoList();
+ 	 	 	for (i = 0; i < res.length; i++) {
+ 	 	 	 	var todo = new ToDoItem();
+ 	 	 	 	for (var k in res[i]) todo[k] = res[i][k];
+ 	 	 	 	if (k = "dueDate") {
+ 	 	 	 	 	todo.dueDate = moment.utc(res[i].dueDate);
+ 	 	 	 	}
+ 	 	 	 	returnedTodos.add(todo);
+ 	 	 	}
+ 	 	 	allToDosInMemory.list = returnedTodos.list;
+ 	 	 	shownToDoList.list = returnedTodos.list;
+ 	 	 	reprintToDoList();
+ 	 	});
+});
+//Print the initial list
+
+
+//CLICKING ON REMOVE BUTTON HANDLER
+//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
+$("#toDoItemList").on("click", ".removeButton", function() {
+
+ 	//Get the list elemenent index
+ 	var index = returnIndexFromString($(this).attr('id'));
+
+ 	//remove from original list
+ 	toDoList.removeById(shownToDoList.get(index).getId());
+
+ 	//Remove this element from shown list
+ 	shownToDoList.remove(index);
+
+ 	//If the removed element was focused in the detailed view, we set the focus to -1
+ 	if (currentActiveIndex === index) {
+ 	 	currentActiveIndex = -1;
+ 	}
+
+ 	//Redraw todo list in html
+ 	//TODO: Could be replaced by only removing one single element! But that is not trivial,
+ 	//because then the ID's of all the elements after the removed one also need to be changed.
  	reprintToDoList();
 
- 	//CLICKING ON REMOVE BUTTON HANDLER
- 	//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
- 	$("#toDoItemList").on("click", ".removeButton", function() {
+});
 
- 	 	//Get the list elemenent index
- 	 	var index = returnIndexFromString($(this).attr('id'));
+//CLICKING ON A TASK DISPLAYS DETAILS IN HTML BELOW (LATER RIGHT SIDE)
+//Current click event set on the li, list item, in the future: a div?
+$("#toDoItemList").on("click", "li", function() {
 
- 	 	//remove from original list
- 	 	toDoList.removeById(shownToDoList.get(index).getId());
+ 	var index = returnIndexFromString($(this).attr('id'));
+ 	currentActiveIndex = index;
+ 	reprintCurrentSelectedInDetails(index);
+ 	//Redraw description in html?
+});
 
- 	 	//Remove this element from shown list
- 	 	shownToDoList.remove(index);
+$("#toDoItemList").on("click", ".doneButtonList", function() {
+ 	console.log("kom ik hier");
+ 	var index = returnIndexFromString($(this).attr('id'));
+ 	toggleDone(index);
+});
 
- 	 	//If the removed element was focused in the detailed view, we set the focus to -1
- 	 	if (currentActiveIndex === index) {
- 	 	 	currentActiveIndex = -1;
- 	 	}
+$("#addToDo").click(function() {
+ 	addToDoItem();
+});
 
- 	 	//Redraw todo list in html
- 	 	//TODO: Could be replaced by only removing one single element! But that is not trivial,
- 	 	//because then the ID's of all the elements after the removed one also need to be changed.
+$("#searchField").change(function() {
+ 	var newValue = $(this).val();
+ 	filterShownToDosOnTitle(newValue);
+});
+
+$("#detailsTitle").change(function() {
+ 	if (currentActiveIndex !== -1) {
+ 	 	var changedValue = $(this).val();
+ 	 	changeToDoTitle(changedValue);
  	 	reprintToDoList();
+ 	}
+});
 
- 	});
-
- 	//CLICKING ON A TASK DISPLAYS DETAILS IN HTML BELOW (LATER RIGHT SIDE)
- 	//Current click event set on the li, list item, in the future: a div?
- 	$("#toDoItemList").on("click", "li", function() {
-
- 	 	var index = returnIndexFromString($(this).attr('id'));
- 	 	currentActiveIndex = index;
- 	 	reprintCurrentSelectedInDetails(index);
- 	 	//Redraw description in html?
- 	});
-
- 	$("#toDoItemList").on("click", ".doneButtonList", function() {
- 	 	console.log("kom ik hier");
- 	 	var index = returnIndexFromString($(this).attr('id'));
- 	 	toggleDone(index);
- 	});
-
- 	$("#addToDo").click(function() {
- 	 	addToDoItem();
- 	});
-
- 	$("#searchField").change(function() {
- 	 	var newValue = $(this).val();
- 	 	filterShownToDosOnTitle(newValue);
- 	});
-
- 	$("#detailsTitle").change(function() {
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	var changedValue = $(this).val();
- 	 	 	changeToDoTitle(changedValue);
- 	 	 	reprintToDoList();
- 	 	}
- 	});
-
- 	$("#detailsSetPriority").click(function() {
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	shownToDoList.get(currentActiveIndex).togglePrio();
- 	 	 	reprintToDoList();
- 	 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
- 	 	}
- 	});
-
- 	$("#detailsDescriptionText").change(function() {
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	shownToDoList.get(currentActiveIndex).setDescription($(this).val());
- 	 	}
- 	});
-
- 	$("#sortPriority").click(function() {
- 	 	shownToDoList = shownToDoList.sortAccordingToPrio();
+$("#detailsSetPriority").click(function() {
+ 	if (currentActiveIndex !== -1) {
+ 	 	shownToDoList.get(currentActiveIndex).togglePrio();
  	 	reprintToDoList();
- 	});
+ 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
+ 	}
+});
 
- 	$("#sortDate").click(function() {
- 	 	shownToDoList = shownToDoList.sortAccordingToDueDate();
+$("#detailsDescriptionText").change(function() {
+ 	if (currentActiveIndex !== -1) {
+ 	 	shownToDoList.get(currentActiveIndex).setDescription($(this).val());
+ 	}
+});
+
+$("#sortPriority").click(function() {
+ 	shownToDoList = shownToDoList.sortAccordingToPrio();
+ 	reprintToDoList();
+});
+
+$("#sortDate").click(function() {
+ 	shownToDoList = shownToDoList.sortAccordingToDueDate();
+ 	reprintToDoList();
+});
+
+$("#detailsDueDateDay").change(function() {
+ 	var newValue = $(this).val();
+ 	if (currentActiveIndex !== -1) {
+ 	 	changeDueDateDateOfMonth(newValue);
  	 	reprintToDoList();
- 	});
+ 	}
+});
 
- 	$("#detailsDueDateDay").change(function() {
- 	 	var newValue = $(this).val();
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	changeDueDateDateOfMonth(newValue);
- 	 	 	reprintToDoList();
- 	 	}
- 	});
+$("#detailsDueDateMonth").change(function() {
+ 	var newValue = $(this).val();
+ 	if (currentActiveIndex !== -1) {
+ 	 	changeDueDateMonth(newValue);
+ 	 	reprintToDoList();
+ 	}
+});
 
- 	$("#detailsDueDateMonth").change(function() {
- 	 	var newValue = $(this).val();
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	changeDueDateMonth(newValue);
- 	 	 	reprintToDoList();
- 	 	}
- 	});
-
- 	$("#detailsDueDateYear").change(function() {
- 	 	var newValue = $(this).val();
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	changeDueDateYear(newValue);
- 	 	 	reprintToDoList();
- 	 	}
- 	});
-
-
+$("#detailsDueDateYear").change(function() {
+ 	var newValue = $(this).val();
+ 	if (currentActiveIndex !== -1) {
+ 	 	changeDueDateYear(newValue);
+ 	 	reprintToDoList();
+ 	}
 });
