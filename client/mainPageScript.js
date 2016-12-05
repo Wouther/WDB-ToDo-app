@@ -87,7 +87,10 @@ var resetOptionsDueDate = function() {
  	//Add all to do items
 
  	for (i = 1; i < numberOfDays + 1; i++) {
- 	 	$("#detailsDueDateDay").append(returnOptionForDayOfTheMonth(i));
+ 	 	var option = document.createElement("option");
+ 	 	option.setAttribute("value", i);
+ 	 	option.innerHTML = i;
+ 	 	$("#detailsDueDateDay").append(option);
  	}
 
 }
