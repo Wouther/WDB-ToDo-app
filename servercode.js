@@ -24,7 +24,7 @@ toDoItem2.dueDate = moment("14-04-2001", "DD-MM-YYYY");
 toDoItem2.description = "THIS IS a description for item 2\ asdasdasdasdasasd11111\n 222222222222222222";
 toDoItem2.id = generateID.generateID();
 
-toDoItem3.title = "Title of second to do item";
+toDoItem3.title = "Title of third to do item";
 toDoItem3.priority = true;
 toDoItem3.dueDate = moment("14-04-2012", "DD-MM-YYYY");
 toDoItem3.description = "THIS IS a description for item 3\ asdasdasdasdasasd11111\n 3333333333333333333333333";
