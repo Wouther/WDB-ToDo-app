@@ -109,3 +109,38 @@ ToDoList.prototype.removeById = function(idparam) {
  	 	}
  	}
 }
+
+ToDoList.prototype.getByID = function(idparam) {
+  for (i = 0; i < this.list.length; i++) {
+    if (this.list.get(i).id === idparam) {
+      return this.list.get(i);
+    }
+  }
+
+  return null;
+}
+
+
+ToDoList.prototype.equals = function(otherList) {
+
+  if (typeof(otherList) !== "object") {
+    return false;
+  }
+  if (this.list.length !== otherList.list.length) {
+    return false;
+  }
+
+  var changedToDosArray = [];
+
+  for (i = 0; i < this.list.length; i++) {
+    // find this todoitem in the other list
+    var foundItem = otherList.getByID(this.get(i).id);
+    // check if the item is equal and not null
+    if (foundItem && foundItem.equals(this.get(i))) {
+
+    } else {
+      
+    }
+  }
+
+}

@@ -21,10 +21,14 @@ ToDoItem.prototype.equals = function(otherToDo) {
  	 	return false;
  	}
 
- 	if (this.id === otherToDo.id) {
- 	 	return true;
- 	}
- 	return false;
+  for (var k in this){
+    if (this.hasOwnProperty(k)) {
+      if (this[k] !== otherToDo[k]) {
+        return false;
+      }
+    }
+}
+ 	return true;
 }
 
 ToDoItem.prototype.getId = function() {
