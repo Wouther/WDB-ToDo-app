@@ -10,7 +10,7 @@ var reprintToDoList = function() {
  	$("#toDoItemList").empty();
  	//Add all to do items from internal object
  	for (i = 0; i < shownToDoList.list.length; i++) {
- 	 	$("#toDoItemList").append(returnToDoListHTML(shownToDoList.get(i), i));
+ 	 	$("#toDoItemList").append(shownToDoList.get(i).getHTML(i));
  	}
 }
 

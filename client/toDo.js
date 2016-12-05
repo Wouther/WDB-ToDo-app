@@ -129,3 +129,50 @@ ToDoItem.prototype.getPriorityString = function() {
  	}
  	return "No prio";
 }
+
+/* Returns HTML for a todo item to be inserted into the todos overview
+ */
+ToDoItem.prototype.getHTML = function(index) {
+ 	var listItem = document.createElement('li');
+ 	listItem.setAttribute("id", "listitem" + index);
+
+ 	var removeButton = document.createElement('button');
+ 	removeButton.setAttribute("class", "removeButton");
+ 	removeButton.setAttribute("id", "removeToDo" + index);
+ 	removeButton.innerHTML = "Remove todo item";
+
+ 	var toDoTitle = document.createElement('h3');
+ 	toDoTitle.setAttribute("id", "toDoTitle" + index);
+ 	toDoTitle.innerHTML = this.title;
+
+ 	var toDoDueDate = document.createElement('h4');
+ 	toDoDueDate.setAttribute("id", "toDoDueDate" + index);
+ 	toDoDueDate.innerHTML = this.getDueDateString();
+
+ 	var toDoPrio = document.createElement('h4');
+ 	toDoPrio.setAttribute("id", "toDoPrio" + index);
+ 	toDoPrio.innerHTML = this.getPriorityString();
+
+ 	var doneButton = document.createElement('button');
+ 	doneButton.setAttribute("id", "doneButtonList" + index);
+ 	doneButton.setAttribute("class", "doneButtonList");
+ 	if (this.completed) {
+ 	 	doneButton.innerHTML = "Done. Click to undo."
+ 	} else {
+ 	 	doneButton.innerHTML = "Click to set to done."
+ 	}
+
+ 	listItem.appendChild(removeButton);
+ 	listItem.appendChild(toDoTitle);
+ 	listItem.appendChild(toDoDueDate);
+ 	listItem.appendChild(toDoPrio);
+ 	listItem.appendChild(doneButton);
+ 	if (this.completed) {
+ 	 	var completionDateHeader = document.createElement("h4");
+ 	 	completionDateHeader.setAttribute("id", "toDoCompletedDate" + index);
+ 	 	completionDateHeader.innerHTML = "Completed on: " + this.getCompletionDateString();
+ 	 	listItem.appendChild(completionDateHeader);
+ 	}
+
+ 	return listItem;
+}
