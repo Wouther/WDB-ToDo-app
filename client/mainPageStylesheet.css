@@ -29,26 +29,44 @@ body > header h1 {
     Two-column layout.
 */
 
+    #leftColumn, #rightColumn {
+        box-sizing: border-box;
+        float: left;
+        width: calc(50% - 0.5em);
+        margin: 0 0.5em;
+    }
+
+    #leftColumn {
+        margin-left: 0em;
+    }
+
+    #rightColumn {
+        margin-right: 0em;
+    }
+
+    #rightColumn::after {
+        clear: left;
+        content: "";
+        display: block;
+    }
+}
+
+    #leftColumn, #rightColumn {
+        width: 100%;
+        margin: 0.5em 0;
+    }
+
+    #leftColumn {
+        margin-top: 0em;
+    }
+
+    #rightColumn {
+        margin-bottom: 0em;
+    }
+}
+
 #leftColumn, #rightColumn {
-    box-sizing: border-box;
-    float: left;
-    width: calc(50% - 0.5em);
-    margin: 0 0.5em;
     padding: 0;
-}
-
-#leftColumn {
-    margin-left: 0em;
-}
-
-#rightColumn {
-    margin-right: 0em;
-}
-
-#rightColumn::after {
-    clear: right;
-    content: "";
-    display: block;
 }
 
 #leftColumn > *, #rightColumn > * { /* All boxes in the columns should stretch to the columns' width. */
