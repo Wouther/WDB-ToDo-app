@@ -46,7 +46,7 @@ var returnToDoListHTML = function(todoItem, index) {
  	returnString = returnString + createElementString("h4", "toDoDueDate", index, todoItem.getDueDateString());
  	returnString = returnString + createElementString("h4", "toDoPrio", index, todoItem.getPriorityString());
  	returnString = returnString + createStringForDoneButton(todoItem, index);
- 	returnString = returnString + "</li><br>";
+ 	returnString = returnString + "</li>";
  	return returnString;
 }
 

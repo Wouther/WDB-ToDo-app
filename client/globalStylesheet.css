@@ -42,8 +42,13 @@
 }
 
 /*
-    Fonts and headers.
+    Colors, fonts, headers, etc.
 */
+
+body {
+    background: rgb(241, 241, 241);
+    color: #444444;
+}
 
 * {
     font-family: Times, serif;
@@ -70,16 +75,21 @@ button, input, select, textarea {
     box-sizing: border-box; /* prevent elements from becoming larger than their box due to padding/margin. */
     padding: 0.5em;
     margin: 0.5em 0;
+    color: #444444;
+}
+
+input:not([type=submit]), select, textarea {
+    background-color: #F0F0F0;
 }
 
 @keyframes select-field-lightbg {
-    from { border-color: #C0C0C0; background-color: #F0F0F0; box-shadow: none; }
-    to { border-color: #FFFF66; background-color: #FFFFCC; box-shadow: 0 0 0.3em #606060; }
+    from { background-color: #F0F0F0; border-color: #C0C0C0; box-shadow: none; }
+    to { background-color: rgb(255, 242, 170); border-color: #FFFF66; box-shadow: 0 0 0.3em #606060; }
 }
 
 @keyframes select-field-darkbg {
-    from { border-color: #C0C0C0; background-color: #F0F0F0; box-shadow: none; }
-    to { border-color: #FFFFCC; background-color: #FFFFCC; box-shadow: 0 0 0.6em #CFCFCF; }
+    from { background-color: #F0F0F0; border-color: #C0C0C0; box-shadow: none; }
+    to { background-color: rgb(255, 242, 170); border-color: rgb(255, 242, 170); box-shadow: 0 0 0.6em rgb(255, 242, 170); }
 }
 
 input[type=text], textarea {
@@ -103,6 +113,7 @@ textarea {
     padding: 0.1em;
     border: none;
     background: transparent;
+    color: inherit;
 }
 
 .toolbar > * {
