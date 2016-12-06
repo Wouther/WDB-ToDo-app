@@ -149,6 +149,16 @@ body > header #username {
     background-color: rgb(110, 110, 110);
 }
 
+@keyframes hover-item-in-list {
+    100% { background-color: rgb(255, 132, 0); }
+}
+
+#toDoItemList > li:hover {
+    animation-name: hover-item-in-list;
+    animation-duration: 0.25s;
+    animation-fill-mode: forwards;
+}
+
 #toDoItemList > li > * {
     flex-basis: auto;
     flex-grow: 0;
@@ -165,6 +175,10 @@ body > header #username {
 
 #toDoItemList > li > .removeTodo::before {
     content: "\f146"; /* minus sign in square (fa-minus-square) */
+}
+
+#toDoItemList > li > .removeTodo:hover, #toDoItemList > li > .setDone:hover {
+    animation-name: hover-iconbutton-lightbg;
 }
 
 #toDoItemList > li > .overview {
