@@ -2,6 +2,6 @@
 
 	module.exports = {
 	 	generateID: function() {
-	 	 	return counter++;
+	 	 	return "" + counter++;
 	 	}
 	};

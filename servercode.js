@@ -35,6 +35,16 @@ todos.push(toDoItem1);
 todos.push(toDoItem2);
 todos.push(toDoItem3);
 
+
+var findToDoItemByID = function (idparam) {
+  for (i = 0; i < todos.length; i++) {
+    if (todos[i].id === idparam) {
+      return todos[i];
+    }
+  }
+  return null;
+}
+
 //var toDoList = new ToDoList();
 // toDoList.add(toDoItem1);
 // toDoList.add(toDoItem2);
@@ -65,17 +75,27 @@ app.get("/todos", function(req, res) {
 });
 
 app.get("/addtodo", function(req, res) {
- 	var url_parts = url.parse(req.url, true);
- 	var query = url_parts.query;
- 	if (query["message"] !== undefined) {
-    var newToDoItem = new ToDoItem();
+    var newToDoItem = new toDoItem.ToDoItem();
+    newToDoItem.id = generateID.generateID();
     todos.push(newToDoItem);
     //This is transmitted back to the client
- 	 	res.end(newToDoItem.id);
- 	 	console.log("added " + tx.message);
+ 	 	res.json(newToDoItem);
+ 	 	console.log("added new todo");
+});
 
- 	} else {
- 	 	res.end("Error: missing message parameter");
+app.get("/changetodo", function(req, res) {
+ 	var url_parts = url.parse(req.url, true);
+ 	var query = url_parts.query;
+  console.log(query);
+  if (query["id"] !== undefined) {
+    console.log(query["id"]);
+    var currTodo = findToDoItemByID("" + query["id"]);
+    console.log(currToDo);
 
- 	}
+
+  console.log("changed todo with id:  " + query["id"]);
+
+} else {
+  console.log("Missing id parameter");
+}
 });

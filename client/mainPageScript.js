@@ -45,17 +45,34 @@ var reprintCurrentSelectedInDetails = function(index) {
 
 //Adds a new toDo Item
 var addToDoItem = function() {
- 	var toAdd = new ToDoItem();
- 	toAdd.setTitle("Untitled");
- 	shownToDoList.add(toAdd);
- 	toDoList.add(toAdd);
- 	reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
- 	currentActiveIndex = shownToDoList.length() - 1;
- 	reprintToDoList();
+
+  $.getJSON("addtodo", function(data) {
+    var toAdd = getToDoItemfromServerJSON(data);
+    shownToDoList.add(toAdd);
+    //allToDosInMemory.add(toAdd);
+    reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
+    currentActiveIndex = shownToDoList.length() - 1;
+    reprintToDoList();
+  });
+}
+
+var changeToDoItemOnServer = function(params, values, id) {
+
+  $.getJSON("changetodo?" + "id=" + id + "&" + params + "=" + values, function(data) {
+    // var toAdd = getToDoItemfromServerJSON(data);
+    // shownToDoList.add(toAdd);
+    // //allToDosInMemory.add(toAdd);
+    // reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
+    // currentActiveIndex = shownToDoList.length() - 1;
+    // reprintToDoList();
+  });
+
+
 }
 
 //Changes a todo title in the internal object.
 var changeToDoTitle = function(value) {
+  changeToDoItemOnServer("title", "poep", shownToDoList.get(currentActiveIndex).id);
  	shownToDoList.get(currentActiveIndex).setTitle(value);
  	//TODO: other stuff, HTTP PUT request(?), change stuff in database
 }
@@ -71,6 +88,7 @@ var filterShownToDosOnTitle = function(value) {
 
  	reprintToDoList();
  	currentActiveIndex = -1;
+
 }
 
 //Resets the dropwdown menu options, based on current year/month selected.
@@ -129,6 +147,8 @@ var changeDueDateDateOfMonth = function(value) {
  	//TODO: other stuff, HTTP PUT request(?)
 }
 
+
+
 //Executed when document has finished loading
 $(document).ready(function() {
 
@@ -142,8 +162,6 @@ $(document).ready(function() {
  	 	 	reprintToDoList();
  	 	});
 
- 	//Print the initial list
-
 
  	//CLICKING ON REMOVE BUTTON HANDLER
  	//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
@@ -153,10 +171,12 @@ $(document).ready(function() {
  	 	var index = returnIndexFromString($(this).attr('id'));
 
  	 	//remove from original list
- 	 	toDoList.removeById(shownToDoList.get(index).getId());
+ 	 	//toDoList.removeById(shownToDoList.get(index).getId());
 
  	 	//Remove this element from shown list
+    //allToDosInMemory.removeById(shownToDoList.get(index).id);
  	 	shownToDoList.remove(index);
+
 
  	 	//If the removed element was focused in the detailed view, we set the focus to -1
  	 	if (currentActiveIndex === index) {
@@ -261,7 +281,17 @@ $(document).ready(function() {
  	 	 	//  todo was added on server
  	 	 	//  todo was deleted on server
  	 	 	// todo was changed on server
- 	 	 	//console.log(data);
+ 	 	 	var toDoListFromServer =  getToDoListObjectFromServerJSON(data);
+      //console.log(shownToDoList.equals(toDoListFromServer));
+      var isTheSame = shownToDoList.equals(toDoListFromServer);
+      if (isTheSame === true) {
+          //console.log("same");
+      } else {
+        shownToDoList.list = toDoListFromServer.list;
+        allToDosInMemory.list = toDoListFromServer.list;
+        reprintToDoList();
+      }
+
  	 	});
  	}, 2000);
 

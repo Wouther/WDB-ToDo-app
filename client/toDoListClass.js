@@ -112,12 +112,20 @@ ToDoList.prototype.removeById = function(idparam) {
 
 ToDoList.prototype.getByID = function(idparam) {
   for (i = 0; i < this.list.length; i++) {
-    if (this.list.get(i).id === idparam) {
-      return this.list.get(i);
+    if (this.get(i).id === idparam) {
+      return this.get(i);
     }
   }
 
   return null;
+}
+
+ToDoList.prototype.setByID = function(idparam, otherToDo) {
+  for (i = 0; i < this.list.length; i++) {
+    if (this.get(i).id === idparam) {
+      this.list[i] = otherToDo;
+    }
+  }
 }
 
 /* Equals function for the list. returns false if the other item is not a list,
