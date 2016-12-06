@@ -175,7 +175,20 @@ body > header h1 {
 }
 
 #toDoItemList > li > .overview > * {
+    display: inline-block;
+    vertical-align: baseline;
     margin: 0;
+}
+
+#toDoItemList > li > .overview > *.dueDate {
+    display: block;
+}
+
+#toDoItemList > li > .overview > *.priority {
+    font-size: 100%;
+    padding: 0;
+    margin: auto 0.5em;
+    vertical-align: top;
 }
 
 #toDoItemList > li > .setDone::before {
@@ -195,14 +208,6 @@ body > header h1 {
     width: 100%;
     margin: 0.5em 0;
     padding: 0.5em 0.5em;
-}
-
-#details #detailsSetPriority::before { /* low priority and default */
-    content: "\f006"; /* star outline (fa-star-o) */
-}
-
-#details #detailsSetPriority[data-priority="high"]::before { /* high priority */
-    content: "\f005"; /* filled star (fa-star) */
 }
 
 #details > .date {

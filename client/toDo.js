@@ -151,26 +151,26 @@ ToDoItem.prototype.getHTML = function(index) {
 
  	var removeButton = document.createElement('button');
     removeButton.setAttribute("id", "removeToDo" + index);
- 	removeButton.setAttribute("class", "iconButton removeTodo");
+ 	removeButton.setAttribute("class", "icon removeTodo");
 
- 	var toDoTitle = document.createElement('h3');
+ 	var toDoTitle = document.createElement('div');
     toDoTitle.setAttribute("id", "toDoTitle" + index);
     toDoTitle.setAttribute("class", "todoTitle");
  	toDoTitle.innerHTML = this.title;
 
- 	var toDoDueDate = document.createElement('h4');
+    var toDoPrio = document.createElement('div');
+ 	toDoPrio.setAttribute("id", "toDoPrio" + index);
+    toDoPrio.setAttribute("class", "icon priority");
+ 	toDoPrio.setAttribute("data-priority", this.getPriorityString());
+
+ 	var toDoDueDate = document.createElement('div');
     toDoDueDate.setAttribute("id", "toDoDueDate" + index);
     toDoDueDate.setAttribute("class", "dueDate");
  	toDoDueDate.innerHTML = this.getDueDateString();
 
- 	var toDoPrio = document.createElement('h4');
- 	toDoPrio.setAttribute("id", "toDoPrio" + index);
-    toDoPrio.setAttribute("class", "priority");
- 	toDoPrio.setAttribute("data-priority", this.getPriorityString());
-
  	var doneButton = document.createElement('button');
  	doneButton.setAttribute("id", "doneButtonList" + index);
- 	doneButton.setAttribute("class", "iconButton setDone");
+ 	doneButton.setAttribute("class", "icon setDone");
  	if (this.completed) { // TODO
  	 	doneButton.innerHTML = "Done. Click to undo.";
  	} else {
@@ -180,8 +180,8 @@ ToDoItem.prototype.getHTML = function(index) {
     var overviewSection = document.createElement('section');
     overviewSection.setAttribute("class", "overview");
  	overviewSection.appendChild(toDoTitle);
+    overviewSection.appendChild(toDoPrio);
  	overviewSection.appendChild(toDoDueDate);
- 	overviewSection.appendChild(toDoPrio);
 
  	listItem.appendChild(removeButton);
     listItem.appendChild(overviewSection);

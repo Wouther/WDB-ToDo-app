@@ -23,11 +23,12 @@
 }
 
 /*
-    Buttons with icons. Set a button's icon by overwriting the ::before
+    Display an icon. Set the icon by overwriting the ::before
     'content' property to the icon's unicode value (e.g. "\f094").
 */
 
-.iconButton { /* Assure correct displaying of icon */
+.icon { /* Assure correct displaying of icon */
+    display: inline-block;
     font: normal normal normal 0px/1 FontAwesome; /* font size and line height will be overwritten further down */
     font-size: inherit;
     line-height: inherit;
@@ -36,7 +37,7 @@
     vertical-align: middle;
 }
 
-.iconButton::before {
+.icon::before {
     content: "?"; /* indicate no icon set yet - overwrite this for each button */
     vertical-align: middle;
 }
@@ -108,12 +109,20 @@ textarea {
     background-position: right 0.3em top 0.3em;
 }
 
-.iconButton {
+.icon {
     font-size: 150%;
     padding: 0.1em;
     border: none;
     background: transparent;
     color: inherit;
+}
+
+.icon.priority::before { /* low priority and default */
+    content: "\f006"; /* star outline (fa-star-o) */
+}
+
+.icon.priority[data-priority="high"]::before { /* high priority */
+    content: "\f005"; /* filled star (fa-star) */
 }
 
 .toolbar > * {

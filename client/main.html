@@ -38,7 +38,7 @@
 
     <div id="leftColumn">
         <nav class="toolbar">
-            <button id="addToDo" class="iconButton"></button>
+            <button id="addToDo" class="icon"></button>
             <input id="searchField" class="mainTool" type="text" name="searchField" placeholder="Search" />
             <button id="sortDate">Sort date</button>
             <button id="sortPriority">Sort priority</button>
@@ -50,13 +50,13 @@
             </header>
             <ul id="toDoItemList">
                 <li id="listitem0">
-                    <button id="removeTodo0" class="iconButton removeTodo"></button>
+                    <button id="removeTodo0" class="icon removeTodo"></button>
                     <section class="overview">
-                        <h3 id="toDoTitle0" class="todoTitle">Todo title 1</h3>
-                        <h4 id="toDoDueDate0" class="dueDate">28/11/16 13:00</h4>
-                        <h4 id="toDoPrio0" class="priority" data-priority="low"></h4>
+                        <div id="toDoTitle0" class="todoTitle">Todo title 1</div>
+                        <div id="toDoPrio0" class="icon priority" data-priority="low"></div>
+                        <div id="toDoDueDate0" class="dueDate">28/11/16 13:00</div>
                     </section>
-                    <button id="doneButtonList0" class="iconButton setDone"></button>
+                    <button id="doneButtonList0" class="icon setDone"></button>
                 </li>
             </ul>
         </section>
@@ -68,7 +68,7 @@
 
             <div class="toolbar">
                 <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle" class="mainTool" />
-                <button id="detailsSetPriority" data-priority="low" class="iconButton"></button>
+                <button id="detailsSetPriority" class="icon priority" data-priority="low"></button>
             </div>
 
             <section class="toolbar date">
