@@ -226,14 +226,18 @@ body > header h1 {
     padding: 0.5em 0.5em;
 }
 
+#details #detailsTitle:focus, #details #detailsDescriptionText:focus {
+    animation-name: select-field-lightbg;
+}
+
+#details #detailsSetPriority:hover {
+    animation-name: hover-iconbutton-lightbg;
+}
+
 #details > .date {
     padding: 0.5em;
     background: #000000;
     color: #FFFFFF;
-}
-
-#details > .date input[type=text]:focus {
-    animation-name: select-field-darkbg;
 }
 
 #details #description > * {

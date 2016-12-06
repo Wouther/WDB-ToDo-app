@@ -72,8 +72,10 @@ h3 {
 /*
     UI Elements.
 */
+
 button, input, select, textarea {
     box-sizing: border-box; /* prevent elements from becoming larger than their box due to padding/margin. */
+    border-radius: 0.2em;
     padding: 0.5em;
     margin: 0.5em 0;
     color: #444444;
@@ -93,6 +95,26 @@ input:not([type=submit]), select, textarea {
     to { background-color: rgb(255, 242, 170); border-color: rgb(255, 242, 170); box-shadow: 0 0 0.6em rgb(255, 242, 170); }
 }
 
+@keyframes hover-field-lightbg {
+    from { border-color: #F0F0F0; box-shadow: none; }
+    to { border-color: #C0C0C0; box-shadow: 0 0 0.3em #C0C0C0; }
+}
+
+@keyframes hover-field-darkbg {
+    from { border-color: #F0F0F0; box-shadow: none; }
+    to { border-color: #C0C0C0; box-shadow: 0 0 0.6em white; }
+}
+
+@keyframes hover-iconbutton-lightbg {
+    from { text-shadow: initial; }
+    to { text-shadow: 0 0 0.6em #444444; }
+}
+
+@keyframes hover-iconbutton-darkbg {
+    from { text-shadow: initial; }
+    to { text-shadow: 0 0 0.6em rgb(241, 241, 241); }
+}
+
 input[type=text], textarea {
     background: #F0F0F0 url('img/edit.png') no-repeat right 0.3em center;
     border: 0.05em solid #C0C0C0;
@@ -100,13 +122,25 @@ input[type=text], textarea {
 }
 
 input[type=text]:focus, textarea:focus {
-    animation-name: select-field-lightbg; /* default highlighting for on light backgrounds, overwrite for darker ones */
-    animation-duration: 0.33s;
+    animation-name: select-field-darkbg; /* default highlighting for on dark backgrounds, overwrite for lighter ones */
+    animation-duration: 0.25s;
     animation-fill-mode: both;
 }
 
 textarea {
     background-position: right 0.3em top 0.3em;
+}
+
+input[type=submit], button {
+    background: #F0F0F0; /* for browsers that do not support gradients */
+    background: linear-gradient(to bottom, #F0F0F0, #C0C0C0);
+}
+
+input[type=submit]:hover, button:hover {
+    outline: none; /* overwrite browser default */
+    animation-name: hover-field-darkbg; /* default highlighting for on dark backgrounds, overwrite for lighter ones */
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
 }
 
 .icon {
@@ -123,6 +157,13 @@ textarea {
 
 .icon.priority[data-priority="high"]::before { /* high priority */
     content: "\f005"; /* filled star (fa-star) */
+}
+
+input[type=submit].icon:hover, button.icon:hover {
+    outline: none; /* overwrite browser default */
+    animation-name: hover-iconbutton-darkbg; /* default highlighting for on dark backgrounds, overwrite for lighter ones */
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
 }
 
 .toolbar > * {
