@@ -159,8 +159,11 @@ input[type=submit]:hover, button:hover {
     content: "\f005"; /* filled star (fa-star) */
 }
 
-input[type=submit].icon:hover, button.icon:hover {
+input[type=submit].icon, button.icon {
     outline: none; /* overwrite browser default */
+}
+
+input[type=submit].icon:hover, button.icon:hover {
     animation-name: hover-iconbutton-darkbg; /* default highlighting for on dark backgrounds, overwrite for lighter ones */
     animation-duration: 0.25s;
     animation-fill-mode: both;
