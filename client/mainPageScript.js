@@ -29,10 +29,8 @@ var reprintCurrentSelectedInDetails = function(index) {
     $("#detailsSetPriority").attr("data-priority", currToDo.getPriorityString());
 
  	//Update duedate dropdown values
- 	$("#detailsDueDateYear").val(currToDo.getDueDate().year());
- 	$("#detailsDueDateMonth").val(currToDo.getDueDate().month() + 1);
- 	resetOptionsDueDate();
- 	$("#detailsDueDateDay").val(currToDo.getDueDate().date());
+    $("#detailsDueDate").val(currToDo.getDueDate().format("YYYY-MM-DD")); // Format for HTML5 date input element
+//    $("#detailsReminderDateTime").val(currToDo.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
 
  	//Description
  	$("#detailsDescriptionText").val(currToDo.getDescription());
@@ -69,28 +67,6 @@ var filterShownToDosOnTitle = function(value) {
  	currentActiveIndex = -1;
 }
 
-//Resets the dropwdown menu options, based on current year/month selected.
-var resetOptionsDueDate = function() {
- 	if (currentActiveIndex === -1) {
- 	 	return;
- 	}
-
- 	var currToDo = shownToDoList.get(currentActiveIndex);
- 	var numberOfDays = currToDo.getDueDate().daysInMonth();
-
- 	//Empty the dropdown menu
- 	$("#detailsDueDateDay").empty();
- 	//Add all to do items
-
- 	for (i = 1; i < numberOfDays + 1; i++) {
- 	 	var option = document.createElement("option");
- 	 	option.setAttribute("value", i);
- 	 	option.innerHTML = i;
- 	 	$("#detailsDueDateDay").append(option);
- 	}
-
-}
-
 var toggleDone = function(index) {
  	var currToDo = shownToDoList.get(index);
  	if (!currToDo.getCompleted()) {
@@ -101,27 +77,10 @@ var toggleDone = function(index) {
  	reprintToDoList();
 }
 
-//Changes a todo due date/ month in the internal object and on the page
-var changeDueDateYear = function(value) {
- 	shownToDoList.get(currentActiveIndex).setDueDateYear(value);
- 	//Change options for days of the month
- 	resetOptionsDueDate();
- 	$("#detailsDueDateMonth").val(shownToDoList.get(currentActiveIndex).getDueDate().month() + 1);
- 	$("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
- 	//TODO: other stuff, HTTP PUT request(?)
-}
-
-//Changes a todo due date/ month in the internal object and on the page
-var changeDueDateMonth = function(value) {
- 	shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
- 	resetOptionsDueDate();
- 	$("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
- 	//TODO: other stuff, HTTP PUT request(?)
-}
-
-//Changes a todo due date/ month in the internal object
-var changeDueDateDateOfMonth = function(value) {
- 	shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
+// Changes a todo due date in the internal object and on the page.
+// Parameter 'value' should be formatted as 'YYYY-MM-DD'.
+var changeDueDate = function(value) {
+    $("#detailsDueDate").val(value);
  	//TODO: other stuff, HTTP PUT request(?)
 }
 
@@ -224,26 +183,11 @@ $(document).ready(function() {
  	 	reprintToDoList();
  	});
 
- 	$("#detailsDueDateDay").change(function() {
- 	 	var newValue = $(this).val();
+ 	$("#detailsDueDate").change(function() {
+ 	 	var newValue = moment($(this).val(), "YYYY-MM-DD");
  	 	if (currentActiveIndex !== -1) {
- 	 	 	changeDueDateDateOfMonth(newValue);
- 	 	 	reprintToDoList();
- 	 	}
- 	});
-
- 	$("#detailsDueDateMonth").change(function() {
- 	 	var newValue = $(this).val();
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	changeDueDateMonth(newValue);
- 	 	 	reprintToDoList();
- 	 	}
- 	});
-
- 	$("#detailsDueDateYear").change(function() {
- 	 	var newValue = $(this).val();
- 	 	if (currentActiveIndex !== -1) {
- 	 	 	changeDueDateYear(newValue);
+            shownToDoList.get(currentActiveIndex).setDueDate(newValue);
+ 	 	 	changeDueDate(newValue.format("YYYY-MM-DD"));
  	 	 	reprintToDoList();
  	 	}
  	});

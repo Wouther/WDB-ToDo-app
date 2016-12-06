@@ -81,6 +81,11 @@ button, input, select, textarea {
     color: #444444;
 }
 
+input[type=date], input[type=time], input[type="datetime-local"] {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+}
+
 input:not([type=submit]), select, textarea {
     background-color: #F0F0F0;
 }

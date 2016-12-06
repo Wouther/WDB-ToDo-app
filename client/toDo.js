@@ -3,9 +3,11 @@ var ToDoItem = function() {
  	this.id = generateID();
  	this.title = "";
  	this.creationDate = moment();
- 	this.dueDate = moment();
- 	//Set default due date to be in 1 week.
- 	this.dueDate.add(7, 'days');
+
+    // Set default due date
+ 	this.dueDate = moment(); // current date/time
+ 	this.dueDate.add(7, 'days'); // set default due date to be in 1 week.
+
  	this.priority = false;
  	this.description = "";
  	//TODO: reminder
@@ -69,7 +71,7 @@ ToDoItem.prototype.getDueDate = function() {
 }
 
 ToDoItem.prototype.getDueDateString = function() {
- 	return this.dueDate.format('llll');
+ 	return this.dueDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
 }
 
 ToDoItem.prototype.getDueDateStatusString = function() {
@@ -105,7 +107,7 @@ ToDoItem.prototype.setDueDateMonth = function(month) {
  	this.dueDate.month(month);
 }
 
-ToDoItem.prototype.setDueDateDateOfMonth = function(day) {
+ToDoItem.prototype.setDueDateDayOfMonth = function(day) {
  	this.dueDate.date(day);
 }
 
