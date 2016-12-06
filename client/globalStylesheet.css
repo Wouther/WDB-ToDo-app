@@ -120,13 +120,16 @@ input:not([type=submit]), select, textarea {
     to { text-shadow: 0 0 0.6em rgb(241, 241, 241); }
 }
 
-input[type=text], textarea {
-    background: #F0F0F0 url('img/edit.png') no-repeat right 0.3em center;
+input, textarea {
     border: 0.05em solid #C0C0C0;
     outline: none; /* overwrite browser default */
 }
 
-input[type=text]:focus, textarea:focus {
+input[type=text] {
+    background: #F0F0F0 url('img/edit.png') no-repeat right 0.3em center;
+}
+
+input:focus, textarea:focus {
     animation-name: select-field-darkbg; /* default highlighting for on dark backgrounds, overwrite for lighter ones */
     animation-duration: 0.25s;
     animation-fill-mode: both;
