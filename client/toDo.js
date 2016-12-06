@@ -150,37 +150,44 @@ ToDoItem.prototype.getHTML = function(index) {
  	listItem.setAttribute("id", "listitem" + index);
 
  	var removeButton = document.createElement('button');
- 	removeButton.setAttribute("class", "removeButton");
- 	removeButton.setAttribute("id", "removeToDo" + index);
- 	removeButton.innerHTML = "Remove todo item";
+    removeButton.setAttribute("id", "removeToDo" + index);
+ 	removeButton.setAttribute("class", "iconButton removeTodo");
 
  	var toDoTitle = document.createElement('h3');
- 	toDoTitle.setAttribute("id", "toDoTitle" + index);
+    toDoTitle.setAttribute("id", "toDoTitle" + index);
+    toDoTitle.setAttribute("class", "todoTitle");
  	toDoTitle.innerHTML = this.title;
 
  	var toDoDueDate = document.createElement('h4');
- 	toDoDueDate.setAttribute("id", "toDoDueDate" + index);
+    toDoDueDate.setAttribute("id", "toDoDueDate" + index);
+    toDoDueDate.setAttribute("class", "dueDate");
  	toDoDueDate.innerHTML = this.getDueDateString();
 
  	var toDoPrio = document.createElement('h4');
  	toDoPrio.setAttribute("id", "toDoPrio" + index);
+    toDoPrio.setAttribute("class", "priority");
  	toDoPrio.innerHTML = this.getPriorityString();
 
  	var doneButton = document.createElement('button');
  	doneButton.setAttribute("id", "doneButtonList" + index);
- 	doneButton.setAttribute("class", "doneButtonList");
- 	if (this.completed) {
- 	 	doneButton.innerHTML = "Done. Click to undo."
+ 	doneButton.setAttribute("class", "iconButton setDone");
+ 	if (this.completed) { // TODO
+ 	 	doneButton.innerHTML = "Done. Click to undo.";
  	} else {
- 	 	doneButton.innerHTML = "Click to set to done."
+ 	 	doneButton.innerHTML = "";
  	}
 
+    var overviewSection = document.createElement('section');
+    overviewSection.setAttribute("class", "overview");
+ 	overviewSection.appendChild(toDoTitle);
+ 	overviewSection.appendChild(toDoDueDate);
+ 	overviewSection.appendChild(toDoPrio);
+
  	listItem.appendChild(removeButton);
- 	listItem.appendChild(toDoTitle);
- 	listItem.appendChild(toDoDueDate);
- 	listItem.appendChild(toDoPrio);
+    listItem.appendChild(overviewSection);
  	listItem.appendChild(doneButton);
- 	if (this.completed) {
+
+ 	if (this.completed) { // TODO
  	 	var completionDateHeader = document.createElement("h4");
  	 	completionDateHeader.setAttribute("id", "toDoCompletedDate" + index);
  	 	completionDateHeader.innerHTML = "Completed on: " + this.getCompletionDateString();

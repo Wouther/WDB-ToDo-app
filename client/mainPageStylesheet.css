@@ -165,15 +165,20 @@ body > header h1 {
     margin-right: 0;
 }
 
-#toDoItemList > li > #removeTodo::before {
+#toDoItemList > li > .removeTodo::before {
     content: "\f146"; /* minus sign in square (fa-minus-square) */
 }
 
 #toDoItemList > li > .overview {
     flex-grow: 1;
+    padding: 0 0.5em;
 }
 
-#toDoItemList > li > #setDone::before {
+#toDoItemList > li > .overview > * {
+    margin: 0;
+}
+
+#toDoItemList > li > .setDone::before {
     content: "\f14a"; /* check sign in square (fa-check-square) */
 }
 

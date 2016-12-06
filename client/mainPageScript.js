@@ -180,7 +180,7 @@ $(document).ready(function() {
  	 	//Redraw description in html?
  	});
 
- 	$("#toDoItemList").on("click", ".doneButtonList", function() {
+ 	$("#toDoItemList").on("click", ".setDone", function() {
  	 	console.log("kom ik hier");
  	 	var index = returnIndexFromString($(this).attr('id'));
  	 	toggleDone(index);
