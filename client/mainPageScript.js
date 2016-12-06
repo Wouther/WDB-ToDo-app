@@ -26,11 +26,7 @@ var reprintCurrentSelectedInDetails = function(index) {
  	}
  	$("#detailsTitle").val(currToDo.getTitle());
 
- 	if (currToDo.getPriority()) {
- 	 	$("#detailsSetPriority").html("Has prio. Click to set to no prio.");
- 	} else {
- 	 	$("#detailsSetPriority").html("No prio. Click to set to prio.");
- 	}
+    $("#detailsSetPriority").attr("data-priority", currToDo.getPriorityString());
 
  	//Update duedate dropdown values
  	$("#detailsDueDateYear").val(currToDo.getDueDate().year());

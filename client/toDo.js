@@ -129,9 +129,9 @@ ToDoItem.prototype.togglePrio = function() {
 
 ToDoItem.prototype.getPriorityString = function() {
  	if (this.priority === true) {
- 	 	return "Prio";
+ 	 	return "high";
  	}
- 	return "No prio";
+ 	return "low";
 }
 
 var getToDoItemfromServerJSON = function(res) {
@@ -166,7 +166,7 @@ ToDoItem.prototype.getHTML = function(index) {
  	var toDoPrio = document.createElement('h4');
  	toDoPrio.setAttribute("id", "toDoPrio" + index);
     toDoPrio.setAttribute("class", "priority");
- 	toDoPrio.innerHTML = this.getPriorityString();
+ 	toDoPrio.setAttribute("data-priority", this.getPriorityString());
 
  	var doneButton = document.createElement('button');
  	doneButton.setAttribute("id", "doneButtonList" + index);
