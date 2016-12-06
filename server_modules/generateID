@@ -1,4 +1,0 @@
-var generateID = function (){
-
-  return "abcd" + counterID++;
-}

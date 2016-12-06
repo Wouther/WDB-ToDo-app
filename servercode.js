@@ -68,14 +68,11 @@ app.get("/addtodo", function(req, res) {
  	var url_parts = url.parse(req.url, true);
  	var query = url_parts.query;
  	if (query["message"] !== undefined) {
- 	 	var tx = {
- 	 	 	message: query["message"],
- 	 	 	type: query["type"],
- 	 	 	deadline: query["deadline"]
- 	 	};
- 	 	todos.push(tx);
- 	 	res.end("Todo added succesfully");
- 	 	console.log("addded" + tx.message);
+    var newToDoItem = new ToDoItem();
+    todos.push(newToDoItem);
+    //This is transmitted back to the client
+ 	 	res.end(newToDoItem.id);
+ 	 	console.log("added " + tx.message);
 
  	} else {
  	 	res.end("Error: missing message parameter");
