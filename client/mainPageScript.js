@@ -1,3 +1,6 @@
+var shownToDoList = new ToDoList();
+var allToDosInMemory = new ToDoList();
+
 //Set to -1 if no to do is focused, this is default on starting the page
 var currentActiveIndex = -1;
 
@@ -6,8 +9,8 @@ var reprintToDoList = function() {
  	//Remove everything that is already in the list
  	$("#toDoItemList").empty();
  	//Add all to do items from internal object
- 	for (i = 0; i < shownToDoList.length(); i++) {
- 	 	$("#toDoItemList").append(returnToDoListHTML(shownToDoList.get(i), i));
+ 	for (i = 0; i < shownToDoList.list.length; i++) {
+ 	 	$("#toDoItemList").append(shownToDoList.get(i).getHTML(i));
  	}
 }
 
@@ -84,7 +87,10 @@ var resetOptionsDueDate = function() {
  	//Add all to do items
 
  	for (i = 1; i < numberOfDays + 1; i++) {
- 	 	$("#detailsDueDateDay").append(returnOptionForDayOfTheMonth(i));
+ 	 	var option = document.createElement("option");
+ 	 	option.setAttribute("value", i);
+ 	 	option.innerHTML = i;
+ 	 	$("#detailsDueDateDay").append(option);
  	}
 
 }
@@ -126,8 +132,18 @@ var changeDueDateDateOfMonth = function(value) {
 //Executed when document has finished loading
 $(document).ready(function() {
 
+ 	//Get all todos from server
+ 	var getToDoList = $.get("/todos", function(req, res) {})
+ 	 	.done(function(res) {
+
+ 	 	 	//Put the gained to do list in client memory todo list
+ 	 	 	allToDosInMemory.list = getToDoListObjectFromServerJSON(res).list;
+ 	 	 	shownToDoList.list = allToDosInMemory.list;
+ 	 	 	reprintToDoList();
+ 	 	});
+
  	//Print the initial list
- 	reprintToDoList();
+
 
  	//CLICKING ON REMOVE BUTTON HANDLER
  	//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
@@ -171,6 +187,7 @@ $(document).ready(function() {
  	});
 
  	$("#addToDo").click(function() {
+ 	 	console.log("Clicked add to do");
  	 	addToDoItem();
  	});
 
@@ -235,5 +252,17 @@ $(document).ready(function() {
  	 	}
  	});
 
+ 	//Retrieve the list of todos from the server each 2 seconds
+ 	setInterval(function() {
+ 	 	//console.log("Fetching the todo list from the server.");
+ 	 	$.getJSON("todos", function(data) {
+ 	 	 	//DO SOMETHING WITH THE RETRIEVED TO DOS HERE
+ 	 	 	//3 TYPES OF CHANGES:
+ 	 	 	//  todo was added on server
+ 	 	 	//  todo was deleted on server
+ 	 	 	// todo was changed on server
+ 	 	 	//console.log(data);
+ 	 	});
+ 	}, 2000);
 
 });
