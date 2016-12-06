@@ -30,6 +30,10 @@ body > header h1 {
     text-align: center;
 }
 
+body > header #username {
+    margin: 0;
+}
+
 /*
     Two-column layout.
 */
@@ -38,16 +42,8 @@ body > header h1 {
     #leftColumn, #rightColumn {
         box-sizing: border-box;
         float: left;
-        width: calc(50% - 0.5em);
+        width: calc(50% - 1em);
         margin: 0 0.5em;
-    }
-
-    #leftColumn {
-        margin-left: 0em;
-    }
-
-    #rightColumn {
-        margin-right: 0em;
     }
 
     #rightColumn::after {
@@ -59,8 +55,8 @@ body > header h1 {
 
 @media only screen and (max-width: 1200px) {
     #leftColumn, #rightColumn {
-        width: 100%;
-        margin: 0.5em 0;
+        width: calc(100% - 1em);
+        margin: 0.5em 0.5em;
     }
 
     #leftColumn {
@@ -107,6 +103,7 @@ body > header h1 {
 #leftColumn > nav {
     background: rgb(0, 157, 129);
     color: #FFFFFF;
+    border: none;
 }
 
 #leftColumn > nav #addToDo::before {
