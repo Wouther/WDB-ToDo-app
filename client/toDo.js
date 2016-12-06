@@ -72,6 +72,15 @@ ToDoItem.prototype.getDueDateString = function() {
  	return this.dueDate.format('llll');
 }
 
+ToDoItem.prototype.getDueDateStatusString = function() {
+    if (this.dueDate.isAfter(moment())) {
+ 	    return "due";
+    }
+    else {
+        return "overdue";
+    }
+}
+
 ToDoItem.prototype.getCompletionDateString = function() {
  	return this.completionDate.format('llll');
 }
@@ -166,6 +175,7 @@ ToDoItem.prototype.getHTML = function(index) {
  	var toDoDueDate = document.createElement('div');
     toDoDueDate.setAttribute("id", "toDoDueDate" + index);
     toDoDueDate.setAttribute("class", "dueDate");
+    toDoDueDate.setAttribute("data-dueStatus", this.getDueDateStatusString());
  	toDoDueDate.innerHTML = this.getDueDateString();
 
  	var doneButton = document.createElement('button');

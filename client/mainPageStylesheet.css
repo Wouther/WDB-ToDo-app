@@ -184,6 +184,22 @@ body > header h1 {
     display: block;
 }
 
+#toDoItemList > li > .overview > *.dueDate::before {
+    display: inline-block;
+    content: "Due:";
+    background: rgb(0, 157, 129);
+    color: #FFFFFF;
+    padding: 0.05em 0.25em;
+    font-size: 80%;
+    border-radius: 0.1em;
+    margin-right: 0.4em;
+}
+
+#toDoItemList > li > .overview > *.dueDate[data-dueStatus=overdue]::before {
+    content: "Overdue:";
+    background: rgb(157, 0, 0);
+}
+
 #toDoItemList > li > .overview > *.priority {
     font-size: 100%;
     padding: 0;
