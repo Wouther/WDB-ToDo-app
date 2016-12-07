@@ -57,10 +57,10 @@ var addToDoItem = function() {
 }
 
 var changeToDoItemOnServer = function(params, values, id) {
-
+  console.log(params.length);
   var paramstring = "";
-  for (i = 0; i < params.length, i++) {
-    paramstring = + "&" + params[i] + "=" + values[i];
+  for (i = 0; i < params.length; i++) {
+    paramstring = paramstring + '&' + params[i] + "=" + values[i];
   }
 
   $.getJSON("changetodo?" + "id=" + id + paramstring, function(data) {
@@ -72,7 +72,12 @@ var changeToDoItemOnServer = function(params, values, id) {
 
 //Changes a todo title in the internal object.
 var changeToDoTitle = function(value) {
-  changeToDoItemOnServer("title", "poep", shownToDoList.get(currentActiveIndex).id);
+
+  var paramlist = [];
+  paramlist.push("title");
+  var valuelist = [];
+  valuelist.push(value);
+    changeToDoItemOnServer(paramlist, valuelist, shownToDoList.get(currentActiveIndex).id);
  	shownToDoList.get(currentActiveIndex).setTitle(value);
  	//TODO: other stuff, HTTP PUT request(?), change stuff in database
 }

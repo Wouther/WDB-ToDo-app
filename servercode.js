@@ -91,24 +91,20 @@ app.get("/removetodo", function(req, res) {
         var index = todos.indexOf(query['id']);
         todos.splice(index, 1);
         console.log("Removed toDO with id: " + query['id']);
-        res.status = '200';
-        res.end
+        res.send = '200';
+        res.end;
       } else {
         console.log("Missing id parameter");
-        res.status = '400';
-        res.end
+        res.send = '400';
+        res.end;
       }
 });
 
 app.get("/changetodo", function(req, res) {
  	var url_parts = url.parse(req.url, true);
  	var query = url_parts.query;
-  console.log(query);
   if (query["id"] !== undefined) {
-    console.log(query["id"]);
     var currToDo = findToDoItemByID(query["id"]);
-    console.log(currToDo);
-
     //Change something for each parameter specified
     for (var k in query){
 
@@ -120,11 +116,13 @@ app.get("/changetodo", function(req, res) {
         currToDo[k] = query[k];
       }
       }
-  console.log("changed todo with id:  " + query["id"]);
+  console.log("changed todo value with id:  " + query["id"]);
+  res.status = '200';
+  res.end;
 
 } else {
   console.log("Missing id parameter");
   res.status = '400';
-  res.end
+  res.end;
 }
 });
