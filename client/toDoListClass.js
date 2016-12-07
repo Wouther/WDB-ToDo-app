@@ -142,11 +142,11 @@ Returns true if the lists are equal.
 ToDoList.prototype.equals = function(otherList) {
 
   if (typeof(otherList) !== "object") {
-    console.log("other list not an object");
+    //console.log("other list not an object");
     return false;
   }
   if (this.list.length !== otherList.list.length) {
-    console.log("length unequal");
+    //console.log("length unequal");
     return false;
   }
 
@@ -159,7 +159,7 @@ ToDoList.prototype.equals = function(otherList) {
     if (foundItem && foundItem.equals(foundItem)) {
 
     } else {
-      console.log(foundItem.id + "id changed");
+      //console.log(foundItem.id + "id changed");
       changedToDosArray.push(foundItem.id);
     }
   }
