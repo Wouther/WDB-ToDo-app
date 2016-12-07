@@ -29,7 +29,7 @@ var reprintCurrentSelectedInDetails = function(index) {
     $("#detailsSetPriority").attr("data-priority", currToDo.getPriorityString());
 
  	//Update duedate dropdown values
-    $("#detailsDueDate").val(currToDo.getDueDate().format("YYYY-MM-DD")); // Format for HTML5 date input element
+    $("#detailsDueDateTime").val(currToDo.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
 //    $("#detailsReminderDateTime").val(currToDo.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
 
  	//Description
@@ -78,9 +78,9 @@ var toggleDone = function(index) {
 }
 
 // Changes a todo due date in the internal object and on the page.
-// Parameter 'value' should be formatted as 'YYYY-MM-DD'.
+// Parameter 'value' should be a 'moment' object of the due date and time.
 var changeDueDate = function(value) {
-    $("#detailsDueDate").val(value);
+    $("#detailsDueDateTime").val(value.toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
  	//TODO: other stuff, HTTP PUT request(?)
 }
 
@@ -183,11 +183,11 @@ $(document).ready(function() {
  	 	reprintToDoList();
  	});
 
- 	$("#detailsDueDate").change(function() {
- 	 	var newValue = moment($(this).val(), "YYYY-MM-DD");
+ 	$("#detailsDueDateTime").change(function() {
+ 	 	var newValue = moment($(this).val());
  	 	if (currentActiveIndex !== -1) {
             shownToDoList.get(currentActiveIndex).setDueDate(newValue);
- 	 	 	changeDueDate(newValue.format("YYYY-MM-DD"));
+ 	 	 	changeDueDate(newValue);
  	 	 	reprintToDoList();
  	 	}
  	});
