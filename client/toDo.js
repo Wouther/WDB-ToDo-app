@@ -260,7 +260,7 @@ ToDoItem.prototype.getHTML = function(index) {
     listItem.appendChild(overviewSection);
  	listItem.appendChild(doneButton);
 
- 	if (this.completed) { // TODO
+ 	if (this.completed && this.completed !== "null") { // TODO
  	 	var completionDateHeader = document.createElement("h4");
  	 	completionDateHeader.setAttribute("id", "toDoCompletedDate" + index);
  	 	completionDateHeader.innerHTML = "Completed on: " + this.getCompletionDateString();

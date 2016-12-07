@@ -137,7 +137,13 @@ app.get("/changetodo", function(req, res) {
       if (k === 'id') {
         continue;
       } else if (k === 'dueDate' || k === 'completionDate') { // Do something special for date changes: parse it first using moment
-        currToDo[k] = moment.utc(query[k]);
+        console.log(query[k])
+        if (query[k] === "null") {
+          console.log("date is null");
+          currToDo[k] = null;
+        } else {
+          currToDo[k] = moment.utc(query[k]);
+        }
       } else {
         currToDo[k] = query[k];
       }
