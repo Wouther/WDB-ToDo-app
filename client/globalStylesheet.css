@@ -151,6 +151,10 @@ input[type=submit]:hover, button:hover {
     animation-fill-mode: both;
 }
 
+input[type=submit]:active, button:active {
+    background: linear-gradient(to bottom, #F0F0F0, rgb(255, 242, 170));
+}
+
 .icon {
     font-size: 150%;
     padding: 0.1em;
