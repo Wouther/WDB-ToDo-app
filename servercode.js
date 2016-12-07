@@ -10,29 +10,41 @@ var toDoItem = require("./server_modules/toDoItem");
 var toDoItem1 = new toDoItem.ToDoItem();
 var toDoItem2 = new toDoItem.ToDoItem();
 var toDoItem3 = new toDoItem.ToDoItem();
+var toDoItem4 = new toDoItem.ToDoItem();
 
-toDoItem1.title = "Title of first to do item";
-toDoItem1.priority = false;
-toDoItem1.dueDate = moment("14-04-1998", "DD-MM-YYYY");
-toDoItem1.description = "THIS IS a description for item 1\ asdasdasdasdasasd11111\n 111111111111111111";
+toDoItem1.title = "Send postcard for niece's birthday";
+toDoItem1.priority = true;
+toDoItem1.dueDate = moment();
+toDoItem1.dueDate.add(3, 'days');
+toDoItem1.description = "Niece Alice's birthday is coming up soon! I should not forget to send the postcard I've written.";
 toDoItem1.id = generateID.generateID();
 
-toDoItem2.title = "Title of second to do item";
+toDoItem2.title = "Pick up meds from pharmacy";
 toDoItem2.priority = true;
-toDoItem2.dueDate = moment("14-04-2001", "DD-MM-YYYY");
-toDoItem2.description = "THIS IS a description for item 2\ asdasdasdasdasasd11111\n 222222222222222222";
+toDoItem2.dueDate = moment();
+toDoItem2.dueDate.add(7, 'days');
+toDoItem2.description = "The doctor's receipt is in the second top drawer of the small cabinet.";
 toDoItem2.id = generateID.generateID();
 
-toDoItem3.title = "Title of third to do item";
-toDoItem3.priority = true;
-toDoItem3.dueDate = moment("14-04-2012", "DD-MM-YYYY");
-toDoItem3.description = "THIS IS a description for item 3\ asdasdasdasdasasd11111\n 3333333333333333333333333";
+toDoItem3.title = "Water the plants";
+toDoItem3.priority = false;
+toDoItem3.dueDate = moment();
+toDoItem3.dueDate.add(5, 'days');
+toDoItem3.description = "The plants should be watered once a week. Also, when I have done this, I should set a new todo to water them next time.";
 toDoItem3.id = generateID.generateID();
+
+toDoItem4.title = "Pick up the treats for Mr. Winston";
+toDoItem4.priority = false;
+toDoItem4.dueDate = moment();
+toDoItem4.dueDate.add(1, 'days');
+toDoItem4.description = "I odered some special treats for Mr. WInston at the animal store. The friendly young man in the store said they would arrive in 2 weeks. So this is when I should pikc them up";
+toDoItem4.id = generateID.generateID();
 
 var todos = [];
 todos.push(toDoItem1);
 todos.push(toDoItem2);
 todos.push(toDoItem3);
+todos.push(toDoItem4);
 
 
 var findToDoItemByID = function (idparam) {
@@ -91,9 +103,9 @@ app.get("/removetodo", function(req, res) {
         //TODO add handling of not known id
 
         var index = todos.map(function(e) { return e.id; }).indexOf(query['id']);
-        console.log("index:" + index);
 
         if (index === -1) {
+          console.log("Client tried to remove a todo with id which was not found, returned 404 to client.");
           data.status = "404";
           res.json(data);
           res.end;
@@ -108,7 +120,7 @@ app.get("/removetodo", function(req, res) {
         }
 
       } else {
-        console.log("Missing id parameter");
+        console.log("Missing id parameter, responded with 400 to client.");
         data.status = "400";
         res.json(data);
         res.end;
