@@ -32,6 +32,7 @@ body > header h1 {
 
 body > header #username {
     margin: 0;
+    font: inherit;
 }
 
 /*
@@ -133,7 +134,7 @@ body > header #username {
 #toDoItemList > li {
     list-style-type: none;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -192,6 +193,15 @@ body > header #username {
     margin: 0;
 }
 
+#toDoItemList > li > .overview > *.todoTitle {
+    overflow: hidden;
+    max-height: 1em;
+    max-width: 85%; /* Experimental value to prevent wrapping of priority star to next line when
+            todo title is long and screen width is small. The proper way to solve this would be
+            using text-overflow: ellipsis, but this required white-space: no-wrap, which has a bug
+            when combined with CSS3 flexboxes (which are used here). */
+}
+
 #toDoItemList > li > .overview > *.dueDate {
     display: block;
 }
@@ -217,6 +227,7 @@ body > header #username {
     padding: 0;
     margin: auto 0.5em;
     vertical-align: top;
+    max-width: 1em; /* influences max-width of .todoTitle */
 }
 
 #toDoItemList > li > .setDone::before {
