@@ -38,7 +38,7 @@ todos.push(toDoItem3);
 
 var findToDoItemByID = function (idparam) {
   for (i = 0; i < todos.length; i++) {
-    if (todos[i].id === idparam) {
+    if (String(todos[i].id) === idparam) {
       return todos[i];
     }
   }
@@ -79,8 +79,25 @@ app.get("/addtodo", function(req, res) {
     newToDoItem.id = generateID.generateID();
     todos.push(newToDoItem);
     //This is transmitted back to the client
+    res.status = '200';
  	 	res.json(newToDoItem);
  	 	console.log("added new todo");
+});
+
+app.get("/removetodo", function(req, res) {
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+      if (query["id"] !== undefined) {
+        var index = todos.indexOf(query['id']);
+        todos.splice(index, 1);
+        console.log("Removed toDO with id: " + query['id']);
+        res.status = '200';
+        res.end
+      } else {
+        console.log("Missing id parameter");
+        res.status = '400';
+        res.end
+      }
 });
 
 app.get("/changetodo", function(req, res) {
@@ -89,13 +106,25 @@ app.get("/changetodo", function(req, res) {
   console.log(query);
   if (query["id"] !== undefined) {
     console.log(query["id"]);
-    var currTodo = findToDoItemByID("" + query["id"]);
+    var currToDo = findToDoItemByID(query["id"]);
     console.log(currToDo);
 
+    //Change something for each parameter specified
+    for (var k in query){
 
+      if (k === 'id') {
+        continue;
+      } else if (k === 'dueDate' || k === 'completionDate') { // Do something special for date changes: parse it first using moment
+        currToDo[k] = moment.utc(query[k]);
+      } else {
+        currToDo[k] = query[k];
+      }
+      }
   console.log("changed todo with id:  " + query["id"]);
 
 } else {
   console.log("Missing id parameter");
+  res.status = '400';
+  res.end
 }
 });

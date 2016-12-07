@@ -58,13 +58,13 @@ var addToDoItem = function() {
 
 var changeToDoItemOnServer = function(params, values, id) {
 
-  $.getJSON("changetodo?" + "id=" + id + "&" + params + "=" + values, function(data) {
-    // var toAdd = getToDoItemfromServerJSON(data);
-    // shownToDoList.add(toAdd);
-    // //allToDosInMemory.add(toAdd);
-    // reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
-    // currentActiveIndex = shownToDoList.length() - 1;
-    // reprintToDoList();
+  var paramstring = "";
+  for (i = 0; i < params.length, i++) {
+    paramstring = + "&" + params[i] + "=" + values[i];
+  }
+
+  $.getJSON("changetodo?" + "id=" + id + paramstring, function(data) {
+
   });
 
 

@@ -7,7 +7,7 @@ exports.index = function(req, res) {
 
 module.exports = {
  	ToDoItem: function() {
- 	 	this.title = "";
+ 	 	this.title = "Untitled";
  	 	this.creationDate = moment();
  	 	this.dueDate = moment();
  	 	//Set default due date to be in 1 week.
