@@ -247,7 +247,7 @@ $(document).ready(function() {
  	 	reprintToDoList();
  	});
 
- 	$("#detailsDueDateTime").change(function() {
+ 	$("#detailsDueDateTime").blur(function() {
  	 	var newValue = moment($(this).val());
         if (!newValue.isValid()) {
              return;
@@ -259,16 +259,17 @@ $(document).ready(function() {
  	 	}
  	});
 
- 	$("#detailsReminderDateTime").change(function() {
+ 	$("#detailsReminderDateTime").blur(function() {
  	 	var newValue = moment($(this).val());
         if (!newValue.isValid()) {
              return;
         }
  	 	if (currentActiveIndex !== -1) {
             // Check validity
-            if (newValue.isAfter(shownToDoList.get(currentActiveIndex).getDueDate()))
+            var dueValue = shownToDoList.get(currentActiveIndex).getDueDate();
+            if (newValue.isAfter(dueValue))
             {
-                newValue = shownToDoList.get(currentActiveIndex).getReminder();
+                newValue = dueValue.subtract(1, 'hours'); // reset to default reminder
             }
 
             shownToDoList.get(currentActiveIndex).setReminder(newValue); // update object in memory with new value
