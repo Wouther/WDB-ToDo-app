@@ -139,17 +139,23 @@ var toggleDone = function(index) {
  	} else {
  	 	currToDo.removeCompleted();
  	}
+  changeDateOnServer("completionDate", currToDo);
+  changeToDoItemOnServer("completed", currToDo.completed, currToDo.id);
  	reprintToDoList();
 }
 
-var changeDueDateOnServer = function() {
-  changeToDoItemOnServer("dueDate", (shownToDoList.get(currentActiveIndex).dueDate.utc()).format(), shownToDoList.get(currentActiveIndex).id);
+var changeDateOnServer = function(key, todo) {
+  if (!todo[key]) { //Date should be reset to null
+    changeToDoItemOnServer(key, null, todo.id);
+  } else {
+    changeToDoItemOnServer(key, (todo[key].utc()).format(), todo.id);
+  }
 }
 
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateYear = function(value) {
  	shownToDoList.get(currentActiveIndex).setDueDateYear(value);
-  changeDueDateOnServer();
+  changeDateOnServer("dueDate", shownToDoList.get(currentActiveIndex));
  	//Change options for days of the month
  	resetOptionsDueDate();
  	$("#detailsDueDateMonth").val(shownToDoList.get(currentActiveIndex).getDueDate().month() + 1);
@@ -160,7 +166,7 @@ var changeDueDateYear = function(value) {
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateMonth = function(value) {
  	shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
-  changeDueDateOnServer();
+  changeDateOnServer("dueDate", shownToDoList.get(currentActiveIndex));
  	resetOptionsDueDate();
  	$("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
  	//TODO: other stuff, HTTP PUT request(?)
@@ -169,7 +175,7 @@ var changeDueDateMonth = function(value) {
 //Changes a todo due date/ month in the internal object
 var changeDueDateDateOfMonth = function(value) {
  	shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
-  changeDueDateOnServer();
+  changeDateOnServer("dueDate", shownToDoList.get(currentActiveIndex));
  	//TODO: other stuff, HTTP PUT request(?)
 }
 
@@ -230,7 +236,6 @@ $(document).ready(function() {
  	});
 
  	$("#toDoItemList").on("click", ".doneButtonList", function() {
- 	 	console.log("kom ik hier");
  	 	var index = returnIndexFromString($(this).attr('id'));
  	 	toggleDone(index);
  	});
@@ -256,6 +261,7 @@ $(document).ready(function() {
  	$("#detailsSetPriority").click(function() {
  	 	if (currentActiveIndex !== -1) {
  	 	 	shownToDoList.get(currentActiveIndex).togglePrio();
+      changeToDoItemOnServer("priority", shownToDoList.get(currentActiveIndex).getPriority(), shownToDoList.get(currentActiveIndex).id);
  	 	 	reprintToDoList();
  	 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
  	 	}
@@ -264,6 +270,7 @@ $(document).ready(function() {
  	$("#detailsDescriptionText").change(function() {
  	 	if (currentActiveIndex !== -1) {
  	 	 	shownToDoList.get(currentActiveIndex).setDescription($(this).val());
+      changeToDoItemOnServer("description", shownToDoList.get(currentActiveIndex).getDescription(), shownToDoList.get(currentActiveIndex).id);
  	 	}
  	});
 
