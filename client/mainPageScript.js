@@ -134,10 +134,14 @@ var toggleDone = function(index) {
  	reprintToDoList();
 }
 
+var changeDueDateOnServer = function() {
+  changeToDoItemOnServer("dueDate", (shownToDoList.get(currentActiveIndex).dueDate.utc()).format(), shownToDoList.get(currentActiveIndex).id);
+}
+
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateYear = function(value) {
  	shownToDoList.get(currentActiveIndex).setDueDateYear(value);
-  changeToDoItemOnServer("dueDate", (shownToDoList.get(currentActiveIndex).dueDate.utc()).format(), shownToDoList.get(currentActiveIndex).id);
+  changeDueDateOnServer();
  	//Change options for days of the month
  	resetOptionsDueDate();
  	$("#detailsDueDateMonth").val(shownToDoList.get(currentActiveIndex).getDueDate().month() + 1);
@@ -147,7 +151,9 @@ var changeDueDateYear = function(value) {
 
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateMonth = function(value) {
+  console.log("changed month value");
  	shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
+  changeDueDateOnServer();
  	resetOptionsDueDate();
  	$("#detailsDueDateDay").val(shownToDoList.get(currentActiveIndex).getDueDate().date());
  	//TODO: other stuff, HTTP PUT request(?)
@@ -155,6 +161,7 @@ var changeDueDateMonth = function(value) {
 
 //Changes a todo due date/ month in the internal object
 var changeDueDateDateOfMonth = function(value) {
+  changeDueDateOnServer();
  	shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
  	//TODO: other stuff, HTTP PUT request(?)
 }
