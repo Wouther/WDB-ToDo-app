@@ -134,12 +134,17 @@ app.get("/changetodo", function(req, res) {
     var currToDo = findToDoItemByID(query["id"]);
     //Change something for each parameter specified
     for (var k in query){
+
+      if (query[k] === "true" || query[k] === "false") {
+        query[k] = JSON.parse(query[k]);
+      }
+
       if (k === 'id') {
         continue;
       } else if (k === 'dueDate' || k === 'completionDate') { // Do something special for date changes: parse it first using moment
-        console.log(query[k])
+        //console.log(query[k])
         if (query[k] === "null") {
-          console.log("date is null");
+          //console.log("date is null");
           currToDo[k] = null;
         } else {
           currToDo[k] = moment.utc(query[k]);
