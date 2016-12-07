@@ -56,6 +56,16 @@ var addToDoItem = function() {
   });
 }
 
+var deleteToDoItemOnServer = function(idparam) {
+  $.getJSON("removetodo?" + "id=" + idparam, function(data) {
+    if (data.status === "200") {
+      console.log("Succesfully deleted todo id:" + idparam + " on server.");
+    } else {
+      console.log("Error in changing todo, status code: " + data.status);
+    }
+  });
+}
+
 var changeToDoItemOnServer = function(params, values, id) {
   var paramstring = "";
 
@@ -76,8 +86,6 @@ var changeToDoItemOnServer = function(params, values, id) {
       console.log("Error in changing todo");
     }
   });
-
-
 }
 
 //Changes a todo title in the internal object.
@@ -193,7 +201,10 @@ $(document).ready(function() {
 
  	 	//Remove this element from shown list
     //allToDosInMemory.removeById(shownToDoList.get(index).id);
- 	 	shownToDoList.remove(index);
+    deleteToDoItemOnServer(shownToDoList.get(index).id);
+    allToDosInMemory.removeById(shownToDoList.get(index).id);
+ 	 	//shownToDoList.remove(index);
+
 
 
  	 	//If the removed element was focused in the detailed view, we set the focus to -1
@@ -257,7 +268,7 @@ $(document).ready(function() {
  	});
 
  	$("#sortPriority").click(function() {
- 	 	shownToDoList = shownToDoList.sortAccordingToPrio();
+ 	 	shownToDoList =  allToDosInMemory.sortAccordingToPrio();
  	 	reprintToDoList();
  	});
 

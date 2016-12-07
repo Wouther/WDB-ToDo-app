@@ -160,7 +160,12 @@ ToDoList.prototype.equals = function(otherList) {
 
     } else {
       //console.log(foundItem.id + "id changed");
-      changedToDosArray.push(foundItem.id);
+      if (foundItem !== null) {
+        changedToDosArray.push(foundItem.id);
+      } else {
+        return false;
+      }
+
     }
   }
 

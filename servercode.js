@@ -87,15 +87,31 @@ app.get("/addtodo", function(req, res) {
 app.get("/removetodo", function(req, res) {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
+    var data = {};
       if (query["id"] !== undefined) {
-        var index = todos.indexOf(query['id']);
-        todos.splice(index, 1);
-        console.log("Removed toDO with id: " + query['id']);
-        res.send = '200';
-        res.end;
+        //TODO add handling of not known id
+
+        var index = todos.map(function(e) { return e.id; }).indexOf(query['id']);
+        console.log("index:" + index);
+
+        if (index === -1) {
+          data.status = "404";
+          res.json(data);
+          res.end;
+
+        } else {
+          todos.splice(index, 1);
+          console.log("Removed toDO with id: " + query['id']);
+          data.status = "200";
+          res.json(data);
+          res.end;
+          console.log("Length of current to do list: " + todos.length);
+        }
+
       } else {
         console.log("Missing id parameter");
-        res.send = '400';
+        data.status = "400";
+        res.json(data);
         res.end;
       }
 });
@@ -107,7 +123,6 @@ app.get("/changetodo", function(req, res) {
     var currToDo = findToDoItemByID(query["id"]);
     //Change something for each parameter specified
     for (var k in query){
-
       if (k === 'id') {
         continue;
       } else if (k === 'dueDate' || k === 'completionDate') { // Do something special for date changes: parse it first using moment
