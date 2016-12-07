@@ -28,9 +28,9 @@ var reprintCurrentSelectedInDetails = function(index) {
 
     $("#detailsSetPriority").attr("data-priority", currToDo.getPriorityString());
 
- 	//Update duedate dropdown values
+ 	//Update due and reminder date/times
     $("#detailsDueDateTime").val(currToDo.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
-//    $("#detailsReminderDateTime").val(currToDo.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+    $("#detailsReminderDateTime").val(currToDo.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
 
  	//Description
  	$("#detailsDescriptionText").val(currToDo.getDescription());
@@ -81,6 +81,13 @@ var toggleDone = function(index) {
 // Parameter 'value' should be a 'moment' object of the due date and time.
 var changeDueDate = function(value) {
     $("#detailsDueDateTime").val(value.toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+ 	//TODO: other stuff, HTTP PUT request(?)
+}
+
+// Changes a reminder in the internal object and on the page.
+// Parameter 'value' should be a 'moment' object of the reminder date and time.
+var changeReminder = function(value) {
+    $("#detailsReminderDateTime").val(value.toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
  	//TODO: other stuff, HTTP PUT request(?)
 }
 
@@ -189,6 +196,14 @@ $(document).ready(function() {
             shownToDoList.get(currentActiveIndex).setDueDate(newValue);
  	 	 	changeDueDate(newValue);
  	 	 	reprintToDoList();
+ 	 	}
+ 	});
+
+ 	$("#detailsReminderDateTime").change(function() {
+ 	 	var newValue = moment($(this).val());
+ 	 	if (currentActiveIndex !== -1) {
+            shownToDoList.get(currentActiveIndex).setReminder(newValue);
+ 	 	 	changeReminder(newValue);
  	 	}
  	});
 

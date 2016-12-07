@@ -10,9 +10,10 @@ var ToDoItem = function() {
 
  	this.priority = false;
  	this.description = "";
- 	//TODO: reminder
- 	this.hasReminder = false;
- 	this.reminder = null;
+
+    // Set default reminder
+ 	this.reminderDate = this.dueDate.subtract(1, 'hours'); // set default reminder one hour before due
+
  	this.completed = false;
  	this.completionDate = null;
 };
@@ -83,6 +84,23 @@ ToDoItem.prototype.getDueDateStatusString = function() {
     }
 }
 
+ToDoItem.prototype.getReminder = function() {
+ 	return this.reminderDate;
+}
+
+ToDoItem.prototype.getReminderString = function() {
+ 	return this.reminderDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
+}
+
+ToDoItem.prototype.getReminderStatusString = function() {
+    if (this.reminderDate.isAfter(moment()) && this.reminderDate.isBefore(this.dueDate)) {
+ 	    return "valid";
+    }
+    else {
+        return "invalid";
+    }
+}
+
 ToDoItem.prototype.getCompletionDateString = function() {
  	return this.completionDate.format('llll');
 }
@@ -111,6 +129,29 @@ ToDoItem.prototype.setDueDateDayOfMonth = function(day) {
  	this.dueDate.date(day);
 }
 
+ToDoItem.prototype.setReminder = function(date) {
+ 	this.reminderDate = date;
+}
+
+ToDoItem.prototype.setReminderHours = function(hours) {
+ 	this.reminderDate.hour(hours);
+}
+
+ToDoItem.prototype.setReminderMinutes = function(minutes) {
+ 	this.reminderDate.minutes(minutes);
+}
+
+ToDoItem.prototype.setReminderYear = function(year) {
+ 	this.reminderDate.year(year);
+}
+
+ToDoItem.prototype.setReminderMonth = function(month) {
+ 	this.reminderDate.month(month);
+}
+
+ToDoItem.prototype.setReminderDayOfMonth = function(day) {
+ 	this.reminderDate.date(day);
+}
 
 ToDoItem.prototype.getPriority = function() {
  	return this.priority;
