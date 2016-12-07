@@ -57,14 +57,24 @@ var addToDoItem = function() {
 }
 
 var changeToDoItemOnServer = function(params, values, id) {
-  console.log(params.length);
   var paramstring = "";
-  for (i = 0; i < params.length; i++) {
-    paramstring = paramstring + '&' + params[i] + "=" + values[i];
+
+  if (typeof(params) === "object") {
+    console.log(params.length);
+    paramstring = "";
+    for (i = 0; i < params.length; i++) {
+      paramstring = '&' + params[i] + "=" + values[i];
+    }
+  } else if (typeof(params) === "string"){
+    paramstring = "&" + params + "=" + values;
   }
 
   $.getJSON("changetodo?" + "id=" + id + paramstring, function(data) {
-
+    if (data.status === 200) {
+      console.log("Succesfully changed todo " + params + " on server.");
+    } else {
+      console.log("Error in changing todo");
+    }
   });
 
 
@@ -73,11 +83,7 @@ var changeToDoItemOnServer = function(params, values, id) {
 //Changes a todo title in the internal object.
 var changeToDoTitle = function(value) {
 
-  var paramlist = [];
-  paramlist.push("title");
-  var valuelist = [];
-  valuelist.push(value);
-    changeToDoItemOnServer(paramlist, valuelist, shownToDoList.get(currentActiveIndex).id);
+    changeToDoItemOnServer("title", value, shownToDoList.get(currentActiveIndex).id);
  	shownToDoList.get(currentActiveIndex).setTitle(value);
  	//TODO: other stuff, HTTP PUT request(?), change stuff in database
 }
@@ -131,6 +137,7 @@ var toggleDone = function(index) {
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateYear = function(value) {
  	shownToDoList.get(currentActiveIndex).setDueDateYear(value);
+  changeToDoItemOnServer("dueDate", (shownToDoList.get(currentActiveIndex).dueDate.utc()).format(), shownToDoList.get(currentActiveIndex).id);
  	//Change options for days of the month
  	resetOptionsDueDate();
  	$("#detailsDueDateMonth").val(shownToDoList.get(currentActiveIndex).getDueDate().month() + 1);

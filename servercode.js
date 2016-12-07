@@ -117,7 +117,7 @@ app.get("/changetodo", function(req, res) {
       }
       }
   console.log("changed todo value with id:  " + query["id"]);
-  res.status = '200';
+  res.json({status : 200});
   res.end;
 
 } else {
