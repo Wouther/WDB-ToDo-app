@@ -262,7 +262,7 @@ $(document).ready(function() {
  	});
 
  	$("#sortDate").click(function() {
- 	 	shownToDoList = shownToDoList.sortAccordingToDueDate();
+ 	 	shownToDoList = allToDosInMemory.sortAccordingToDueDate();
  	 	reprintToDoList();
  	});
 
@@ -301,10 +301,11 @@ $(document).ready(function() {
  	 	 	// todo was changed on server
  	 	 	var toDoListFromServer =  getToDoListObjectFromServerJSON(data);
       //console.log(shownToDoList.equals(toDoListFromServer));
-      var isTheSame = shownToDoList.equals(toDoListFromServer);
+      var isTheSame = allToDosInMemory.equals(toDoListFromServer);
       if (isTheSame === true) {
           //console.log("same");
       } else {
+        console.log("todo list changed on server");
         shownToDoList.list = toDoListFromServer.list;
         allToDosInMemory.list = toDoListFromServer.list;
         reprintToDoList();

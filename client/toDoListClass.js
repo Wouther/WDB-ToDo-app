@@ -49,6 +49,8 @@ var compareFunctionDueDate = function(a, b) {
  	 	 	return 0;
  	 	}
  	}
+
+
  	//TODO not functional
 var compareFunctionPrio = function(a, b) {
  	if (a.priority === true && b.priority === false) {
@@ -140,9 +142,11 @@ Returns true if the lists are equal.
 ToDoList.prototype.equals = function(otherList) {
 
   if (typeof(otherList) !== "object") {
+    console.log("other list not an object");
     return false;
   }
   if (this.list.length !== otherList.list.length) {
+    console.log("length unequal");
     return false;
   }
 
@@ -152,9 +156,10 @@ ToDoList.prototype.equals = function(otherList) {
     // find this todoitem in the other list
     var foundItem = otherList.getByID(this.get(i).id);
     // check if the item is equal and not null
-    if (foundItem && foundItem.equals(this.get(i))) {
+    if (foundItem && foundItem.equals(foundItem)) {
 
     } else {
+      console.log(foundItem.id + "id changed");
       changedToDosArray.push(foundItem.id);
     }
   }

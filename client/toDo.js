@@ -27,6 +27,7 @@ ToDoItem.prototype.equals = function(otherToDo) {
       if (moment.isMoment(this[k])) {
 
         if (!this[k].isSame(otherToDo[k])) {
+          console.log("date not the same:" + otherToDo[k])
           return false;
         }
 
@@ -34,6 +35,9 @@ ToDoItem.prototype.equals = function(otherToDo) {
         if (this[k] !== otherToDo[k]) {
           //console.log(this[k]);
           //console.log(otherToDo[k]);
+          console.log( k + " not the same:" + otherToDo[k])
+          console.log(this[k]);
+          console.log(otherToDo[k]);
           return false;
         }
       }
