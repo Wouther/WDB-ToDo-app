@@ -100,9 +100,9 @@ var filterShownToDosOnTitle = function(value) {
 
  	//IF the searchbox is empty, we need to show all todo's again
  	if (!value) {
- 	 	shownToDoList = jQuery.extend(true, {}, toDoList);
+ 	 	shownToDoList = allToDosInMemory;
  	} else { //else, filter based on string
- 	 	shownToDoList = toDoList.subsetBasedOnTitle(value);
+ 	 	shownToDoList = allToDosInMemory.subsetBasedOnTitle(value);
  	}
 
  	reprintToDoList();
