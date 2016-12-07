@@ -249,6 +249,9 @@ $(document).ready(function() {
 
  	$("#detailsDueDateTime").change(function() {
  	 	var newValue = moment($(this).val());
+        if (!newValue.isValid()) {
+             return;
+        }
  	 	if (currentActiveIndex !== -1) {
             shownToDoList.get(currentActiveIndex).setDueDate(newValue); // update object in memory with new value
  	 	 	changeDueDate(shownToDoList.get(currentActiveIndex)); // update object on screen and in database
@@ -258,6 +261,9 @@ $(document).ready(function() {
 
  	$("#detailsReminderDateTime").change(function() {
  	 	var newValue = moment($(this).val());
+        if (!newValue.isValid()) {
+             return;
+        }
  	 	if (currentActiveIndex !== -1) {
             // Check validity
             if (newValue.isAfter(shownToDoList.get(currentActiveIndex).getDueDate()))
