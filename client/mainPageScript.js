@@ -151,7 +151,6 @@ var changeDueDateYear = function(value) {
 
 //Changes a todo due date/ month in the internal object and on the page
 var changeDueDateMonth = function(value) {
-  console.log("changed month value");
  	shownToDoList.get(currentActiveIndex).setDueDateMonth(value - 1);
   changeDueDateOnServer();
  	resetOptionsDueDate();
@@ -161,8 +160,8 @@ var changeDueDateMonth = function(value) {
 
 //Changes a todo due date/ month in the internal object
 var changeDueDateDateOfMonth = function(value) {
-  changeDueDateOnServer();
  	shownToDoList.get(currentActiveIndex).setDueDateDateOfMonth(value);
+  changeDueDateOnServer();
  	//TODO: other stuff, HTTP PUT request(?)
 }
 
