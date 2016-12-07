@@ -49,6 +49,8 @@ var compareFunctionDueDate = function(a, b) {
  	 	 	return 0;
  	 	}
  	}
+
+
  	//TODO not functional
 var compareFunctionPrio = function(a, b) {
  	if (a.priority === true && b.priority === false) {
@@ -112,12 +114,20 @@ ToDoList.prototype.removeById = function(idparam) {
 
 ToDoList.prototype.getByID = function(idparam) {
   for (i = 0; i < this.list.length; i++) {
-    if (this.list.get(i).id === idparam) {
-      return this.list.get(i);
+    if (this.get(i).id === idparam) {
+      return this.get(i);
     }
   }
 
   return null;
+}
+
+ToDoList.prototype.setByID = function(idparam, otherToDo) {
+  for (i = 0; i < this.list.length; i++) {
+    if (this.get(i).id === idparam) {
+      this.list[i] = otherToDo;
+    }
+  }
 }
 
 /* Equals function for the list. returns false if the other item is not a list,
@@ -132,9 +142,11 @@ Returns true if the lists are equal.
 ToDoList.prototype.equals = function(otherList) {
 
   if (typeof(otherList) !== "object") {
+    //console.log("other list not an object");
     return false;
   }
   if (this.list.length !== otherList.list.length) {
+    //console.log("length unequal");
     return false;
   }
 
@@ -144,10 +156,16 @@ ToDoList.prototype.equals = function(otherList) {
     // find this todoitem in the other list
     var foundItem = otherList.getByID(this.get(i).id);
     // check if the item is equal and not null
-    if (foundItem && foundItem.equals(this.get(i))) {
+    if (foundItem && foundItem.equals(foundItem)) {
 
     } else {
-      changedToDosArray.push(foundItem.id);
+      //console.log(foundItem.id + "id changed");
+      if (foundItem !== null) {
+        changedToDosArray.push(foundItem.id);
+      } else {
+        return false;
+      }
+
     }
   }
 

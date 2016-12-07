@@ -41,17 +41,53 @@ var reprintCurrentSelectedInDetails = function(index) {
 
 //Adds a new toDo Item
 var addToDoItem = function() {
- 	var toAdd = new ToDoItem();
- 	toAdd.setTitle("Untitled");
- 	shownToDoList.add(toAdd);
- 	toDoList.add(toAdd);
- 	reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
- 	currentActiveIndex = shownToDoList.length() - 1;
- 	reprintToDoList();
+
+  $.getJSON("addtodo", function(data) {
+    var toAdd = getToDoItemfromServerJSON(data);
+    shownToDoList.add(toAdd);
+    //allToDosInMemory.add(toAdd);
+    reprintCurrentSelectedInDetails(shownToDoList.length() - 1);
+    currentActiveIndex = shownToDoList.length() - 1;
+    reprintToDoList();
+  });
+}
+
+var deleteToDoItemOnServer = function(idparam) {
+  $.getJSON("removetodo?" + "id=" + idparam, function(data) {
+    if (data.status === "200") {
+      console.log("Succesfully deleted todo id:" + idparam + " on server.");
+    } else {
+      console.log("Error in changing todo, status code: " + data.status);
+    }
+  });
+}
+
+var changeToDoItemOnServer = function(params, values, id) {
+  var paramstring = "";
+
+  if (typeof(params) === "object") {
+    console.log(params.length);
+    paramstring = "";
+    for (i = 0; i < params.length; i++) {
+      paramstring = '&' + params[i] + "=" + values[i];
+    }
+  } else if (typeof(params) === "string"){
+    paramstring = "&" + params + "=" + values;
+  }
+
+  $.getJSON("changetodo?" + "id=" + id + paramstring, function(data) {
+    if (data.status === 200) {
+      console.log("Succesfully changed todo " + params + " on server.");
+    } else {
+      console.log("Error in changing todo");
+    }
+  });
 }
 
 //Changes a todo title in the internal object.
 var changeToDoTitle = function(value) {
+
+    changeToDoItemOnServer("title", value, shownToDoList.get(currentActiveIndex).id);
  	shownToDoList.get(currentActiveIndex).setTitle(value);
  	//TODO: other stuff, HTTP PUT request(?), change stuff in database
 }
@@ -60,13 +96,14 @@ var filterShownToDosOnTitle = function(value) {
 
  	//IF the searchbox is empty, we need to show all todo's again
  	if (!value) {
- 	 	shownToDoList = jQuery.extend(true, {}, toDoList);
+ 	 	shownToDoList = allToDosInMemory;
  	} else { //else, filter based on string
- 	 	shownToDoList = toDoList.subsetBasedOnTitle(value);
+ 	 	shownToDoList = allToDosInMemory.subsetBasedOnTitle(value);
  	}
 
  	reprintToDoList();
  	currentActiveIndex = -1;
+
 }
 
 var toggleDone = function(index) {
@@ -76,7 +113,17 @@ var toggleDone = function(index) {
  	} else {
  	 	currToDo.removeCompleted();
  	}
+  changeDateOnServer("completionDate", currToDo);
+  changeToDoItemOnServer("completed", currToDo.completed, currToDo.id);
  	reprintToDoList();
+}
+
+var changeDateOnServer = function(key, todo) {
+  if (!todo[key]) { //Date should be reset to null
+    changeToDoItemOnServer(key, null, todo.id);
+  } else {
+    changeToDoItemOnServer(key, (todo[key].utc()).format(), todo.id);
+  }
 }
 
 // Updates a todo object's due date (only!) on the screen and in the database,
@@ -85,7 +132,7 @@ var toggleDone = function(index) {
 var changeDueDate = function(obj) {
     $("#detailsDueDateTime").val(obj.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
     $("#detailsDue").attr("data-dueStatus", obj.getDueDateStatusString());
- 	//TODO: other stuff, HTTP PUT request(?)
+    changeDateOnServer("dueDate", obj);
 }
 
 // Updates a todo object's reminder (only!) on the screen and in the database,
@@ -94,7 +141,7 @@ var changeDueDate = function(obj) {
 var changeReminder = function(obj) {
     $("#detailsReminderDateTime").val(obj.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
     $("#detailsReminder").attr("data-reminderStatus", obj.getReminderStatusString());
-    //TODO: other stuff, HTTP PUT request(?)
+    changeDateOnServer("reminder", obj);
 }
 
 //Executed when document has finished loading
@@ -110,8 +157,6 @@ $(document).ready(function() {
  	 	 	reprintToDoList();
  	 	});
 
- 	//Print the initial list
-
 
  	//CLICKING ON REMOVE BUTTON HANDLER
  	//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
@@ -121,10 +166,15 @@ $(document).ready(function() {
  	 	var index = returnIndexFromString($(this).attr('id'));
 
  	 	//remove from original list
- 	 	toDoList.removeById(shownToDoList.get(index).getId());
+ 	 	//toDoList.removeById(shownToDoList.get(index).getId());
 
  	 	//Remove this element from shown list
- 	 	shownToDoList.remove(index);
+    //allToDosInMemory.removeById(shownToDoList.get(index).id);
+    deleteToDoItemOnServer(shownToDoList.get(index).id);
+    allToDosInMemory.removeById(shownToDoList.get(index).id);
+ 	 	//shownToDoList.remove(index);
+
+
 
  	 	//If the removed element was focused in the detailed view, we set the focus to -1
  	 	if (currentActiveIndex === index) {
@@ -149,7 +199,6 @@ $(document).ready(function() {
  	});
 
  	$("#toDoItemList").on("click", ".setDone", function() {
- 	 	console.log("kom ik hier");
  	 	var index = returnIndexFromString($(this).attr('id'));
  	 	toggleDone(index);
  	});
@@ -175,6 +224,7 @@ $(document).ready(function() {
  	$("#detailsSetPriority").click(function() {
  	 	if (currentActiveIndex !== -1) {
  	 	 	shownToDoList.get(currentActiveIndex).togglePrio();
+      changeToDoItemOnServer("priority", shownToDoList.get(currentActiveIndex).getPriority(), shownToDoList.get(currentActiveIndex).id);
  	 	 	reprintToDoList();
  	 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
  	 	}
@@ -183,16 +233,17 @@ $(document).ready(function() {
  	$("#detailsDescriptionText").change(function() {
  	 	if (currentActiveIndex !== -1) {
  	 	 	shownToDoList.get(currentActiveIndex).setDescription($(this).val());
+      changeToDoItemOnServer("description", shownToDoList.get(currentActiveIndex).getDescription(), shownToDoList.get(currentActiveIndex).id);
  	 	}
  	});
 
  	$("#sortPriority").click(function() {
- 	 	shownToDoList = shownToDoList.sortAccordingToPrio();
+ 	 	shownToDoList =  allToDosInMemory.sortAccordingToPrio();
  	 	reprintToDoList();
  	});
 
  	$("#sortDate").click(function() {
- 	 	shownToDoList = shownToDoList.sortAccordingToDueDate();
+ 	 	shownToDoList = allToDosInMemory.sortAccordingToDueDate();
  	 	reprintToDoList();
  	});
 
@@ -228,7 +279,18 @@ $(document).ready(function() {
  	 	 	//  todo was added on server
  	 	 	//  todo was deleted on server
  	 	 	// todo was changed on server
- 	 	 	//console.log(data);
+ 	 	 	var toDoListFromServer =  getToDoListObjectFromServerJSON(data);
+      //console.log(shownToDoList.equals(toDoListFromServer));
+      var isTheSame = allToDosInMemory.equals(toDoListFromServer);
+      if (isTheSame === true) {
+          //console.log("same");
+      } else {
+        console.log("todo list changed on server");
+        shownToDoList.list = toDoListFromServer.list;
+        allToDosInMemory.list = toDoListFromServer.list;
+        reprintToDoList();
+      }
+
  	 	});
  	}, 2000);
 

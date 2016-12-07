@@ -26,8 +26,23 @@ ToDoItem.prototype.equals = function(otherToDo) {
 
   for (var k in this){
     if (this.hasOwnProperty(k)) {
-      if (this[k] !== otherToDo[k]) {
-        return false;
+      //Special case for moment comparison
+      if (moment.isMoment(this[k])) {
+
+        if (!this[k].isSame(otherToDo[k])) {
+          console.log("date not the same:" + otherToDo[k])
+          return false;
+        }
+
+      } else {
+        if (this[k] !== otherToDo[k]) {
+          //console.log(this[k]);
+          //console.log(otherToDo[k]);
+          console.log( k + " not the same:" + otherToDo[k])
+          console.log(this[k]);
+          console.log(otherToDo[k]);
+          return false;
+        }
       }
     }
 }
