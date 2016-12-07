@@ -268,6 +268,39 @@ body > header #username {
     border-radius: 0.3em;
 }
 
+#details > .date .dueDate, #details > .date .reminder {
+    display: block;
+}
+
+#details > .date .dueDate::before, #details > .date .reminder::before {
+    display: inline-block;
+    color: #FFFFFF;
+    padding: 0.1em 0.5em;
+    border-radius: 0.2em;
+    margin-left: 0.2em;
+    margin-right: 0.4em;
+}
+
+#details > .date .dueDate::before { /* dueStatus=due and default */
+    content: "Due:";
+    background: rgb(0, 157, 129);
+}
+
+#details > .date .dueDate[data-dueStatus=overdue]::before {
+    content: "Overdue:";
+    background: rgb(157, 0, 0);
+}
+
+#details > .date .reminder::before { /* reminderStatus=due and default */
+    content: "Reminder:";
+    background: transparant;
+}
+
+#details > .date .reminder[data-reminderStatus=overdue]::before {
+    content: "Reminder:";
+    background: rgb(157, 0, 0);
+}
+
 #details #description > * {
     margin: 0.3em 0;
 }

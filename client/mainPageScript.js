@@ -30,7 +30,9 @@ var reprintCurrentSelectedInDetails = function(index) {
 
  	//Update due and reminder date/times
     $("#detailsDueDateTime").val(currToDo.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+    $("#detailsDue").attr("data-dueStatus", currToDo.getDueDateStatusString());
     $("#detailsReminderDateTime").val(currToDo.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+    $("#detailsReminder").attr("data-reminderStatus", currToDo.getReminderStatusString());
 
  	//Description
  	$("#detailsDescriptionText").val(currToDo.getDescription());
@@ -77,18 +79,22 @@ var toggleDone = function(index) {
  	reprintToDoList();
 }
 
-// Changes a todo due date in the internal object and on the page.
-// Parameter 'value' should be a 'moment' object of the due date and time.
-var changeDueDate = function(value) {
-    $("#detailsDueDateTime").val(value.toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+// Updates a todo object's due date (only!) on the screen and in the database,
+// using an in-memory object. Parameter 'obj' should be an instance of the toDo
+// class.
+var changeDueDate = function(obj) {
+    $("#detailsDueDateTime").val(obj.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+    $("#detailsDue").attr("data-dueStatus", obj.getDueDateStatusString());
  	//TODO: other stuff, HTTP PUT request(?)
 }
 
-// Changes a reminder in the internal object and on the page.
-// Parameter 'value' should be a 'moment' object of the reminder date and time.
-var changeReminder = function(value) {
-    $("#detailsReminderDateTime").val(value.toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
- 	//TODO: other stuff, HTTP PUT request(?)
+// Updates a todo object's reminder (only!) on the screen and in the database,
+// using an in-memory object. Parameter 'obj' should be an instance of the toDo
+// class.
+var changeReminder = function(obj) {
+    $("#detailsReminderDateTime").val(obj.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+    $("#detailsReminder").attr("data-reminderStatus", obj.getReminderStatusString());
+    //TODO: other stuff, HTTP PUT request(?)
 }
 
 //Executed when document has finished loading
@@ -193,8 +199,8 @@ $(document).ready(function() {
  	$("#detailsDueDateTime").change(function() {
  	 	var newValue = moment($(this).val());
  	 	if (currentActiveIndex !== -1) {
-            shownToDoList.get(currentActiveIndex).setDueDate(newValue);
- 	 	 	changeDueDate(newValue);
+            shownToDoList.get(currentActiveIndex).setDueDate(newValue); // update object in memory with new value
+ 	 	 	changeDueDate(shownToDoList.get(currentActiveIndex)); // update object on screen and in database
  	 	 	reprintToDoList();
  	 	}
  	});
@@ -202,8 +208,14 @@ $(document).ready(function() {
  	$("#detailsReminderDateTime").change(function() {
  	 	var newValue = moment($(this).val());
  	 	if (currentActiveIndex !== -1) {
-            shownToDoList.get(currentActiveIndex).setReminder(newValue);
- 	 	 	changeReminder(newValue);
+            // Check validity
+            if (newValue.isAfter(shownToDoList.get(currentActiveIndex).getDueDate()))
+            {
+                newValue = shownToDoList.get(currentActiveIndex).getReminder();
+            }
+
+            shownToDoList.get(currentActiveIndex).setReminder(newValue); // update object in memory with new value
+ 	 	 	changeReminder(shownToDoList.get(currentActiveIndex)); // update object on screen and in database
  	 	}
  	});
 

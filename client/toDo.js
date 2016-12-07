@@ -93,11 +93,16 @@ ToDoItem.prototype.getReminderString = function() {
 }
 
 ToDoItem.prototype.getReminderStatusString = function() {
-    if (this.reminderDate.isAfter(moment()) && this.reminderDate.isBefore(this.dueDate)) {
- 	    return "valid";
+    if (this.reminderDate.isAfter(this.dueDate)) {
+        return "invalid";
     }
     else {
-        return "invalid";
+        if (this.reminderDate.isBefore(moment())) {
+            return "overdue";
+        }
+        else {
+            return "due";
+        }
     }
 }
 
