@@ -5,6 +5,7 @@
 body {
     min-width: 500px;
     margin-top: 0;
+    margin-bottom: 3em;
     padding-top: 7.5em; /* influenced by header height */
 }
 
@@ -51,14 +52,14 @@ body > header #username {
 */
 
 @media only screen and (min-width: 1201px) {
-    #leftColumn, #rightColumn {
+    #leftColumn, #rightColumn, body > footer {
         box-sizing: border-box;
         float: left;
         width: calc(50% - 1em);
         margin: 0 0.5em;
     }
 
-    #rightColumn::after {
+    #rightColumn::after, body > footer::after {
         clear: left;
         content: "";
         display: block;
@@ -66,7 +67,7 @@ body > header #username {
 }
 
 @media only screen and (max-width: 1200px) {
-    #leftColumn, #rightColumn {
+    #leftColumn, #rightColumn, body > footer {
         width: calc(100% - 1em);
         margin: 0.5em 0.5em;
     }
@@ -106,6 +107,19 @@ body > header #username {
     border-bottom-width: 0.1em;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
+}
+
+/*
+    Footer
+*/
+
+body > footer {
+    position: absolute;
+}
+
+body > footer > a {
+    position: absolute;
+    right: 1.5em;
 }
 
 /*
