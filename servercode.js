@@ -75,17 +75,22 @@ var app;
 var connection = mysql.createConnection( {
 	host : 'localhost',
 	port : 3306,
-user: 'root',
-password: 'marja15marja15',
+user: 'todouser',
+password: 'plip',
 database: 'todo'
 });
 connection.connect(function(err) {
-  console.log(err);
 });
 
+var queryString = "SELECT * FROM todolist WHERE todolist.Owner = 2;";
+var plip = connection.query(queryString, function(err, rows, fields) {
+    if (err) throw err;
 
- //var plap = connection.query("SELECT Id FROM todolist WHERE todolist.Owner = 2;");
- //console.log(plap);
+    for (var i in rows) {
+        console.log('Post Titles: ', rows[i].Name);
+    }
+});
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //############################# HTTP SERVING code ####################################
