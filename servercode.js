@@ -87,7 +87,7 @@ var plip = connection.query(queryString, function(err, rows, fields) {
     if (err) throw err;
 
     for (var i in rows) {
-        console.log('Post Titles: ', rows[i].Name);
+        console.log('Row names: ', rows[i].Name);
     }
 });
 
