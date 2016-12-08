@@ -4,12 +4,23 @@
 
 body {
     min-width: 500px;
+    margin-top: 0;
+    padding-top: 7.5em; /* influenced by header height */
 }
 
 body > header {
-    margin: 0;
-    padding: 0.5em;
+    box-sizing: border-box;
+    display: block;
+    position: fixed;
+    top: 0;
+    width: calc(100% - 1.8em);
+    overflow: hidden;
+    height: 6em; /* influences body padding-top */
+    margin: 0 0.5em;
+    padding: 1em 1em;
     border-radius: 0 0 1em 1em;
+    background: rgb(255, 132, 0);
+    color: #FFFFFF;
 }
 
 body > header * {
