@@ -61,11 +61,35 @@ var findToDoItemByID = function (idparam) {
 // toDoList.add(toDoItem2);
 // toDoList.add(toDoItem3);
 
+var mysql = require('mysql');
 var express = require("express");
 var url = require("url");
 var http = require("http");
 var path = require('path');
 var app;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//############################# SQL code #############################################
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+var connection = mysql.createConnection( {
+	host : 'localhost',
+	port : 3306,
+user: 'root',
+password: 'marja15marja15',
+database: 'todo'
+});
+connection.connect(function(err) {
+  console.log(err);
+});
+
+
+ //var plap = connection.query("SELECT Id FROM todolist WHERE todolist.Owner = 2;");
+ //console.log(plap);
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//############################# HTTP SERVING code ####################################
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 var dirname = path.dirname(require.main.filename);
 
@@ -159,7 +183,7 @@ app.get("/changetodo", function(req, res) {
 
 } else {
   console.log("Missing id parameter");
-  res.status = '400';
+  res.json({status : 400, message: "Missing id parameter."});
   res.end;
 }
 });
