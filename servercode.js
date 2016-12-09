@@ -145,8 +145,6 @@ app.get("/login", function(req, res) {
             }
 
             results.password = rows[0].password;
-            console.log(results.password);
-
 
             if (results.password !== query["password"]) {
               console.log("wrong password for known user");
