@@ -34,6 +34,9 @@ var reprintCurrentSelectedInDetails = function(index) {
     $("#detailsReminderDateTime").val(currToDo.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
     $("#detailsReminder").attr("data-reminderStatus", currToDo.getReminderStatusString());
 
+    //Update assignee
+    $("#detailsAssigneeSelect").val(currToDo.getAssignee());
+
  	//Description
  	$("#detailsDescriptionText").val(currToDo.getDescription());
 
@@ -148,8 +151,25 @@ var changeReminder = function(obj) {
     changeDateOnServer("reminder", obj);
 }
 
+// Updates the assignee dropdown menu in the details view. (TODO user actual server data!)
+var setAssigneeHTML = function() { // TODO correct arguments
+    $("#detailsAssigneeSelect").empty(); // Remove current users in dropdown
+
+    for (var i = 0; i < 5; i++) { // TODO use actual server data (passed from arguments)
+        var thisUserOption = document.createElement('option');
+        thisUserOption.setAttribute("value", i); // Set user id as value
+        thisUserOption.innerHTML = "Username" + i; // Set user's name
+        $("#detailsAssigneeSelect").append(thisUserOption);
+    }
+}
+
 //Executed when document has finished loading
 $(document).ready(function() {
+
+    // Get all users from server for assignee dropdown menu
+    // TODO server query
+    setAssigneeHTML();
+
 
  	//Get all todos from server
  	var getToDoList = $.get("/todos", function(req, res) {})
@@ -232,6 +252,14 @@ $(document).ready(function() {
       changeToDoItemOnServer("priority", shownToDoList.get(currentActiveIndex).getPriority(), shownToDoList.get(currentActiveIndex).id);
  	 	 	reprintToDoList();
  	 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
+ 	 	}
+ 	});
+
+ 	$("#detailsAssigneeSelect").change(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	shownToDoList.get(currentActiveIndex).setAssignee($(this).val());
+            changeToDoItemOnServer("assignee", shownToDoList.get(currentActiveIndex).getAssignee(), shownToDoList.get(currentActiveIndex).id); // TODO implement on server
+            reprintToDoList();
  	 	}
  	});
 

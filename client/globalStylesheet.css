@@ -86,6 +86,11 @@ input[type=date], input[type=time], input[type="datetime-local"] {
     padding-bottom: 0.2em;
 }
 
+select {
+    padding-top: 0.35em;
+    padding-bottom: 0.35em;
+}
+
 input:not([type=submit]), select, textarea {
     background-color: #F0F0F0;
 }
@@ -120,7 +125,7 @@ input:not([type=submit]), select, textarea {
     to { text-shadow: 0 0 0.6em rgb(241, 241, 241); }
 }
 
-input, textarea {
+input, textarea, select {
     border: 0.05em solid #C0C0C0;
     outline: none; /* overwrite browser default */
 }
@@ -129,7 +134,7 @@ input[type=text] {
     background: #F0F0F0 url('img/edit.png') no-repeat right 0.3em center;
 }
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus {
     animation-name: select-field-darkbg; /* default highlighting for on dark backgrounds, overwrite for lighter ones */
     animation-duration: 0.25s;
     animation-fill-mode: both;
