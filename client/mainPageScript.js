@@ -282,14 +282,14 @@ $(document).ready(function() {
 
  	//Retrieve the list of todos from the server each 2 seconds
  	setInterval(function() {
- 	 	//console.log("Fetching the todo list from the server.");
- 	 	$.getJSON("todos", function(data) {
+
+ 	 	$.getJSON("todos?token=" + localStorage.getItem("token"), function(data) {
  	 	 	//DO SOMETHING WITH THE RETRIEVED TO DOS HERE
  	 	 	//3 TYPES OF CHANGES:
  	 	 	//  todo was added on server
  	 	 	//  todo was deleted on server
  	 	 	// todo was changed on server
- 	 	 	var toDoListFromServer =  getToDoListObjectFromServerJSON(data);
+ 	 	 	var toDoListFromServer =  getToDoListObjectFromServerJSON(data.list);
       //console.log(shownToDoList.equals(toDoListFromServer));
       var isTheSame = allToDosInMemory.equals(toDoListFromServer);
       if (isTheSame === true) {

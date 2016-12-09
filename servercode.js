@@ -5,6 +5,7 @@ var generateID = require("./server_modules/generateID.js");
 var generateToken = require("./server_modules/generateToken.js");
 var toDoItem = require("./server_modules/toDoItem");
 var loginItem = require("./server_modules/loggedIn");
+var findFunctions = require("./server_modules/findFunctions");
 
 // DATA STORED IN MEMORY OF SERVER: LATER THIS NEEDS TO BE LOADED FROM DATABASE
 
@@ -98,6 +99,7 @@ var plip = connection.query(queryString, function(err, rows, fields) {
 //############################# HTTP SERVING code ####################################
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
 var dirname = path.dirname(require.main.filename);
 
 var port = process.argv[2];
@@ -113,7 +115,47 @@ app.get('/', function(req, res) {
 
 //Gets list of todos from server
 app.get("/todos", function(req, res) {
- 	res.json(todos);
+
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
+  var data = {};
+
+  if (query["token"] === undefined) {
+    data.status = 400;
+    data.message = "Missing token parameter in query";
+    res.json(data);
+    res.end;
+    return;
+  }
+
+  userId = findFunctions.findId(query["token"], loggedInUsers);
+
+  if (userId === undefined) {
+    data.status = 401;
+    data.message = "Unauthorized";
+    res.json(data);
+    res.end;
+  } else {
+      var list = [];
+      var queryString = "SELECT * FROM todoitem WHERE todoitem.owner=?";
+        connection.query(queryString, userId, function(err, rows, fields) {
+          if (err) throw err;
+          //console.log(moment(rows[0].creationDate)._isValid);
+
+          for (i = 0; i < rows.length; i++) {
+            list.push(toDoItem.createItemFromDBEntry(rows[i]));
+            //console.log(rows[i]);
+          }
+          data.list = list;
+          data.status = 200;
+          data.message = "Succes";
+          res.json(data);
+          res.end;
+        });
+
+  }
+
+
 });
 
 
