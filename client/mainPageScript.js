@@ -160,7 +160,7 @@ $(document).ready(function() {
 
  	//CLICKING ON REMOVE BUTTON HANDLER
  	//On is used instead of onclick, so that newly created DOM elements will also have these event handlers
- 	$("#toDoItemList").on("click", ".removeButton", function() {
+ 	$("#toDoItemList").on("click", ".removeTodo", function() {
 
  	 	//Get the list elemenent index
  	 	var index = returnIndexFromString($(this).attr('id'));

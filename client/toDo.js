@@ -207,11 +207,16 @@ ToDoItem.prototype.getPriorityString = function() {
 }
 
 var getToDoItemfromServerJSON = function(res) {
+
  	var todo = new ToDoItem();
- 	for (var k in res) todo[k] = res[k];
- 	if (k = "dueDate") {
- 	 	todo.dueDate = moment.utc(res.dueDate);
- 	}
+ 	for (var k in res) {
+    //TODO something better here:
+ 	if ((k === "dueDate" || k === "completionDate") && res[k]) {
+ 	 	todo[k] = moment.utc(res[k]);
+ 	} else {
+    todo[k] = res[k];
+  }
+  }
  	return todo;
 }
 
@@ -260,7 +265,7 @@ ToDoItem.prototype.getHTML = function(index) {
     listItem.appendChild(overviewSection);
  	listItem.appendChild(doneButton);
 
- 	if (this.completed) { // TODO
+ 	if (this.completed && this.completionDate !== null) { // TODO
  	 	var completionDateHeader = document.createElement("h4");
  	 	completionDateHeader.setAttribute("id", "toDoCompletedDate" + index);
  	 	completionDateHeader.innerHTML = "Completed on: " + this.getCompletionDateString();
