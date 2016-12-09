@@ -158,6 +158,37 @@ app.get("/todos", function(req, res) {
 
 });
 
+app.get("/logout", function(req, res) {
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
+  var data = {};
+
+  if (query["token"] === undefined) {
+    data.status = 400;
+    data.message = "Missing token parameter in query";
+    res.json(data);
+    res.end;
+  } else {
+
+    var index = findFunctions.findIndex(query["token"], loggedInUsers);
+
+    if (index === undefined) {
+      console.log("Login token not found in server");
+      data.status = 500;
+      res.json(data);
+      res.end;
+      return;
+    } else {
+      loggedInUsers.splice(index, 1);
+      data.status = 200;
+      data.message = "Accepted";
+      res.json(data);
+      res.end;
+    }
+
+  }
+});
+
 
 app.get("/login", function(req, res) {
   var url_parts = url.parse(req.url, true);

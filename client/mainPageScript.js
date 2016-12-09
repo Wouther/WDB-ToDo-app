@@ -211,6 +211,20 @@ $(document).ready(function() {
  	 	addToDoItem();
  	});
 
+  $("#logoutButton").click(function() {
+
+    $.getJSON("logout?token=" + localStorage.getItem("token"), function(data) {
+      if (data.status === 200) {
+        window.localStorage.removeItem("token");
+        window.location = '/';
+      } else {
+        console.log(data.status);
+        console.log(data.message);
+      }
+    });
+
+  });
+
  	$("#searchField").change(function() {
  	 	var newValue = $(this).val();
  	 	filterShownToDosOnTitle(newValue);
