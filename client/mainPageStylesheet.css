@@ -241,16 +241,18 @@ body > footer > a {
     display: none;
 }
 
-#toDoItemList > li[data-completedStatus=true] > .overview > *.completionDate {
+#toDoItemList > li[data-completedStatus=true] > .overview > *.completionDate, #toDoItemList > li[data-completedStatus=true] > .overview > *.assignee {
     display: block;
 }
 
-#toDoItemList > li > .overview > *.dueDate::before, #toDoItemList > li > .overview > *.completionDate::before {
+#toDoItemList > li > .overview > *.dueDate::before, #toDoItemList > li > .overview > *.completionDate::before, #toDoItemList > li > .overview > *.assignee::before {
     display: inline-block;
     padding: 0.05em 0.25em;
     font-size: 80%;
     border-radius: 0.1em;
     margin-right: 0.4em;
+    background: #C0C0C0;
+    color: #444444;
 }
 
 #toDoItemList > li > .overview > *.dueDate::before {
@@ -267,8 +269,10 @@ body > footer > a {
 
 #toDoItemList > li> .overview > *.completionDate::before {
     content: "Completed on:";
-    background: #C0C0C0;
-    color: #444444;
+}
+
+#toDoItemList > li> .overview > *.assignee::before {
+    content: "Assigned to:";
 }
 
 

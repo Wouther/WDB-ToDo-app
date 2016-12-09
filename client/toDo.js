@@ -16,6 +16,8 @@ var ToDoItem = function() {
 
  	this.completed = false;
  	this.completionDate = null;
+
+    this.assignee = -1; // TODO assign to self by default
 };
 
 ToDoItem.prototype.equals = function(otherToDo) {
@@ -220,6 +222,18 @@ ToDoItem.prototype.getPriorityString = function() {
  	return "low";
 }
 
+ToDoItem.prototype.setAssignee = function(assigneeId) {
+ 	this.assignee = assigneeId;
+}
+
+ToDoItem.prototype.getAssignee = function() {
+ 	return 3; // TODO return user's id
+}
+
+ToDoItem.prototype.getAssigneeName = function() {
+ 	return "Bob"; // TODO return user's name or "Me" if assigned to self
+}
+
 var getToDoItemfromServerJSON = function(res) {
 
  	var todo = new ToDoItem();
@@ -266,6 +280,11 @@ ToDoItem.prototype.getHTML = function(index) {
     toDoCompletionDate.setAttribute("class", "completionDate");
  	toDoCompletionDate.innerHTML = this.getCompletionDateString();
 
+ 	var toDoAssignee = document.createElement('div');
+    toDoAssignee.setAttribute("id", "toDoAssignee" + index);
+    toDoAssignee.setAttribute("class", "assignee");
+ 	toDoAssignee.innerHTML = this.getAssigneeName();
+
  	var doneButton = document.createElement('button');
  	doneButton.setAttribute("id", "doneButtonList" + index);
  	doneButton.setAttribute("class", "icon setDone");
@@ -276,6 +295,7 @@ ToDoItem.prototype.getHTML = function(index) {
     overviewSection.appendChild(toDoPrio);
     overviewSection.appendChild(toDoDueDate);
     overviewSection.appendChild(toDoCompletionDate);
+    overviewSection.appendChild(toDoAssignee);
 
  	listItem.appendChild(removeButton);
     listItem.appendChild(overviewSection);
