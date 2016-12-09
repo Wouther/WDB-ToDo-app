@@ -233,21 +233,44 @@ body > footer > a {
     display: block;
 }
 
-#toDoItemList > li > .overview > *.dueDate::before {
+#toDoItemList > li > .overview > *.completionDate { /* default and completedStatus=false */
+    display: none;
+}
+
+#toDoItemList > li[data-completedStatus=true] > .overview > *.dueDate {
+    display: none;
+}
+
+#toDoItemList > li[data-completedStatus=true] > .overview > *.completionDate {
+    display: block;
+}
+
+#toDoItemList > li > .overview > *.dueDate::before, #toDoItemList > li > .overview > *.completionDate::before {
     display: inline-block;
-    content: "Due:";
-    background: rgb(0, 157, 129);
-    color: #FFFFFF;
     padding: 0.05em 0.25em;
     font-size: 80%;
     border-radius: 0.1em;
     margin-right: 0.4em;
 }
 
+#toDoItemList > li > .overview > *.dueDate::before {
+    content: "Due:";
+    background: rgb(0, 157, 129);
+    color: #FFFFFF;
+}
+
 #toDoItemList > li > .overview > *.dueDate[data-dueStatus=overdue]::before {
     content: "Overdue:";
     background: rgb(157, 0, 0);
+    color: #FFFFFF;
 }
+
+#toDoItemList > li> .overview > *.completionDate::before {
+    content: "Completed on:";
+    background: #C0C0C0;
+    color: #444444;
+}
+
 
 #toDoItemList > li > .overview > *.priority {
     font-size: 100%;
@@ -259,6 +282,10 @@ body > footer > a {
 
 #toDoItemList > li > .setDone::before {
     content: "\f14a"; /* check sign in square (fa-check-square) */
+}
+
+#toDoItemList > li[data-completedStatus=true] > .setDone::before { /* change to undo-button */
+    content: "\f0e2"; /* undo sign (counter-clockwise arrow) (fa-undo) */
 }
 
 /*

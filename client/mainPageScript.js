@@ -108,13 +108,17 @@ var filterShownToDosOnTitle = function(value) {
 
 var toggleDone = function(index) {
  	var currToDo = shownToDoList.get(index);
+
  	if (!currToDo.getCompleted()) {
  	 	currToDo.setAsCompleted(moment());
  	} else {
  	 	currToDo.removeCompleted();
  	}
-  changeDateOnServer("completionDate", currToDo);
-  changeToDoItemOnServer("completed", currToDo.completed, currToDo.id);
+    changeDateOnServer("completionDate", currToDo);
+    changeToDoItemOnServer("completed", currToDo.completed, currToDo.id);
+
+    $("#toDoCompletionDate" + index).html(currToDo.getCompletionDateString());
+    $("#listitem" + index).attr("data-completedStatus", currToDo.getCompletedStatusString());
  	reprintToDoList();
 }
 
@@ -201,6 +205,7 @@ $(document).ready(function() {
  	$("#toDoItemList").on("click", ".setDone", function() {
  	 	var index = returnIndexFromString($(this).attr('id'));
  	 	toggleDone(index);
+        reprintToDoList();
  	});
 
  	$("#addToDo").click(function() {

@@ -74,6 +74,15 @@ ToDoItem.prototype.getCompleted = function() {
  	return this.completed;
 }
 
+ToDoItem.prototype.getCompletedStatusString = function() {
+ 	if (this.completed) {
+        return "true";
+    }
+    else {
+        return "false";
+    }
+}
+
 ToDoItem.prototype.getTitle = function() {
  	return this.title;
 }
@@ -122,7 +131,12 @@ ToDoItem.prototype.getReminderStatusString = function() {
 }
 
 ToDoItem.prototype.getCompletionDateString = function() {
- 	return this.completionDate.format('llll');
+    if (this.completed) {
+        return this.completionDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
+    }
+    else {
+        return "Not completed yet.";
+    }
 }
 
 ToDoItem.prototype.setDueDate = function(date) {
@@ -225,6 +239,7 @@ var getToDoItemfromServerJSON = function(res) {
 ToDoItem.prototype.getHTML = function(index) {
  	var listItem = document.createElement('li');
  	listItem.setAttribute("id", "listitem" + index);
+    listItem.setAttribute("data-completedStatus", this.getCompletedStatusString());
 
  	var removeButton = document.createElement('button');
     removeButton.setAttribute("id", "removeToDo" + index);
@@ -246,31 +261,25 @@ ToDoItem.prototype.getHTML = function(index) {
     toDoDueDate.setAttribute("data-dueStatus", this.getDueDateStatusString());
  	toDoDueDate.innerHTML = this.getDueDateString();
 
+ 	var toDoCompletionDate = document.createElement('div');
+    toDoCompletionDate.setAttribute("id", "toDoCompletionDate" + index);
+    toDoCompletionDate.setAttribute("class", "completionDate");
+ 	toDoCompletionDate.innerHTML = this.getCompletionDateString();
+
  	var doneButton = document.createElement('button');
  	doneButton.setAttribute("id", "doneButtonList" + index);
  	doneButton.setAttribute("class", "icon setDone");
- 	if (this.completed) { // TODO
- 	 	doneButton.innerHTML = "Done. Click to undo.";
- 	} else {
- 	 	doneButton.innerHTML = "";
- 	}
 
     var overviewSection = document.createElement('section');
     overviewSection.setAttribute("class", "overview");
  	overviewSection.appendChild(toDoTitle);
     overviewSection.appendChild(toDoPrio);
- 	overviewSection.appendChild(toDoDueDate);
+    overviewSection.appendChild(toDoDueDate);
+    overviewSection.appendChild(toDoCompletionDate);
 
  	listItem.appendChild(removeButton);
     listItem.appendChild(overviewSection);
  	listItem.appendChild(doneButton);
-
- 	if (this.completed && this.completionDate !== null) { // TODO
- 	 	var completionDateHeader = document.createElement("h4");
- 	 	completionDateHeader.setAttribute("id", "toDoCompletedDate" + index);
- 	 	completionDateHeader.innerHTML = "Completed on: " + this.getCompletionDateString();
- 	 	listItem.appendChild(completionDateHeader);
- 	}
 
  	return listItem;
 }

@@ -151,7 +151,7 @@ input[type=submit]:hover, button:hover {
     animation-fill-mode: both;
 }
 
-input[type=submit]:active, button:active {
+input[type=submit]:not(.icon):active, button:not(.icon):active {
     background: linear-gradient(to bottom, #F0F0F0, rgb(255, 242, 170));
 }
 
