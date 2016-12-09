@@ -17,7 +17,7 @@ var ToDoItem = function() {
  	this.completed = false;
  	this.completionDate = null;
 
-    this.assignee = -1; // TODO assign to self by default
+    this.assignee = 1; // TODO assign to self by default. replace this with own user id when logging is implemented
 };
 
 ToDoItem.prototype.equals = function(otherToDo) {
@@ -226,12 +226,19 @@ ToDoItem.prototype.setAssignee = function(assigneeId) {
  	this.assignee = assigneeId;
 }
 
+// Returns user id of assignee
 ToDoItem.prototype.getAssignee = function() {
- 	return 3; // TODO return user's id
+ 	return this.assignee;
 }
 
 ToDoItem.prototype.getAssigneeName = function() {
- 	return "Bob"; // TODO return user's name or "Me" if assigned to self
+    for (var k in allUsersInMemory) {
+        if (allUsersInMemory[k].id == this.assignee) {
+            return allUsersInMemory[k].name;
+        }
+    }
+    console.log("Unable to get assignee name. Invalid user id '" + this.assignee + "'?")
+ 	return "";
 }
 
 var getToDoItemfromServerJSON = function(res) {

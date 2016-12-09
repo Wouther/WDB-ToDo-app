@@ -1,5 +1,6 @@
 var shownToDoList = new ToDoList();
 var allToDosInMemory = new ToDoList();
+var allUsersInMemory = []; // json object with users, having fields 'id' and 'name'.
 
 //window.localStorage.setItem("token", "ashdgahs1231231212");
 console.log(window.localStorage.getItem("token"));
@@ -154,15 +155,14 @@ var changeReminder = function(obj) {
     changeDateOnServer("reminder", obj);
 }
 
-// Updates the assignee dropdown menu in the details view. (TODO user actual server data!)
-var setAssigneeHTML = function() { // TODO correct arguments
+// Updates the assignee dropdown menu in the details view.
+var setAssigneeHTML = function() {
     $("#detailsAssigneeSelect").empty(); // Remove current users in dropdown
-
-    for (var i = 0; i < 5; i++) { // TODO use actual server data (passed from arguments)
-        var thisUserOption = document.createElement('option');
-        thisUserOption.setAttribute("value", i); // Set user id as value
-        thisUserOption.innerHTML = "Username" + i; // Set user's name
-        $("#detailsAssigneeSelect").append(thisUserOption);
+    for (var k in allUsersInMemory) {
+       var thisUserOption = document.createElement('option');
+       thisUserOption.setAttribute("value", allUsersInMemory[k].id); // Set user id as value
+       thisUserOption.innerHTML = allUsersInMemory[k].name; // Set user's name as text in dropdown
+       $("#detailsAssigneeSelect").append(thisUserOption);
     }
 }
 
@@ -170,8 +170,11 @@ var setAssigneeHTML = function() { // TODO correct arguments
 $(document).ready(function() {
 
     // Get all users from server for assignee dropdown menu
-    // TODO server query
-    setAssigneeHTML();
+    var getUserList = $.get("/users", function(req, res) {})
+ 	 	.done(function(res) {
+            allUsersInMemory = res;
+            setAssigneeHTML();
+ 	 	});
 
 
  	//Get all todos from server

@@ -105,8 +105,8 @@ app = express();
 app.use(express.static(dirname + "/client"));
 http.createServer(app).listen(port);
 
-//Simply send the main page if the client requests the root
-//Later moet hier de inlogpagina natuurlijk
+//Send the entry page if the client requests the root
+//TODO: send main page instead if already logged in
 app.get('/', function(req, res) {
  	res.sendFile(dirname + "/client/entrypage.html");
 });
@@ -116,6 +116,22 @@ app.get("/todos", function(req, res) {
  	res.json(todos);
 });
 
+//Gets list of users from server (id and name only, for assignee dropdown menu)
+app.get("/users", function(req, res) {
+    var queryString = "SELECT id,name FROM user";
+    var results = {};
+    connection.query(queryString, function(err, rows, fields) {
+        if (err) throw err;
+        if (rows.length === 0) {
+          console.log("No users in database.");
+          data.status = 401;
+          res.json(data);
+          res.end;
+        } else {
+            res.json(rows);
+        }
+    });
+});
 
 app.get("/login", function(req, res) {
   var url_parts = url.parse(req.url, true);
