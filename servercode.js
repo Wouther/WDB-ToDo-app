@@ -195,6 +195,20 @@ app.get("/login", function(req, res) {
   var query = url_parts.query;
   var data = {};
 
+  if (query["token"] !== undefined) {
+    if (findFunctions.tokenStillValid(query["token"], loggedInUsers)) {
+      data.status = 200;
+      data.message = "Unathourized"
+      res.json(data);
+      res.end;
+    } else {
+      data.status = 401;
+      res.json(data);
+      res.end;
+    }
+    return;
+  }
+
   var queryString = "SELECT id FROM user WHERE user.username=?";
   var results = {};
   connection.query(queryString, query["username"], function(err, rows, fields) {

@@ -12,5 +12,13 @@ module.exports = {
         return i;
       }
     }
+  },
+  tokenStillValid: function(token, userlist) {
+    for (i = 0; i < userlist.length; i++) {
+      if (token === userlist[i].token) {
+        return true;
+      }
+    }
+    return false;
   }
 };

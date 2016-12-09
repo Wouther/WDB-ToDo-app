@@ -2,6 +2,19 @@
 
 $(document).ready(function() {
 
+  //Try logging in with token if it is in browser
+  var token =  localStorage.getItem("token");
+
+  if (token !== undefined) {
+    $.getJSON("login?" + "token=" + token, function(data) {
+      if (data.status === 200) {
+        window.location = '/main';
+      } else {
+        localStorage.removeItem("token");
+      }
+    });
+  }
+
 $("#loginButton").click(function() {
 
   console.log("clicked login button");
