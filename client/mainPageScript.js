@@ -1,6 +1,9 @@
 var shownToDoList = new ToDoList();
 var allToDosInMemory = new ToDoList();
 
+//window.localStorage.setItem("token", "ashdgahs1231231212");
+console.log(window.localStorage.getItem("token"));
+
 //Set to -1 if no to do is focused, this is default on starting the page
 var currentActiveIndex = -1;
 

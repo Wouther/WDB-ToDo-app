@@ -7,6 +7,10 @@
     <title>Secretary</title>
     <meta name="description" content="Secretary ToDo application for elderly people">
     <meta name="author" content="Minor group 50">
+    <!-- external libraries -->
+    <script src="lib/jquery-3.1.1.min.js"></script>
+    <script src="lib/moment.js"></script>
+    <!-- main script -->
     <script src="entryPageScript.js"></script>
 
     <link rel="stylesheet" href="globalStylesheet.css">
@@ -23,12 +27,12 @@
         <header>
             <h2>Please login or register</h2>
         </header>
-        <form action="todo.js">
-            <input type="text" name="username" value="Username" />
-            <input type="text" name="password" value="Password" />
+        <form id="loginform" action=>
+            <input type="text" name="username" value="Username" id="userNameField"/>
+            <input type="text" name="password" value="Password" id="passwordField"/>
             <div id="buttons">
-                <input type="submit" value="Login" />
-                <input type="submit" value="Register" />
+                <input type="submit" name="login" value="Login" id="loginButton"/>
+                <input type="submit" value="Register"/>
             </div>
         </form>
     </main>

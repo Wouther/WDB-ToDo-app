@@ -77,20 +77,21 @@ var connection = mysql.createConnection( {
 	port : 3306,
 user: 'todouser',
 password: 'plip',
-database: 'todo'
+database: 'todoown'
 });
 connection.connect(function(err) {
 });
 
-var queryString = "SELECT * FROM todolist WHERE todolist.Owner = 2;";
+var queryString = "SELECT * FROM todoitem;";
 var plip = connection.query(queryString, function(err, rows, fields) {
     if (err) throw err;
 
     for (var i in rows) {
-        console.log('Row names: ', rows[i].Name);
+        console.log('Row names: ', rows[i].title);
     }
 });
 
+var token = '12312312312';
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //############################# HTTP SERVING code ####################################
@@ -106,13 +107,31 @@ http.createServer(app).listen(port);
 //Simply send the main page if the client requests the root
 //Later moet hier de inlogpagina natuurlijk
 app.get('/', function(req, res) {
- 	res.sendFile(dirname + "/client/main.html");
+ 	res.sendFile(dirname + "/client/entrypage.html");
 });
 
 //Gets list of todos from server
 app.get("/todos", function(req, res) {
  	res.json(todos);
 });
+
+
+app.get("/login", function(req, res) {
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
+  var data = {};
+
+    console.log("received login request");
+    data.status = 200;
+    data.token = token;
+    res.json(data);
+});
+
+
+app.get('/main', function(req, res) {
+ 	res.sendFile(dirname + "/client/main.html");
+});
+
 
 app.get("/addtodo", function(req, res) {
     var newToDoItem = new toDoItem.ToDoItem();

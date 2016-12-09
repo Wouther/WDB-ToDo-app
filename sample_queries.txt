@@ -1,0 +1,5 @@
+//ADDING NEW
+INSERT INTO todoitem (title, description, owner)
+VALUES("Pick up meds", "Pick up my husband's meds from the pharmacy and put them into the daily pill box for him", 1);
+
+//CHANGING
