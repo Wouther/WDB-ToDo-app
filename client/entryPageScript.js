@@ -14,8 +14,10 @@ $("#loginButton").click(function() {
       console.log(data.token);
       window.localStorage.setItem("token", data.token);
       window.location = '/main';
-    } else {
-      //HANDLING FOR WRONG LOGIN INFORMATION
+    } else if (data.status === 401){
+      console.log("Username not known by server.");
+    } else if (data.status === 403) {
+      console.log("Wrong password");
     }
   });
 });

@@ -2,8 +2,9 @@
 //Custom module imports
 var moment = require('moment');
 var generateID = require("./server_modules/generateID.js");
+var generateToken = require("./server_modules/generateToken.js");
 var toDoItem = require("./server_modules/toDoItem");
-
+var loginItem = require("./server_modules/loggedIn");
 
 // DATA STORED IN MEMORY OF SERVER: LATER THIS NEEDS TO BE LOADED FROM DATABASE
 
@@ -41,6 +42,7 @@ toDoItem4.description = "I odered some special treats for Mr. WInston at the ani
 toDoItem4.id = generateID.generateID();
 
 var todos = [];
+var loggedInUsers = [];
 todos.push(toDoItem1);
 todos.push(toDoItem2);
 todos.push(toDoItem3);
@@ -91,7 +93,6 @@ var plip = connection.query(queryString, function(err, rows, fields) {
     }
 });
 
-var token = '12312312312';
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //############################# HTTP SERVING code ####################################
@@ -121,10 +122,66 @@ app.get("/login", function(req, res) {
   var query = url_parts.query;
   var data = {};
 
-    console.log("received login request");
-    data.status = 200;
-    data.token = token;
-    res.json(data);
+  var queryString = "SELECT id FROM user WHERE user.username=?";
+  var results = {};
+  connection.query(queryString, query["username"], function(err, rows, fields) {
+      if (err) throw err;
+      if (rows.length === 0) {
+        console.log("Received login request with unknown username");
+        data.status = 401;
+        res.json(data);
+        res.end;
+      } else { //retrieve password from db and compare
+        results.id = rows[0].id;
+        queryString = "SELECT password FROM user WHERE user.id = ?;"
+        connection.query(queryString, results.id, function(err, rows, fields) {
+            if (err) throw err;
+
+            if (rows.length !== 1) {
+              console.log("Invalid password retrieved from DB for known user");
+              data.status = 500;
+              res.json(data);
+              res.end;
+            }
+
+            results.password = rows[0].password;
+            console.log(results.password);
+
+
+            if (results.password !== query["password"]) {
+              console.log("wrong password for known user");
+              data.status = 403;
+              res.json(data);
+              res.end;
+            } else {
+              console.log("received valid login request");
+
+              //Add user to the internal server's client list
+              var user = new loginItem.loggedInUser();
+              user.id = results.id;
+
+              user.token = generateToken.generateToken();
+              console.log("Generated token for new user: " + user.token);
+              loggedInUsers.push(user);
+              console.log("Users currently logged in: " + loggedInUsers.length);
+
+              data.status = 200;
+              data.token = user.token;
+              res.json(data);
+            }
+
+        });
+
+
+
+      }
+  });
+
+
+
+
+
+
 });
 
 
