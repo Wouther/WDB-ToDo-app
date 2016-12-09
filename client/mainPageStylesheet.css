@@ -21,6 +21,7 @@ body > header {
     padding: 1em 1em;
     border-radius: 0 0 1em 1em;
     background: rgb(255, 132, 0);
+    box-shadow: 0 0 0.5em #444444;
     color: #FFFFFF;
 }
 
