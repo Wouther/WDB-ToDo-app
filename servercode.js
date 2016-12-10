@@ -104,8 +104,21 @@ app.get('/analytics', function(req, res) {
             res.end;
           });
       });
-    } else if (query["type"] === "Somethingelse") {
-      //do other stuff
+    } else if (query["type"] === "todosPerUser") {
+
+      var queryString = "SELECT u.username, COUNT(*) FROM user as u, todoitem as t WHERE t.owner = u.id GROUP BY u.id DESC LIMIT 10;";
+      connection.query(queryString, function(err, rows, fields) {
+        if (err) throw err;
+        data.list = rows;
+        console.log(rows[0]['COUNT(*)']);
+        console.log(rows.length);
+        data.status = 200;
+        res.json(data);
+        res.end;
+      });
+
+
+
     }
 
 
@@ -139,7 +152,7 @@ app.get("/todos", function(req, res) {
       var queryString = "SELECT * FROM todoitem WHERE todoitem.owner=?";
         connection.query(queryString, userId, function(err, rows, fields) {
           if (err) throw err;
-          //console.log(moment(rows[0].creationDate)._isValid);
+
 
           for (i = 0; i < rows.length; i++) {
             list.push(toDoItem.createItemFromDBEntry(rows[i]));
