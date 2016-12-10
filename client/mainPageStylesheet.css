@@ -35,6 +35,10 @@ body > header #username {
     font: inherit;
 }
 
+body > header button {
+    margin-left: 0.5em;
+}
+
 /*
     Two-column layout.
 */
