@@ -106,7 +106,7 @@ app.get('/analytics', function(req, res) {
       });
     } else if (query["type"] === "todosPerUser") {
 
-      var queryString = "SELECT u.username, COUNT(*) FROM user as u, todoitem as t WHERE t.owner = u.id GROUP BY u.id DESC LIMIT 10;";
+      var queryString = "SELECT u.username, COUNT(*) FROM user as u, todoitem as t WHERE t.owner = u.id GROUP BY u.id ORDER BY COUNT(t.id) DESC LIMIT 10;";
       connection.query(queryString, function(err, rows, fields) {
         if (err) throw err;
         data.list = rows;
