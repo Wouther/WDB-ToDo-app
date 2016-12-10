@@ -16,6 +16,8 @@ var ToDoItem = function() {
 
  	this.completed = false;
  	this.completionDate = null;
+
+    this.assignee = 1; // TODO assign to self by default. replace this with own user id when logging is implemented
 };
 
 ToDoItem.prototype.equals = function(otherToDo) {
@@ -74,6 +76,15 @@ ToDoItem.prototype.getCompleted = function() {
  	return this.completed;
 }
 
+ToDoItem.prototype.getCompletedStatusString = function() {
+ 	if (this.completed) {
+        return "true";
+    }
+    else {
+        return "false";
+    }
+}
+
 ToDoItem.prototype.getTitle = function() {
  	return this.title;
 }
@@ -122,7 +133,12 @@ ToDoItem.prototype.getReminderStatusString = function() {
 }
 
 ToDoItem.prototype.getCompletionDateString = function() {
- 	return this.completionDate.format('llll');
+    if (this.completed) {
+        return this.completionDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
+    }
+    else {
+        return "Not completed yet.";
+    }
 }
 
 ToDoItem.prototype.setDueDate = function(date) {
@@ -206,6 +222,25 @@ ToDoItem.prototype.getPriorityString = function() {
  	return "low";
 }
 
+ToDoItem.prototype.setAssignee = function(assigneeId) {
+ 	this.assignee = assigneeId;
+}
+
+// Returns user id of assignee
+ToDoItem.prototype.getAssignee = function() {
+ 	return this.assignee;
+}
+
+ToDoItem.prototype.getAssigneeName = function() {
+    for (var k in allUsersInMemory) {
+        if (allUsersInMemory[k].id == this.assignee) {
+            return allUsersInMemory[k].name;
+        }
+    }
+    console.log("Unable to get assignee name. Invalid user id '" + this.assignee + "'?")
+ 	return "";
+}
+
 var getToDoItemfromServerJSON = function(res) {
 
  	var todo = new ToDoItem();
@@ -225,6 +260,7 @@ var getToDoItemfromServerJSON = function(res) {
 ToDoItem.prototype.getHTML = function(index) {
  	var listItem = document.createElement('li');
  	listItem.setAttribute("id", "listitem" + index);
+    listItem.setAttribute("data-completedStatus", this.getCompletedStatusString());
 
  	var removeButton = document.createElement('button');
     removeButton.setAttribute("id", "removeToDo" + index);
@@ -246,31 +282,31 @@ ToDoItem.prototype.getHTML = function(index) {
     toDoDueDate.setAttribute("data-dueStatus", this.getDueDateStatusString());
  	toDoDueDate.innerHTML = this.getDueDateString();
 
+ 	var toDoCompletionDate = document.createElement('div');
+    toDoCompletionDate.setAttribute("id", "toDoCompletionDate" + index);
+    toDoCompletionDate.setAttribute("class", "completionDate");
+ 	toDoCompletionDate.innerHTML = this.getCompletionDateString();
+
+ 	var toDoAssignee = document.createElement('div');
+    toDoAssignee.setAttribute("id", "toDoAssignee" + index);
+    toDoAssignee.setAttribute("class", "assignee");
+ 	toDoAssignee.innerHTML = this.getAssigneeName();
+
  	var doneButton = document.createElement('button');
  	doneButton.setAttribute("id", "doneButtonList" + index);
  	doneButton.setAttribute("class", "icon setDone");
- 	if (this.completed) { // TODO
- 	 	doneButton.innerHTML = "Done. Click to undo.";
- 	} else {
- 	 	doneButton.innerHTML = "";
- 	}
 
     var overviewSection = document.createElement('section');
     overviewSection.setAttribute("class", "overview");
  	overviewSection.appendChild(toDoTitle);
     overviewSection.appendChild(toDoPrio);
- 	overviewSection.appendChild(toDoDueDate);
+    overviewSection.appendChild(toDoDueDate);
+    overviewSection.appendChild(toDoCompletionDate);
+    overviewSection.appendChild(toDoAssignee);
 
  	listItem.appendChild(removeButton);
     listItem.appendChild(overviewSection);
  	listItem.appendChild(doneButton);
-
- 	if (this.completed && this.completionDate !== null) { // TODO
- 	 	var completionDateHeader = document.createElement("h4");
- 	 	completionDateHeader.setAttribute("id", "toDoCompletedDate" + index);
- 	 	completionDateHeader.innerHTML = "Completed on: " + this.getCompletionDateString();
- 	 	listItem.appendChild(completionDateHeader);
- 	}
 
  	return listItem;
 }

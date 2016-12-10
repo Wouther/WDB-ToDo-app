@@ -1,5 +1,6 @@
 var shownToDoList = new ToDoList();
 var allToDosInMemory = new ToDoList();
+var allUsersInMemory = []; // json object with users, having fields 'id' and 'name'.
 
 //window.localStorage.setItem("token", "ashdgahs1231231212");
 console.log(window.localStorage.getItem("token"));
@@ -36,6 +37,9 @@ var reprintCurrentSelectedInDetails = function(index) {
     $("#detailsDue").attr("data-dueStatus", currToDo.getDueDateStatusString());
     $("#detailsReminderDateTime").val(currToDo.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
     $("#detailsReminder").attr("data-reminderStatus", currToDo.getReminderStatusString());
+
+    //Update assignee
+    $("#detailsAssigneeSelect").val(currToDo.getAssignee());
 
  	//Description
  	$("#detailsDescriptionText").val(currToDo.getDescription());
@@ -113,13 +117,17 @@ var filterShownToDosOnTitle = function(value) {
 
 var toggleDone = function(index) {
  	var currToDo = shownToDoList.get(index);
+
  	if (!currToDo.getCompleted()) {
  	 	currToDo.setAsCompleted(moment());
  	} else {
  	 	currToDo.removeCompleted();
  	}
-  changeDateOnServer("completionDate", currToDo);
-  changeToDoItemOnServer("completed", currToDo.completed, currToDo.id);
+    changeDateOnServer("completionDate", currToDo);
+    changeToDoItemOnServer("completed", currToDo.completed, currToDo.id);
+
+    $("#toDoCompletionDate" + index).html(currToDo.getCompletionDateString());
+    $("#listitem" + index).attr("data-completedStatus", currToDo.getCompletedStatusString());
  	reprintToDoList();
 }
 
@@ -149,8 +157,27 @@ var changeReminder = function(obj) {
     changeDateOnServer("reminder", obj);
 }
 
+// Updates the assignee dropdown menu in the details view.
+var setAssigneeHTML = function() {
+    $("#detailsAssigneeSelect").empty(); // Remove current users in dropdown
+    for (var k in allUsersInMemory) {
+       var thisUserOption = document.createElement('option');
+       thisUserOption.setAttribute("value", allUsersInMemory[k].id); // Set user id as value
+       thisUserOption.innerHTML = allUsersInMemory[k].name; // Set user's name as text in dropdown
+       $("#detailsAssigneeSelect").append(thisUserOption);
+    }
+}
+
 //Executed when document has finished loading
 $(document).ready(function() {
+
+    // Get all users from server for assignee dropdown menu
+    var getUserList = $.get("/users", function(req, res) {})
+ 	 	.done(function(res) {
+            allUsersInMemory = res;
+            setAssigneeHTML();
+ 	 	});
+
 
  	//Get all todos from server
  	var getToDoList = $.get("/todos", function(req, res) {})
@@ -206,6 +233,7 @@ $(document).ready(function() {
  	$("#toDoItemList").on("click", ".setDone", function() {
  	 	var index = returnIndexFromString($(this).attr('id'));
  	 	toggleDone(index);
+        reprintToDoList();
  	});
 
  	$("#addToDo").click(function() {
@@ -246,6 +274,14 @@ $(document).ready(function() {
       changeToDoItemOnServer("priority", shownToDoList.get(currentActiveIndex).getPriority(), shownToDoList.get(currentActiveIndex).id);
  	 	 	reprintToDoList();
  	 	 	reprintCurrentSelectedInDetails(currentActiveIndex);
+ 	 	}
+ 	});
+
+ 	$("#detailsAssigneeSelect").change(function() {
+ 	 	if (currentActiveIndex !== -1) {
+ 	 	 	shownToDoList.get(currentActiveIndex).setAssignee($(this).val());
+            changeToDoItemOnServer("assignee", shownToDoList.get(currentActiveIndex).getAssignee(), shownToDoList.get(currentActiveIndex).id); // TODO implement on server
+            reprintToDoList();
  	 	}
  	});
 

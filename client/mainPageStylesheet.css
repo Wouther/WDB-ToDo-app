@@ -4,12 +4,25 @@
 
 body {
     min-width: 500px;
+    margin-top: 0;
+    margin-bottom: 1em;
+    padding-top: 7.5em; /* influenced by header height */
 }
 
 body > header {
-    margin: 0;
-    padding: 0.5em;
+    box-sizing: border-box;
+    display: block;
+    position: fixed;
+    top: 0;
+    width: calc(100% - 1.8em);
+    overflow: hidden;
+    height: 6em; /* influences body padding-top */
+    margin: 0 0.5em;
+    padding: 1em 1em;
     border-radius: 0 0 1em 1em;
+    background: rgb(255, 132, 0);
+    box-shadow: 0 0 0.5em #444444;
+    color: #FFFFFF;
 }
 
 body > header * {
@@ -44,14 +57,14 @@ body > header button {
 */
 
 @media only screen and (min-width: 1201px) {
-    #leftColumn, #rightColumn {
+    #leftColumn, #rightColumn, body > footer {
         box-sizing: border-box;
         float: left;
         width: calc(50% - 1em);
         margin: 0 0.5em;
     }
 
-    #rightColumn::after {
+    #rightColumn::after, body > footer::after {
         clear: left;
         content: "";
         display: block;
@@ -59,7 +72,7 @@ body > header button {
 }
 
 @media only screen and (max-width: 1200px) {
-    #leftColumn, #rightColumn {
+    #leftColumn, #rightColumn, body > footer {
         width: calc(100% - 1em);
         margin: 0.5em 0.5em;
     }
@@ -99,6 +112,20 @@ body > header button {
     border-bottom-width: 0.1em;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
+}
+
+/*
+    Footer
+*/
+
+body > footer {
+    padding-top: 0.5em;
+    padding-bottom: 2em;
+}
+
+body > footer > a {
+    position: absolute;
+    right: 1.5em;
 }
 
 /*
@@ -210,21 +237,48 @@ body > header button {
     display: block;
 }
 
-#toDoItemList > li > .overview > *.dueDate::before {
+#toDoItemList > li > .overview > *.completionDate { /* default and completedStatus=false */
+    display: none;
+}
+
+#toDoItemList > li[data-completedStatus=true] > .overview > *.dueDate {
+    display: none;
+}
+
+#toDoItemList > li[data-completedStatus=true] > .overview > *.completionDate, #toDoItemList > li[data-completedStatus=true] > .overview > *.assignee {
+    display: block;
+}
+
+#toDoItemList > li > .overview > *.dueDate::before, #toDoItemList > li > .overview > *.completionDate::before, #toDoItemList > li > .overview > *.assignee::before {
     display: inline-block;
-    content: "Due:";
-    background: rgb(0, 157, 129);
-    color: #FFFFFF;
     padding: 0.05em 0.25em;
     font-size: 80%;
     border-radius: 0.1em;
     margin-right: 0.4em;
+    background: #C0C0C0;
+    color: #444444;
+}
+
+#toDoItemList > li > .overview > *.dueDate::before {
+    content: "Due:";
+    background: rgb(0, 157, 129);
+    color: #FFFFFF;
 }
 
 #toDoItemList > li > .overview > *.dueDate[data-dueStatus=overdue]::before {
     content: "Overdue:";
     background: rgb(157, 0, 0);
+    color: #FFFFFF;
 }
+
+#toDoItemList > li> .overview > *.completionDate::before {
+    content: "Completed on:";
+}
+
+#toDoItemList > li> .overview > *.assignee::before {
+    content: "Assigned to:";
+}
+
 
 #toDoItemList > li > .overview > *.priority {
     font-size: 100%;
@@ -236,6 +290,10 @@ body > header button {
 
 #toDoItemList > li > .setDone::before {
     content: "\f14a"; /* check sign in square (fa-check-square) */
+}
+
+#toDoItemList > li[data-completedStatus=true] > .setDone::before { /* change to undo-button */
+    content: "\f0e2"; /* undo sign (counter-clockwise arrow) (fa-undo) */
 }
 
 /*
@@ -264,7 +322,7 @@ body > header button {
     animation-name: hover-iconbutton-lightbg;
 }
 
-#details > .date {
+#details > .date, #details > .assigneeToolbar {
     margin: 1em 0.5em;
     padding: 0.5em;
     background-color: rgb(45, 45, 45);
@@ -272,37 +330,44 @@ body > header button {
     border-radius: 0.3em;
 }
 
-#details > .date .dueDate, #details > .date .reminder {
+#details > .date .dueDate, #details > .date .reminder, #details > .assigneeToolbar .assignee {
     display: block;
 }
 
-#details > .date .dueDate::before, #details > .date .reminder::before {
+#details > .date .dueDate::before, #details > .date .reminder::before, #details > .assigneeToolbar .assignee::before {
     display: inline-block;
     color: #FFFFFF;
     padding: 0.1em 0.5em;
     border-radius: 0.2em;
     margin-left: 0.2em;
     margin-right: 0.4em;
+    background: transparant;
 }
 
 #details > .date .dueDate::before { /* dueStatus=due and default */
     content: "Due:";
     background: rgb(0, 157, 129);
+    color: #FFFFFF;
 }
 
 #details > .date .dueDate[data-dueStatus=overdue]::before {
     content: "Overdue:";
     background: rgb(157, 0, 0);
+    color: #FFFFFF;
 }
 
 #details > .date .reminder::before { /* reminderStatus=due and default */
     content: "Reminder:";
-    background: transparant;
 }
 
 #details > .date .reminder[data-reminderStatus=overdue]::before {
     content: "Reminder:";
     background: rgb(157, 0, 0);
+    color: #FFFFFF;
+}
+
+#details > .assigneeToolbar .assignee::before {
+    content: "Assigned to:";
 }
 
 #details #description > * {

@@ -52,12 +52,14 @@
                 <h2>ToDo List</h2>
             </header>
             <ul id="toDoItemList">
-                <li id="listitem0">
+                <li id="listitem0" data-completedStatus="false">
                     <button id="removeTodo0" class="icon removeTodo"></button>
                     <section class="overview">
                         <div id="toDoTitle0" class="todoTitle">Todo title 1</div>
                         <div id="toDoPrio0" class="icon priority" data-priority="low"></div>
                         <div id="toDoDueDate0" class="dueDate" data-dueStatus="due">28/11/16 13:00</div>
+                        <div id="toDoCompletionDate0" class="completionDate">30/11/16 21:20</div>
+                        <div id="toDoAssignee0" class="assignee">Frederick</div>
                     </section>
                     <button id="doneButtonList0" class="icon setDone"></button>
                 </li>
@@ -88,6 +90,15 @@
                 </div>
             </section>
 
+            <section class="toolbar assigneeToolbar">
+                <div id="detailsAssignee" class="mainTool assignee">
+                    <select id="detailsAssigneeSelect">
+                        <option value="1">Username1</option>
+                        <option value="2">Username2</option>
+                    </select>
+                </div>
+            </section>
+
             <section id="description">
                 <h3>Description:</h3>
                 <textarea id="detailsDescriptionText">
@@ -96,6 +107,10 @@
             </section>
         </article>
     </div>
+
+    <footer>
+        <a href="analytics.html">Analytics</a>
+    </footer>
 
 </body>
 
