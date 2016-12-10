@@ -7,47 +7,8 @@ var toDoItem = require("./server_modules/toDoItem");
 var loginItem = require("./server_modules/loggedIn");
 var findFunctions = require("./server_modules/findFunctions");
 
-// DATA STORED IN MEMORY OF SERVER: LATER THIS NEEDS TO BE LOADED FROM DATABASE
-
-var toDoItem1 = new toDoItem.ToDoItem();
-var toDoItem2 = new toDoItem.ToDoItem();
-var toDoItem3 = new toDoItem.ToDoItem();
-var toDoItem4 = new toDoItem.ToDoItem();
-
-toDoItem1.title = "Send postcard for niece's birthday";
-toDoItem1.priority = true;
-toDoItem1.dueDate = moment();
-toDoItem1.dueDate.add(3, 'days');
-toDoItem1.description = "Niece Alice's birthday is coming up soon! I should not forget to send the postcard I've written.";
-toDoItem1.id = generateID.generateID();
-
-toDoItem2.title = "Pick up meds from pharmacy";
-toDoItem2.priority = true;
-toDoItem2.dueDate = moment();
-toDoItem2.dueDate.add(7, 'days');
-toDoItem2.description = "The doctor's receipt is in the second top drawer of the small cabinet.";
-toDoItem2.id = generateID.generateID();
-
-toDoItem3.title = "Water the plants";
-toDoItem3.priority = false;
-toDoItem3.dueDate = moment();
-toDoItem3.dueDate.add(5, 'days');
-toDoItem3.description = "The plants should be watered once a week. Also, when I have done this, I should set a new todo to water them next time.";
-toDoItem3.id = generateID.generateID();
-
-toDoItem4.title = "Pick up the treats for Mr. Winston";
-toDoItem4.priority = false;
-toDoItem4.dueDate = moment();
-toDoItem4.dueDate.add(1, 'days');
-toDoItem4.description = "I odered some special treats for Mr. WInston at the animal store. The friendly young man in the store said they would arrive in 2 weeks. So this is when I should pikc them up";
-toDoItem4.id = generateID.generateID();
-
-var todos = [];
 var loggedInUsers = [];
-todos.push(toDoItem1);
-todos.push(toDoItem2);
-todos.push(toDoItem3);
-todos.push(toDoItem4);
+
 
 
 var findToDoItemByID = function (idparam) {
@@ -85,12 +46,13 @@ database: 'todoown'
 connection.connect(function(err) {
 });
 
+//AFKIJKVOORBEELD
 var queryString = "SELECT * FROM todoitem;";
 var plip = connection.query(queryString, function(err, rows, fields) {
     if (err) throw err;
 
     for (var i in rows) {
-        console.log('Row names: ', rows[i].title);
+        //console.log('Row names: ', rows[i].title);
     }
 });
 
@@ -365,17 +327,26 @@ app.get("/changetodo", function(req, res) {
 
       } else if (k === 'id' || k === 'token') {
         continue;
-      } else if (k === 'dueDate' || k === 'completionDate') { // Do something special for date changes: parse it first using moment
+      } else if (k === 'dueDate' || k === 'completionDate' ) { // Do something special for date changes: parse it first using moment
 
         if (query[k] === "null") {
 
+            var queryString = "UPDATE todoitem SET " + k + " = null WHERE todoitem.id = " + todoid + ";";
+            console.log(queryString);
+            connection.query(queryString, function(err) {
+                if (err) throw err;
+            });
+
+            console.log("changed todo value with id:  " + query["id"] + " for userid:");
+            res.json({status : 200});
+            res.end;
+            return;
 
         } else {
           query[k] = moment.utc(query[k]).format('YYYY-MM-DD HH:mm:ss');
         }
 
         var queryString = "UPDATE todoitem SET " + k + " = ? WHERE todoitem.id = " + todoid + ";";
-        console.log(queryString);
         connection.query(queryString, query[k], function(err) {
             if (err) throw err;
         });
