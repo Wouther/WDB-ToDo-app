@@ -78,7 +78,9 @@ var changeToDoItemOnServer = function(params, values, id) {
     paramstring = "&" + params + "=" + values;
   }
 
-  $.getJSON("changetodo?" + "id=" + id + paramstring, function(data) {
+  var queryString = "changetodo?" + "token="+ localStorage.getItem("token") + "&id=" + id + paramstring;
+
+  $.getJSON(queryString, function(data) {
     if (data.status === 200) {
       console.log("Succesfully changed todo " + params + " on server.");
     } else {

@@ -22,6 +22,7 @@ module.exports = {
  	},
   createItemFromDBEntry: function(dbData) {
     todoitem = {};
+    todoitem.id = dbData.id;
     todoitem.title = dbData.title;
     todoitem.creationDate = moment(dbData.creationDate);
     todoitem.dueDate = moment(dbData.dueDate);
@@ -46,5 +47,11 @@ module.exports = {
     }
     todoitem.completionDate = moment(dbData.completionDate);
     return todoitem;
+  },
+  createDBitemFromQuery: function(query) {
+    todoitem = {};
+  },
+  parseEntryForDB: function (entry) {
+
   }
 };

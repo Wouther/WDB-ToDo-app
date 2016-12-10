@@ -320,32 +320,69 @@ app.get("/removetodo", function(req, res) {
 app.get("/changetodo", function(req, res) {
  	var url_parts = url.parse(req.url, true);
  	var query = url_parts.query;
-  if (query["id"] !== undefined) {
-    var currToDo = findToDoItemByID(query["id"]);
+  if (query["id"] !== undefined && query["token"] !== undefined) {
+    var todoid = query["id"];
+    console.log("todoid: " + todoid);
+    //var userid = findFunctions.findId(query["token"], loggedInUsers);
     //Change something for each parameter specified
     for (var k in query){
 
       if (query[k] === "true" || query[k] === "false") {
-        query[k] = JSON.parse(query[k]);
-      }
+        // query[k] = JSON.parse(query[k]);
 
-      if (k === 'id') {
+        if (query[k] === "true") {
+          query[k] = 1;
+        } else {
+          query[k] = 0;
+        }
+
+        var queryString = "UPDATE todoitem SET " + k + " = " + query[k] + " WHERE todoitem.id =" + todoid + ";";
+        console.log(queryString);
+        connection.query(queryString, function(err) {
+            if (err) throw err;
+        });
+
+        console.log("changed todo value with id:  " + query["id"] + " for userid:");
+        res.json({status : 200});
+        res.end;
+        return;
+
+
+      } else if (k === 'id' || k === 'token') {
         continue;
       } else if (k === 'dueDate' || k === 'completionDate') { // Do something special for date changes: parse it first using moment
-        //console.log(query[k])
+
         if (query[k] === "null") {
-          //console.log("date is null");
-          currToDo[k] = null;
+
+
         } else {
-          currToDo[k] = moment.utc(query[k]);
+          query[k] = moment.utc(query[k]).format('YYYY-MM-DD HH:mm:ss');
         }
+
+        var queryString = "UPDATE todoitem SET " + k + " = ? WHERE todoitem.id = " + todoid + ";";
+        console.log(queryString);
+        connection.query(queryString, query[k], function(err) {
+            if (err) throw err;
+        });
+
+        console.log("changed todo value with id:  " + query["id"] + " for userid:");
+        res.json({status : 200});
+        res.end;
+        return;
+
       } else {
-        currToDo[k] = query[k];
+        var queryString = "UPDATE todoitem SET " + k + " = ? WHERE todoitem.id = " + todoid + ";";
+        console.log(queryString);
+        connection.query(queryString, query[k], function(err) {
+            if (err) throw err;
+        });
+
+        console.log("changed todo value with id:  " + query["id"] + " for userid:");
+        res.json({status : 200});
+        res.end;
       }
       }
-  console.log("changed todo value with id:  " + query["id"]);
-  res.json({status : 200});
-  res.end;
+
 
 } else {
   console.log("Missing id parameter");

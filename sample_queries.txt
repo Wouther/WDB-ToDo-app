@@ -1,5 +1,25 @@
+/SELECT all todoitem
+
+
 //ADDING NEW
 INSERT INTO todoitem (title, description, owner)
 VALUES("Pick up meds", "Pick up my husband's meds from the pharmacy and put them into the daily pill box for him", 1);
 
 //CHANGING
+USE todoown;
+UPDATE todoitem
+SET priority = 1
+WHERE todoitem.id = 1;
+
+UPDATE todoitem
+SET duedate = "2017-01-01 12:11:01"
+WHERE todoitem.id = 1;
+
+UPDATE todoitem
+SET completionDate = "2017-01-01 12:11:01"
+WHERE todoitem.id = 1;
+
+
+UPDATE todoitem
+SET completionDate = null
+WHERE todoitem.id = 1;
