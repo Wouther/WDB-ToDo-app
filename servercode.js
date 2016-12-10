@@ -276,13 +276,45 @@ app.get('/main', function(req, res) {
 
 
 app.get("/addtodo", function(req, res) {
-    var newToDoItem = new toDoItem.ToDoItem();
-    newToDoItem.id = generateID.generateID();
-    todos.push(newToDoItem);
-    //This is transmitted back to the client
-    res.status = '200';
- 	 	res.json(newToDoItem);
- 	 	console.log("added new todo");
+
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
+  var data = {};
+
+  if (query["token"] !== undefined) {
+    var userid = findFunctions.findId(query["token"], loggedInUsers);
+    var title = "Untitled";
+    var description = "";
+
+    //Create new entry
+    var queryString = "INSERT INTO todoitem (title, description, owner) VALUES(?, ?, " + userid + ");"
+    connection.query(queryString, [title, description], function(err, result) {
+        if (err) throw err;
+
+            var newToDoID = result.insertId;
+            var queryString = "SELECT * FROM todoitem WHERE todoitem.id=?";
+            connection.query(queryString, newToDoID, function(err, rows, fields) {
+              if (err) throw err;
+              //console.log(moment(rows[0].creationDate)._isValid);
+
+              var newToDoItem = new toDoItem.createItemFromDBEntry(rows[0]);
+              res.status = '200';
+              res.json(newToDoItem);
+              console.log("added new todo");
+            });
+
+        });
+
+
+
+
+
+
+  }
+
+
+
+
 });
 
 app.get("/removetodo", function(req, res) {

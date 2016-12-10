@@ -1,9 +1,17 @@
 /SELECT all todoitem
+SELECT *
+from todoitem;
 
 
 //ADDING NEW
 INSERT INTO todoitem (title, description, owner)
 VALUES("Pick up meds", "Pick up my husband's meds from the pharmacy and put them into the daily pill box for him", 1);
+
+INSERT INTO todoitem (title, description, owner)
+VALUES("Untitled", "", 6);
+
+INSERT INTO user (username, password)
+VALUES("a", "a");
 
 //CHANGING
 USE todoown;
@@ -16,10 +24,15 @@ SET duedate = "2017-01-01 12:11:01"
 WHERE todoitem.id = 1;
 
 UPDATE todoitem
-SET completionDate = "2017-01-01 12:11:01"
+SET completionDate = "2017-01-01 12:11:01", completed = 1
 WHERE todoitem.id = 1;
 
 
 UPDATE todoitem
-SET completionDate = null
+SET completionDate = null, completed = 0
 WHERE todoitem.id = 1;
+
+
+UPDATE todoitem
+SET ? = ?
+WHERE todoitem.id = ?;

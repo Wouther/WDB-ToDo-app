@@ -45,7 +45,7 @@ var reprintCurrentSelectedInDetails = function(index) {
 //Adds a new toDo Item
 var addToDoItem = function() {
 
-  $.getJSON("addtodo", function(data) {
+  $.getJSON("addtodo?" + "token="+ localStorage.getItem("token"), function(data) {
     var toAdd = getToDoItemfromServerJSON(data);
     shownToDoList.add(toAdd);
     //allToDosInMemory.add(toAdd);
