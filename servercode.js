@@ -86,6 +86,29 @@ app.get('/analytics', function(req, res) {
     res.sendFile(dirname + "/client/analytics.html");
   } else {
     //Do something else if paremeters were added in the url
+
+    //requested the total completed todos.
+    if (query["type"] === "completedTodosTotal") {
+      var queryString = "select COUNT(*) from todoitem WHERE todoitem.completed=0;";
+        connection.query(queryString, function(err, rows, fields) {
+          if (err) throw err;
+          console.log(rows[0]);
+          data.notcompleted = rows[0]['COUNT(*)'];
+          queryString = "select COUNT(*) from todoitem WHERE todoitem.completed=1;";
+          connection.query(queryString, function(err, rows, fields) {
+            if (err) throw err;
+            data.completed = rows[0]['COUNT(*)'];
+            console.log(rows[0]['COUNT(*)']);
+            data.status = 200;
+            res.json(data);
+            res.end;
+          });
+      });
+    } else if (query["type"] === "Somethingelse") {
+      //do other stuff
+    }
+
+
   }
 });
 
@@ -263,7 +286,7 @@ app.get("/addtodo", function(req, res) {
     var description = "";
 
     //Create new entry
-    var queryString = "INSERT INTO todoitem (title, dueDate, description, owner) VALUES(?, date_add(now(), INTERVAL 1 WEEK)?, " + userid + ");"
+    var queryString = "INSERT INTO todoitem (title, dueDate, description, owner) VALUES(?, date_add(now(), INTERVAL 1 WEEK), ? , " + userid + ");"
     connection.query(queryString, [title, description], function(err, result) {
         if (err) throw err;
 
