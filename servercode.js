@@ -136,7 +136,7 @@ app.get("/todos", function(req, res) {
     res.end;
   } else {
       var list = [];
-      var queryString = "SELECT * FROM todoitem WHERE todoitem.owner=?";
+      var queryString = "SELECT * FROM todoitem WHERE todoitem.assignee=?";
         connection.query(queryString, userId, function(err, rows, fields) {
           if (err) throw err;
           //console.log(moment(rows[0].creationDate)._isValid);
@@ -302,7 +302,8 @@ app.get("/addtodo", function(req, res) {
     var description = "";
 
     //Create new entry
-    var queryString = "INSERT INTO todoitem (title, dueDate, description, owner) VALUES(?, date_add(now(), INTERVAL 1 WEEK), ? , " + userid + ");"
+    var queryString = "INSERT INTO todoitem (title, dueDate, description, assignee) VALUES(?, date_add(now(), INTERVAL 1 WEEK), ? , " + userid + ");"
+    console.log(queryString);
     connection.query(queryString, [title, description], function(err, result) {
         if (err) throw err;
 
