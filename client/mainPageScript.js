@@ -56,8 +56,8 @@ var addToDoItem = function() {
 }
 
 var deleteToDoItemOnServer = function(idparam) {
-  $.getJSON("removetodo?" + "id=" + idparam, function(data) {
-    if (data.status === "200") {
+  $.getJSON("removetodo?" + "token="+ localStorage.getItem("token") + "&id=" + idparam, function(data) {
+    if (data.status === 200) {
       console.log("Succesfully deleted todo id:" + idparam + " on server.");
     } else {
       console.log("Error in changing todo, status code: " + data.status);

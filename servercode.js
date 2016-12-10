@@ -321,32 +321,17 @@ app.get("/removetodo", function(req, res) {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     var data = {};
-      if (query["id"] !== undefined) {
-        //TODO add handling of not known id
 
-        var index = todos.map(function(e) { return e.id; }).indexOf(query['id']);
-
-        if (index === -1) {
-          console.log("Client tried to remove a todo with id which was not found, returned 404 to client.");
-          data.status = "404";
-          res.json(data);
+    if (query["id"] !== undefined && query["token"] !== undefined) {
+      var queryString = "DELETE FROM todoitem WHERE id=?;"
+      connection.query(queryString, query["id"], function(err) {
+          if (err) throw err;
+          res.json({status : 200});
           res.end;
+          return;
+          });
+    }
 
-        } else {
-          todos.splice(index, 1);
-          console.log("Removed toDO with id: " + query['id']);
-          data.status = "200";
-          res.json(data);
-          res.end;
-          console.log("Length of current to do list: " + todos.length);
-        }
-
-      } else {
-        console.log("Missing id parameter, responded with 400 to client.");
-        data.status = "400";
-        res.json(data);
-        res.end;
-      }
 });
 
 app.get("/changetodo", function(req, res) {
