@@ -75,6 +75,20 @@ app.get('/', function(req, res) {
  	res.sendFile(dirname + "/client/entrypage.html");
 });
 
+app.get('/analytics', function(req, res) {
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
+  var data = {};
+  var amountOfParameters = Object.keys(query).length;
+
+  if (amountOfParameters === 0) {
+    //simply send analytics page.
+    res.sendFile(dirname + "/client/analytics.html");
+  } else {
+    //Do something else if paremeters were added in the url
+  }
+});
+
 //Gets list of todos from server
 app.get("/todos", function(req, res) {
 
@@ -249,7 +263,7 @@ app.get("/addtodo", function(req, res) {
     var description = "";
 
     //Create new entry
-    var queryString = "INSERT INTO todoitem (title, dueDate, description, owner) VALUES(?, date_add(now(), INTERVAL 1 WEEK), ?, " + userid + ");"
+    var queryString = "INSERT INTO todoitem (title, dueDate, description, owner) VALUES(?, date_add(now(), INTERVAL 1 WEEK)?, " + userid + ");"
     connection.query(queryString, [title, description], function(err, result) {
         if (err) throw err;
 
