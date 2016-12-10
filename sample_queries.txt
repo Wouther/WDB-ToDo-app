@@ -1,4 +1,4 @@
-/SELECT all todoitem
+/////////////SELECT all todoitem
 SELECT *
 from todoitem;
 
@@ -8,7 +8,7 @@ INSERT INTO todoitem (title, description, owner)
 VALUES("Pick up meds", "Pick up my husband's meds from the pharmacy and put them into the daily pill box for him", 1);
 
 INSERT INTO todoitem (title, description, owner)
-VALUES("Untitled", "", 6);
+VALUES("Untitled", "", 4);
 
 INSERT INTO user (username, password)
 VALUES("a", "a");

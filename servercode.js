@@ -399,9 +399,9 @@ app.get("/changetodo", function(req, res) {
       }
 
 
-} else {
-  console.log("Missing id parameter");
-  res.json({status : 400, message: "Missing id parameter."});
-  res.end;
-}
+    } else {
+    console.log("Missing id parameter");
+    res.json({status : 400, message: "Missing id parameter."});
+    res.end;
+    }
 });
