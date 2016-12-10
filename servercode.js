@@ -249,7 +249,7 @@ app.get("/addtodo", function(req, res) {
     var description = "";
 
     //Create new entry
-    var queryString = "INSERT INTO todoitem (title, description, owner) VALUES(?, ?, " + userid + ");"
+    var queryString = "INSERT INTO todoitem (title, dueDate, description, owner) VALUES(?, date_add(now(), INTERVAL 1 WEEK), ?, " + userid + ");"
     connection.query(queryString, [title, description], function(err, result) {
         if (err) throw err;
 
