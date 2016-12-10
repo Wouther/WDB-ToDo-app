@@ -16,7 +16,7 @@ $(document).ready(function() {
   			type: "pie",
   			showInLegend: true,
   			toolTipContent: "{y} - #percent %",
-  			yValueFormatString: "#0.#,,.",
+  			yValueFormatString: "# todo items",
   			legendText: "{indexLabel}",
   			dataPoints: [
   				{  y: 4, indexLabel: "Done" },
