@@ -339,7 +339,6 @@ app.get("/changetodo", function(req, res) {
  	var query = url_parts.query;
   if (query["id"] !== undefined && query["token"] !== undefined) {
     var todoid = query["id"];
-    console.log("todoid: " + todoid);
     //var userid = findFunctions.findId(query["token"], loggedInUsers);
     //Change something for each parameter specified
     for (var k in query){
@@ -354,7 +353,6 @@ app.get("/changetodo", function(req, res) {
         }
 
         var queryString = "UPDATE todoitem SET " + k + " = " + query[k] + " WHERE todoitem.id =" + todoid + ";";
-        console.log(queryString);
         connection.query(queryString, function(err) {
             if (err) throw err;
         });
