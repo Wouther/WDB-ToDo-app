@@ -19,8 +19,8 @@ $(document).ready(function() {
   			yValueFormatString: "# todo items",
   			legendText: "{indexLabel}",
   			dataPoints: [
-  				{  y: 4, indexLabel: "Done" },
-  				{  y: 7, indexLabel: "Not Completed" },
+  				{  y: 0, indexLabel: "Done" },
+  				{  y: 0, indexLabel: "Not Completed" },
   			]
   		}
   		]
