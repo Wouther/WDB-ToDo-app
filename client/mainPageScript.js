@@ -5,6 +5,13 @@ var allUsersInMemory = []; // json object with users, having fields 'id' and 'na
 //window.localStorage.setItem("token", "ashdgahs1231231212");
 console.log(window.localStorage.getItem("token"));
 
+//Return to login page if token is not valid anymore
+var returnToInlog = function() {
+    localStorage.removeItem("token");
+    window.location = '/';
+    console.log("Returned to login page, login token not recognised by server.");
+}
+
 //Set to -1 if no to do is focused, this is default on starting the page
 var currentActiveIndex = -1;
 
@@ -92,6 +99,8 @@ var changeToDoItemOnServer = function(params, values, id) {
     }
   });
 }
+
+
 
 //Changes a todo title in the internal object.
 var changeToDoTitle = function(value) {
@@ -341,17 +350,25 @@ $(document).ready(function() {
  	 	 	//  todo was added on server
  	 	 	//  todo was deleted on server
  	 	 	// todo was changed on server
- 	 	 	var toDoListFromServer =  getToDoListObjectFromServerJSON(data.list);
-      //console.log(shownToDoList.equals(toDoListFromServer));
-      var isTheSame = allToDosInMemory.equals(toDoListFromServer);
-      if (isTheSame === true) {
-          //console.log("same");
-      } else {
-        console.log("todo list changed on server");
-        shownToDoList.list = toDoListFromServer.list;
-        allToDosInMemory.list = toDoListFromServer.list;
-        reprintToDoList();
+
+
+      if (data.status === 401) {
+        console.log("received 401 unauthorized.");
+        returnToInlog();
+        return;
+      } else if (data.status === 200) {
+        var toDoListFromServer =  getToDoListObjectFromServerJSON(data.list);
+        var isTheSame = allToDosInMemory.equals(toDoListFromServer);
+        if (isTheSame === true) {
+            //console.log("same");
+        } else {
+          console.log("todo list changed on server");
+          shownToDoList.list = toDoListFromServer.list;
+          allToDosInMemory.list = toDoListFromServer.list;
+          reprintToDoList();
+        }
       }
+
 
  	 	});
  	}, 2000);

@@ -142,7 +142,7 @@ app.get("/todos", function(req, res) {
 
   userId = findFunctions.findId(query["token"], loggedInUsers);
 
-  if (userId === undefined) {
+  if (userId === undefined) { //Did not find user among logged in users
     data.status = 401;
     data.message = "Unauthorized";
     res.json(data);
