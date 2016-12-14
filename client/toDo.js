@@ -17,7 +17,8 @@ var ToDoItem = function() {
  	this.completed = false;
  	this.completionDate = null;
 
-    this.assignee = 1; // TODO assign to self by default. replace this with own user id when logging is implemented
+    this.owner = 1; // TODO by definition always owned by self when created. replace this with own user id when logging is implemented
+    this.assignee = null; // Not assigned to anyone by default
 };
 
 ToDoItem.prototype.equals = function(otherToDo) {
@@ -222,8 +223,31 @@ ToDoItem.prototype.getPriorityString = function() {
  	return "low";
 }
 
+ToDoItem.prototype.setOwner = function(ownerId) {
+ 	this.owner = ownerId;
+}
+
+// Returns user id of owner
+ToDoItem.prototype.getOwner = function() {
+ 	return this.owner;
+}
+
+ToDoItem.prototype.getOwnerName = function() {
+    for (var k in allUsersInMemory) {
+        if (allUsersInMemory[k].id == this.owner) {
+            return allUsersInMemory[k].name;
+        }
+    }
+    console.log("Unable to get owner name. Invalid user id '" + this.owner + "'?")
+ 	return "";
+}
+
 ToDoItem.prototype.setAssignee = function(assigneeId) {
- 	this.assignee = assigneeId;
+    if (assigneeId == undefined) {
+        this.assignee = null;
+    } else {
+ 	  this.assignee = assigneeId;
+    }
 }
 
 // Returns user id of assignee
@@ -232,6 +256,10 @@ ToDoItem.prototype.getAssignee = function() {
 }
 
 ToDoItem.prototype.getAssigneeName = function() {
+    if (this.assignee == null) {
+        return "";
+    }
+    
     for (var k in allUsersInMemory) {
         if (allUsersInMemory[k].id == this.assignee) {
             return allUsersInMemory[k].name;
