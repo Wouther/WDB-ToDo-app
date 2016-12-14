@@ -120,8 +120,6 @@ app.get('/analytics', function(req, res) {
 
 
     }
-
-
   }
 });
 
@@ -149,7 +147,7 @@ app.get("/todos", function(req, res) {
     res.end;
   } else {
       var list = [];
-      var queryString = "SELECT * FROM todoitem WHERE todoitem.owner=?";
+      var queryString = "SELECT * FROM todoitem WHERE todoitem.assignee=?";
         connection.query(queryString, userId, function(err, rows, fields) {
           if (err) throw err;
 
@@ -164,10 +162,7 @@ app.get("/todos", function(req, res) {
           res.json(data);
           res.end;
         });
-
   }
-
-
 });
 
 app.get("/logout", function(req, res) {
@@ -218,6 +213,48 @@ app.get("/users", function(req, res) {
     });
 });
 
+//Gets info of currently logged in user from server when passed a valid token, or HTTP status 401 (Unauthorized) if not logged in.
+app.get("/user", function(req, res) {
+      var url_parts = url.parse(req.url, true);
+      var query = url_parts.query;
+      var data = {};
+
+      if (query["token"] === undefined) {
+        data.status = 400;
+        data.message = "Missing token parameter in query";
+        res.json(data);
+        res.end;
+        return;
+      }
+
+      userId = findFunctions.findId(query["token"], loggedInUsers);
+
+      if (userId === undefined) {
+        data.status = 401;
+        data.message = "Unauthorized";
+        res.json(data);
+        res.end;
+      } else {
+        var queryString = "SELECT * FROM user WHERE id = ?";
+        var results = {};
+        connection.query(queryString, userId, function(err, rows, fields) {
+            if (err) throw err;
+            if (rows.length === 0) {
+              console.log("Logged in with a user unknown to the database. (Huh?)");
+              data.status = 401;
+              res.json(data);
+              res.end;
+            } else {
+                data.status = 200;
+                data.message = "OK";
+                data.content = rows;
+                res.json(data);
+                res.end;
+            }
+        });
+    }
+});
+
 app.get("/login", function(req, res) {
   var url_parts = url.parse(req.url, true);
   var query = url_parts.query;
@@ -226,7 +263,7 @@ app.get("/login", function(req, res) {
   if (query["token"] !== undefined) {
     if (findFunctions.tokenStillValid(query["token"], loggedInUsers)) {
       data.status = 200;
-      data.message = "Unathourized"
+      data.message = "OK"
       res.json(data);
       res.end;
     } else {
@@ -248,7 +285,7 @@ app.get("/login", function(req, res) {
         res.end;
       } else { //retrieve password from db and compare
         results.id = rows[0].id;
-        queryString = "SELECT password FROM user WHERE user.id = ?;"
+        queryString = "SELECT password FROM user WHERE user.id = ?;";
         connection.query(queryString, results.id, function(err, rows, fields) {
             if (err) throw err;
 
@@ -279,22 +316,14 @@ app.get("/login", function(req, res) {
               console.log("Users currently logged in: " + loggedInUsers.length);
 
               data.status = 200;
+              data.message = "OK"
               data.token = user.token;
               res.json(data);
+              res.end;
             }
-
         });
-
-
-
       }
   });
-
-
-
-
-
-
 });
 
 
@@ -315,7 +344,8 @@ app.get("/addtodo", function(req, res) {
     var description = "";
 
     //Create new entry
-    var queryString = "INSERT INTO todoitem (title, dueDate, description, owner) VALUES(?, date_add(now(), INTERVAL 1 WEEK), ? , " + userid + ");"
+    var queryString = "INSERT INTO todoitem (title, dueDate, description, assignee) VALUES(?, date_add(now(), INTERVAL 1 WEEK), ? , " + userid + ");"
+    console.log(queryString);
     connection.query(queryString, [title, description], function(err, result) {
         if (err) throw err;
 
@@ -332,17 +362,7 @@ app.get("/addtodo", function(req, res) {
             });
 
         });
-
-
-
-
-
-
   }
-
-
-
-
 });
 
 app.get("/removetodo", function(req, res) {
