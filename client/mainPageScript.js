@@ -1,6 +1,7 @@
 var shownToDoList = new ToDoList();
 var allToDosInMemory = new ToDoList();
 var allUsersInMemory = []; // json object with users, having fields 'id' and 'name'.
+var thisUserInMemory = []; // json object with data of currently logged in user
 
 //window.localStorage.setItem("token", "ashdgahs1231231212");
 console.log(window.localStorage.getItem("token"));
@@ -179,6 +180,17 @@ var setAssigneeHTML = function() {
 
 //Executed when document has finished loading
 $(document).ready(function() {
+    // Get the currently logged in user's data from the server
+    $.getJSON("user?" + "token=" + localStorage.getItem("token"), function(data) {
+        if (data.status === 200) {
+            console.log("Succesfully obtained currently logged in user's data from server.");
+            thisUserInMemory = data.content[0];
+            $("#username").html(thisUserInMemory.name); // Update page on screen with user's data
+        } else {
+            console.log("Error obtaining currently logged in user's data. Server replied with HTTP " + data.status + " with message '" + data.message + "'.");
+            // TODO forward to login page
+        }
+    });
 
     // Get all users from server for assignee dropdown menu
     var getUserList = $.get("/users", function(req, res) {})
@@ -186,7 +198,6 @@ $(document).ready(function() {
             allUsersInMemory = res;
             setAssigneeHTML();
  	 	});
-
 
  	//Get all todos from server
  	var getToDoList = $.get("/todos", function(req, res) {})

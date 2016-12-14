@@ -1,7 +1,6 @@
 var ToDoList = function() {
  	this.list = [];
  	this.id = null;
- 	this.owner = null;
  	this.creationDate = null;
  	this.name = null;
 }
