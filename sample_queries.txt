@@ -36,3 +36,12 @@ WHERE todoitem.id = 1;
 UPDATE todoitem
 SET ? = ?
 WHERE todoitem.id = ?;
+
+
+//AAntal todo's per user name
+
+SELECT u.name, COUNT(t.id)
+FROM user as u, todoitem as t
+WHERE t.owner = u.id
+GROUP BY u.id DESC
+LIMIT 10;
