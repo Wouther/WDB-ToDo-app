@@ -4,18 +4,25 @@
   "description": "To do app for the elderly.",
   "main": "servercode.js",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "mysql": "*",
+    "http": "*",
+    "url": "*",
+    "path": "*",
+    "moment": "*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+  },
   "scripts": {
+    "start": "node servercode.js 80",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Wouther/WDB-ToDo-app.git"
   },
-  "author": "Wouther Bons Margreet Hoekstra",
-  "license": "ISC",
+  "author": "Wouther Bons, Margreet Hoekstra",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Wouther/WDB-ToDo-app/issues"
   },
