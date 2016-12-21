@@ -1,7 +1,7 @@
 //Constructor
 var ToDoItem = function() {
  	this.id = generateID();
- 	this.title = "";
+ 	this.title = "Untitled";
  	this.creationDate = moment();
 
     // Set default due date
@@ -99,10 +99,17 @@ ToDoItem.prototype.getDueDate = function() {
 }
 
 ToDoItem.prototype.getDueDateString = function() {
- 	return this.dueDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
+    if (this.dueDate === null) {
+        return "None";
+    } else {
+        return this.dueDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
+    }
 }
 
 ToDoItem.prototype.getDueDateStatusString = function() {
+    if (this.dueDate === null) {
+        return "none";
+    }
     if (this.dueDate.isAfter(moment())) {
  	    return "due";
     }
@@ -116,10 +123,17 @@ ToDoItem.prototype.getReminder = function() {
 }
 
 ToDoItem.prototype.getReminderString = function() {
- 	return this.reminderDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
+    if (this.reminderDate === null) {
+        return "None";
+    } else {
+ 	    return this.reminderDate.calendar(); // Returns as readable calendar text (e.g. "Tomorrow")
+    }
 }
 
 ToDoItem.prototype.getReminderStatusString = function() {
+    if (this.reminderDate === null) {
+        return "none";
+    }
     if (this.reminderDate.isAfter(this.dueDate)) {
         return "invalid";
     }
@@ -259,7 +273,7 @@ ToDoItem.prototype.getAssigneeName = function() {
     if (this.assignee == null) {
         return "";
     }
-    
+
     for (var k in allUsersInMemory) {
         if (allUsersInMemory[k].id == this.assignee) {
             return allUsersInMemory[k].name;
@@ -274,7 +288,7 @@ var getToDoItemfromServerJSON = function(res) {
  	var todo = new ToDoItem();
  	for (var k in res) {
     //TODO something better here:
- 	if ((k === "dueDate" || k === "completionDate") && res[k]) {
+ 	if ((k === "dueDate" || k === "completionDate" || k === "reminderDate") && res[k]) {
  	 	todo[k] = moment.utc(res[k]);
  	} else {
     todo[k] = res[k];
