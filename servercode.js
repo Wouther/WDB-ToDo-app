@@ -154,7 +154,6 @@ app.get("/todos", function(req, res) {
 
           for (i = 0; i < rows.length; i++) {
             list.push(toDoItem.createItemFromDBEntry(rows[i]));
-            //console.log(rows[i]);
           }
           data.list = list;
           data.status = 200;

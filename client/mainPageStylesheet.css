@@ -356,7 +356,7 @@ body > footer > a {
     color: #FFFFFF;
 }
 
-#details > .date .reminder::before { /* reminderStatus=due and default */
+#details > .date .reminder::before { /* reminderStatus=due, reminderStatus=none and default */
     content: "Reminder:";
 }
 

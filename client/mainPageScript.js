@@ -41,10 +41,8 @@ var reprintCurrentSelectedInDetails = function(index) {
     $("#detailsSetPriority").attr("data-priority", currToDo.getPriorityString());
 
  	//Update due and reminder date/times
-    $("#detailsDueDateTime").val(currToDo.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
-    $("#detailsDue").attr("data-dueStatus", currToDo.getDueDateStatusString());
-    $("#detailsReminderDateTime").val(currToDo.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
-    $("#detailsReminder").attr("data-reminderStatus", currToDo.getReminderStatusString());
+    changeDueDateOnScreen(currToDo);
+    changeReminderOnScreen(currToDo);
 
     //Update assignee
     $("#detailsAssigneeSelect").val(currToDo.getAssignee());
@@ -142,7 +140,7 @@ var toggleDone = function(index) {
 }
 
 var changeDateOnServer = function(key, todo) {
-console.log(key + "   " + todo[key]);
+console.log(key + "   " + todo[key] + "!!!");
   if (!todo[key]) { //Date should be reset to null
     changeToDoItemOnServer(key, null, todo.id);
   } else {
@@ -150,22 +148,26 @@ console.log(key + "   " + todo[key]);
   }
 }
 
-// Updates a todo object's due date (only!) on the screen and in the database,
-// using an in-memory object. Parameter 'obj' should be an instance of the toDo
-// class.
-var changeDueDate = function(obj) {
-    $("#detailsDueDateTime").val(obj.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+// Updates a todo object's due date (only!) on the screen, using an in-memory object.
+// Parameter 'obj' should be an instance of the toDo class.
+var changeDueDateOnScreen = function(obj) {
+    if (obj.getDueDate() !== null) {
+        $("#detailsDueDateTime").val(obj.getDueDate().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+    } else {
+        $("#detailsDueDateTime").val("");
+    }
     $("#detailsDue").attr("data-dueStatus", obj.getDueDateStatusString());
-    changeDateOnServer("dueDate", obj);
 }
 
-// Updates a todo object's reminder (only!) on the screen and in the database,
-// using an in-memory object. Parameter 'obj' should be an instance of the toDo
-// class.
-var changeReminder = function(obj) {
-    $("#detailsReminderDateTime").val(obj.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+// Updates a todo object's reminder (only!) on the screen, using an in-memory object.
+// Parameter 'obj' should be an instance of the toDo class.
+var changeReminderOnScreen = function(obj) {
+    if (obj.getReminder() !== null) {
+        $("#detailsReminderDateTime").val(obj.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
+    } else {
+        $("#detailsReminderDateTime").val("");
+    }
     $("#detailsReminder").attr("data-reminderStatus", obj.getReminderStatusString());
-    changeDateOnServer("reminderDate", obj);
 }
 
 // Updates the assignee dropdown menu in the details view.
@@ -323,33 +325,52 @@ $(document).ready(function() {
  	 	reprintToDoList();
  	});
 
- 	$("#detailsDueDateTime").blur(function() {
- 	 	var newValue = moment($(this).val());
-        if (!newValue.isValid()) {
-             return;
-        }
- 	 	if (currentActiveIndex !== -1) {
+    $("#detailsDueDateTime").blur(function() {
+        if (currentActiveIndex !== -1) {
+            var newValue = $(this).val();
+            if (newValue !== "") {
+                // Convert to moment format
+         	 	newValue = moment(newValue);
+                if (!newValue.isValid()) {
+                     return;
+                }
+            } else {
+                // Change value back to previous since null values not allowed for due dates
+                changeDueDateOnScreen(shownToDoList.get(currentActiveIndex)); // update object on screen
+                return;
+            }
+
+            // Update object everywhere
             shownToDoList.get(currentActiveIndex).setDueDate(newValue); // update object in memory with new value
- 	 	 	changeDueDate(shownToDoList.get(currentActiveIndex)); // update object on screen and in database
- 	 	 	reprintToDoList();
+            changeDueDateOnScreen(shownToDoList.get(currentActiveIndex)); // update object on screen
+            changeDateOnServer("dueDate", shownToDoList.get(currentActiveIndex)); // update object in database
+            reprintToDoList();
  	 	}
  	});
 
  	$("#detailsReminderDateTime").blur(function() {
- 	 	var newValue = moment($(this).val());
-        if (!newValue.isValid()) {
-             return;
-        }
- 	 	if (currentActiveIndex !== -1) {
-            // Check validity
-            var dueValue = shownToDoList.get(currentActiveIndex).getDueDate();
-            if (newValue.isAfter(dueValue))
-            {
-                newValue = dueValue.subtract(1, 'hours'); // reset to default reminder
+        if (currentActiveIndex !== -1) {
+            var newValue = $(this).val();
+            if (newValue !== "") {
+                // Convert to moment format
+         	 	newValue = moment(newValue);
+                if (!newValue.isValid()) {
+                     return;
+                }
+
+                // Check validity
+                var dueValue = shownToDoList.get(currentActiveIndex).getDueDate();
+                if (newValue.isAfter(dueValue)) {
+                    newValue = dueValue.subtract(1, 'hours'); // reset to default reminder
+                }
+            } else {
+                newValue = null;
             }
 
+            // Update object everywhere
             shownToDoList.get(currentActiveIndex).setReminder(newValue); // update object in memory with new value
- 	 	 	changeReminder(shownToDoList.get(currentActiveIndex)); // update object on screen and in database
+            changeReminderOnScreen(shownToDoList.get(currentActiveIndex)); // update object on screen
+            changeDateOnServer("reminderDate", shownToDoList.get(currentActiveIndex)); // update object in database
  	 	}
  	});
 
