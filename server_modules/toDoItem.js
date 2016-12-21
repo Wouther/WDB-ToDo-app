@@ -48,7 +48,8 @@ module.exports = {
     }
     todoitem.completionDate = moment(dbData.completionDate);
     todoitem.owner = dbData.owner;
-    todoitem.assignee = dbData.assignee;
+    todoitem.assignee = dbData.assigneeid;
+    todoitem.assigndate = dbData.assigndate;
     return todoitem;
   },
   createDBitemFromQuery: function(query) {

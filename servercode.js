@@ -147,7 +147,7 @@ app.get("/todos", function(req, res) {
     res.end;
   } else {
       var list = [];
-      var queryString = "SELECT * FROM todoitem WHERE owner = ? OR id IN (SELECT todoid FROM todoassignment WHERE assigneeid = ?)"; // Select all todos that are owner by OR assigned to the current user.
+      var queryString = "SELECT todoitem.*, todoassignment.assigneeid, todoassignment.assigndate FROM todoitem JOIN todoassignment ON todoassignment.todoid = todoitem.id WHERE todoitem.owner = ? OR todoitem.id IN (SELECT todoid FROM todoassignment WHERE assigneeid = ?);"; // Select all todos that are owner by OR assigned to the current user.
         connection.query(queryString, [userId, userId], function(err, rows, fields) {
           if (err) throw err;
 
