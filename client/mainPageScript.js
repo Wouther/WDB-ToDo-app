@@ -142,6 +142,7 @@ var toggleDone = function(index) {
 }
 
 var changeDateOnServer = function(key, todo) {
+console.log(key + "   " + todo[key]);
   if (!todo[key]) { //Date should be reset to null
     changeToDoItemOnServer(key, null, todo.id);
   } else {
@@ -164,7 +165,7 @@ var changeDueDate = function(obj) {
 var changeReminder = function(obj) {
     $("#detailsReminderDateTime").val(obj.getReminder().toISOString().slice(0, -1)); // HTML5 input datetime-local element accepts ISO string without trailing 'Z'
     $("#detailsReminder").attr("data-reminderStatus", obj.getReminderStatusString());
-    changeDateOnServer("reminder", obj);
+    changeDateOnServer("reminderDate", obj);
 }
 
 // Updates the assignee dropdown menu in the details view.

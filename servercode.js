@@ -420,7 +420,7 @@ app.get("/changetodo", function(req, res) {
 
       } else if (k === 'id' || k === 'token') {
         continue;
-      } else if (k === 'dueDate' || k === 'completionDate' ) { // Do something special for date changes: parse it first using moment
+    } else if (k === 'dueDate' || k === 'completionDate' || k == 'reminderDate') { // Do something special for date changes: parse it first using moment
 
         if (query[k] === "null") {
 
