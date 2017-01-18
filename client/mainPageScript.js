@@ -374,6 +374,16 @@ $(document).ready(function() {
  	 	}
  	});
 
+ 	$("#zoomOutButton").click(function() {
+ 	 	console.log("Clicked zoom out button");
+        // TODO
+ 	});
+
+ 	$("#zoomInButton").click(function() {
+ 	 	console.log("Clicked zoom in button");
+        // TODO
+ 	});
+
  	//Retrieve the list of todos from the server each 2 seconds
  	setInterval(function() {
 
