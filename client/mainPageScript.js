@@ -189,6 +189,9 @@ $(document).ready(function() {
             console.log("Succesfully obtained currently logged in user's data from server.");
             thisUserInMemory = data.content[0];
             $("#username").html(thisUserInMemory.name); // Update page on screen with user's data
+
+            //Retrieves the template HTML the first time you logon
+
         } else {
             console.log("Error obtaining currently logged in user's data. Server replied with HTTP " + data.status + " with message '" + data.message + "'.");
             // TODO forward to login page
@@ -374,36 +377,40 @@ $(document).ready(function() {
  	 	}
  	});
 
+
+
+
+
  	//Retrieve the list of todos from the server each 2 seconds
- 	setInterval(function() {
-
- 	 	$.getJSON("todos?token=" + localStorage.getItem("token"), function(data) {
- 	 	 	//DO SOMETHING WITH THE RETRIEVED TO DOS HERE
- 	 	 	//3 TYPES OF CHANGES:
- 	 	 	//  todo was added on server
- 	 	 	//  todo was deleted on server
- 	 	 	// todo was changed on server
-
-
-      if (data.status === 401) {
-        console.log("received 401 unauthorized.");
-        returnToInlog();
-        return;
-      } else if (data.status === 200) {
-        var toDoListFromServer =  getToDoListObjectFromServerJSON(data.list);
-        var isTheSame = allToDosInMemory.equals(toDoListFromServer);
-        if (isTheSame === true) {
-            //console.log("same");
-        } else {
-          console.log("todo list changed on server");
-          shownToDoList.list = toDoListFromServer.list;
-          allToDosInMemory.list = toDoListFromServer.list;
-          reprintToDoList();
-        }
-      }
-
-
- 	 	});
- 	}, 2000);
+ // 	setInterval(function() {
+  //
+ // 	 	$.getJSON("todos?token=" + localStorage.getItem("token"), function(data) {
+ // 	 	 	//DO SOMETHING WITH THE RETRIEVED TO DOS HERE
+ // 	 	 	//3 TYPES OF CHANGES:
+ // 	 	 	//  todo was added on server
+ // 	 	 	//  todo was deleted on server
+ // 	 	 	// todo was changed on server
+  //
+  //
+  //     if (data.status === 401) {
+  //       console.log("received 401 unauthorized.");
+  //       returnToInlog();
+  //       return;
+  //     } else if (data.status === 200) {
+  //       var toDoListFromServer =  getToDoListObjectFromServerJSON(data.list);
+  //       var isTheSame = allToDosInMemory.equals(toDoListFromServer);
+  //       if (isTheSame === true) {
+  //           //console.log("same");
+  //       } else {
+  //         console.log("todo list changed on server");
+  //         shownToDoList.list = toDoListFromServer.list;
+  //         allToDosInMemory.list = toDoListFromServer.list;
+  //         reprintToDoList();
+  //       }
+  //     }
+  //
+  //
+ // 	 	});
+ // 	}, 2000);
 
 });

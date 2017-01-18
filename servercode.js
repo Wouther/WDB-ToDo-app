@@ -10,15 +10,15 @@ var findFunctions = require("./server_modules/findFunctions");
 var loggedInUsers = [];
 
 
-
-var findToDoItemByID = function (idparam) {
-  for (i = 0; i < todos.length; i++) {
-    if (String(todos[i].id) === idparam) {
-      return todos[i];
-    }
-  }
-  return null;
-}
+//
+// var findToDoItemByID = function (idparam) {
+//   for (i = 0; i < todos.length; i++) {
+//     if (String(todos[i].id) === idparam) {
+//       return todos[i];
+//     }
+//   }
+//   return null;
+// }
 
 //var toDoList = new ToDoList();
 // toDoList.add(toDoItem1);
@@ -30,7 +30,30 @@ var express = require("express");
 var url = require("url");
 var http = require("http");
 var path = require('path');
+var ejs = require("ejs");
+
+exports.index = function(req, res) {
+    // send moment to your ejs
+    res.render('index', { moment: moment });
+}
+// var template = '<% for(var i=0; i< input.length; i++) {%>' +
+//                    '<li id="listitem<%= i %>" data-completedStatus="false">' +
+//                     '<button id="removeTodo<%= i %>" class="icon removeTodo"></button>' +
+//                     '<section class="overview">' +
+//                         '<div id="toDoTitle<%= i %>" class="todoTitle"><%= input[i].title %></div>' +
+//                         '<div id="toDoPrio<%= i %>" class="icon priority" data-priority="low"></div>' +
+//                         '<div id="toDoDueDate<%= i %>" class="dueDate" data-dueStatus="due"><%= input[i].dueDate %></div>' +
+//                         '<div id="toDoCompletionDate<%= i %>" class="completionDate"><%= input[i].completionDate %></div>' +
+//                         '<div id="toDoAssignee<%= i %>" class="assignee">Frederick</div>' +
+//                     '</section>' +
+//                     '<button id="doneButtonList<%= i %>" class="icon setDone"></button>' +
+//                 '</li>' +
+// '<% } %>';
+
+
 var app;
+
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //############################# SQL code #############################################
@@ -68,6 +91,9 @@ var port = process.argv[2];
 app = express();
 app.use(express.static(dirname + "/client"));
 http.createServer(app).listen(port);
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 //Send the entry page if the client requests the root
 //TODO: send main page instead if already logged in
@@ -325,9 +351,55 @@ app.get("/login", function(req, res) {
   });
 });
 
+app.get('/templatetodos', function(req, res) {
+
+
+
+});
+
 
 app.get('/main', function(req, res) {
- 	res.sendFile(dirname + "/client/main.html");
+
+
+ // 	res.sendFile(dirname + "/client/main.html");
+
+ var url_parts = url.parse(req.url, true);
+ var query = url_parts.query;
+ var data = {};
+
+ console.log("template route requested");
+
+ if (query["token"] === undefined) {
+   data.status = 400;
+   data.message = "Missing token parameter in query";
+  //  res.json(data);
+  //  res.end;
+  res.sendFile(dirname + "/client/entrypage.html");
+   return;
+ }
+
+ userId = findFunctions.findId(query["token"], loggedInUsers);
+
+ if (userId === undefined) {
+   res.sendFile(dirname + "/client/entrypage.html");
+    return;
+ }
+
+ //Retrieve todos for this user from DB
+var list = [];
+var queryString = "SELECT todoitem.*, todoassignment.assigneeid, todoassignment.assigndate FROM todoitem JOIN todoassignment ON todoassignment.todoid = todoitem.id WHERE todoitem.owner = ? OR todoitem.id IN (SELECT todoid FROM todoassignment WHERE assigneeid = ?);"; // Select all todos that are owner by OR assigned to the current user.
+ connection.query(queryString, [userId , userId] , function(err, rows, fields) {
+   if (err) throw err;
+
+
+   for (i = 0; i < rows.length; i++) {
+     list.push(toDoItem.createItemFromDBEntry(rows[i]));
+   }
+
+console.log(list);
+res.render('todolist', {input: list});
+res.end;
+});
 });
 
 
