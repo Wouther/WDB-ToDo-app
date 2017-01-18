@@ -25,24 +25,15 @@ var zoomPage = function() {
 
 //Get zoom value from server (cookie) and zoom page to the new level.
 var zoomGet = function() {
-    // Get zoom level from server (cookie)
-    var queryString = "getcookies?" + "token="+ localStorage.getItem("token") + "&keys=zoomlevel";
-    $.getJSON(queryString, function(data) {
-      if (data.status === 200) {
-          if ($.isEmptyObject(data.content)) { // Query successful but value not yet assigned in cookie
-              zoomSet(zoomLevel); // Set to current local value
-              console.log("Succesful query to server but zoom level not defined yet. Set to current local value (" + zoomLevel.toString() + ").");
-          } else {
-              zoomLevel = parseInt(data.content["zoomlevel"]); // Use value from server locally
-              console.log("Succesfully got zoom level from server (new value = " + zoomLevel.toString() + ").");
-          }
+    // Get zoom level from cookie
+    zoomLevel = parseInt(Cookies.get('zoomlevel'));
+    if (isNaN(zoomLevel)) {
+        zoomSet(100); // default
+        return;
+    }
 
-          // Actually zoom the page
-          zoomPage();
-      } else {
-        console.log("Error in getting zoom level from server.");
-      }
-    });
+    // Actually zoom the page
+    zoomPage();
 }
 
 //Set zoom value on server (cookie) and zoom page to the new level.
@@ -50,15 +41,8 @@ var zoomSet = function(newZoomLevel) {
     // Save new zoom level locally
     zoomLevel = newZoomLevel;
 
-    // Store new zoom level on server (cookie)
-    var queryString = "setcookies?" + "token="+ localStorage.getItem("token") + "&keys=zoomlevel&values=" + newZoomLevel.toString();
-    $.getJSON(queryString, function(data) {
-      if (data.status === 200) {
-        console.log("Succesfully set zoom level on server (new value = " + newZoomLevel.toString() + ").");
-      } else {
-        console.log("Error in setting zoom level on server.");
-      }
-    });
+    // Store new zoom level on cookie
+    Cookies.set('zoomlevel', zoomLevel.toString());
 
     // Actually zoom the page
     zoomPage();
