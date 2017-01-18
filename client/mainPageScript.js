@@ -61,6 +61,8 @@ var zoomSetRelative = function(zoomOffset) {
 
 //REPRINTS THE todo list according to values in the ToDoList object
 var reprintToDoList = function() {
+
+  console.log("reprinted to do list");
  	//Remove everything that is already in the list
  	$("#toDoItemList").empty();
  	//Add all to do items from internal object
@@ -242,21 +244,21 @@ $(document).ready(function() {
     });
 
     // Get all users from server for assignee dropdown menu
-    var getUserList = $.get("/users", function(req, res) {})
+    $.get("/users", function(req, res) {})
  	 	.done(function(res) {
             allUsersInMemory = res;
             setAssigneeHTML();
  	 	});
 
  	//Get all todos from server
- 	var getToDoList = $.get("/todos", function(req, res) {})
- 	 	.done(function(res) {
-
- 	 	 	//Put the gained to do list in client memory todo list
- 	 	 	allToDosInMemory.list = getToDoListObjectFromServerJSON(res).list;
- 	 	 	shownToDoList.list = allToDosInMemory.list;
- 	 	 	reprintToDoList();
- 	 	});
+ // 	$.get("/todos", function(req, res) {})
+ // 	 	.done(function(res) {
+  //
+ // 	 	 	//Put the gained to do list in client memory todo list
+ // 	 	 	allToDosInMemory.list = getToDoListObjectFromServerJSON(res).list;
+ // 	 	 	shownToDoList.list = allToDosInMemory.list;
+ // 	 	 	reprintToDoList();
+ // 	 	});
 
 
  	//CLICKING ON REMOVE BUTTON HANDLER
@@ -430,7 +432,7 @@ $(document).ready(function() {
         zoomSetRelative(10);
  	});
 
- 	//Retrieve the list of todos from the server each 2 seconds
+ // 	Retrieve the list of todos from the server each 2 seconds
  	setInterval(function() {
 
  	 	$.getJSON("todos?token=" + localStorage.getItem("token"), function(data) {

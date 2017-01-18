@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Secretary</title>
+    <meta name="description" content="Secretary ToDo application for elderly people">
+    <meta name="author" content="Minor group 50">
+    <!-- external libraries -->
+    <script src="lib/jquery-3.1.1.min.js"></script>
+    <script src="lib/moment.js"></script>
+    <script src="lib/js.cookie.js"></script>
+
+    <!-- Custom general JS functions -->
+    <script src="helperFunctionsJS.js"></script>
+    <!-- custom js 'classes' -->
+    <script src="toDo.js"></script>
+    <script src="toDoListClass.js"></script>
+    <!-- Helper functions used to make html to insert into the page -->
+    <script src="htmlConstructionFunctions.js"></script>
+    <!-- Fake 'data' to make the list contain something on loading page. Should be replaced by loading from the DB later. -->
+    <script src="dataOnLoad.js"></script>
+    <!-- Main script for the page -->
+    <script src="mainPageScript.js"></script>
+
+    <link rel="stylesheet" href="font-awesome.min.css">
+    <link rel="stylesheet" href="globalStylesheet.css">
+    <link rel="stylesheet" href="mainPageStylesheet.css">
+</head>
+
+<body>
+
+    <header id="header" class="toolbar">
+        <div>&nbsp;</div><!--No content on left side of header yet-->
+        <h1>Secretary</h1>
+        <div>
+            Welcome, <span id="username">user</span>!
+            <button id="logoutButton">Logout</button>
+        </div>
+    </header>
+
+    <div id="leftColumn">
+        <nav class="toolbar">
+            <button id="addToDo" class="icon"></button>
+            <input id="searchField" class="mainTool" type="text" name="searchField" placeholder="Search" />
+            <button id="sortDate">Sort date</button>
+            <button id="sortPriority">Sort priority</button>
+        </nav>
+
+        <section id="listSection">
+            <header>
+                <h2>ToDo List</h2>
+            </header>
+            <ul id="toDoItemList">
+
+              <% for(var i=0; i< todos.length; i++) { %>
+                <li id="listitem<%= i %>" data-completedStatus="false">
+                    <button id="removeTodo<%= i %>"   class="icon removeTodo"></button>
+                    <section class="overview<%= i %>">
+                        <div id="toDoTitle<%= i %>"  class="todoTitle">Loading...</div>
+                        <div id="toDoPrio<%= i %>"  class="icon priority" data-priority="low"></div>
+                        <div id="toDoDueDate<%= i %>" class="dueDate" data-dueStatus="due">Loading...</div>
+                        <div id="toDoCompletionDate<%= i %>" class="completionDate">Loading...</div>
+                        <div id="toDoAssignee<%= i %>"  class="assignee">Loading...</div>
+                    </section>
+                    <button id="doneButtonList<%= i %>" class="icon setDone"></button>
+                </li>
+                <% } %>
+            </ul>
+        </section>
+    </div>
+
+    <div id="rightColumn">
+        <article id="details">
+            <header>
+                <h2>Details</h2>
+            </header>
+
+            <div class="toolbar">
+                <input type="text" name="detailsTitle" value="ToDoItem1" id="detailsTitle" class="mainTool" />
+                <button id="detailsSetPriority" class="icon priority" data-priority="low"></button>
+            </div>
+
+            <section class="toolbar date">
+                <div id="detailsDue" class="mainTool dueDate" data-dueStatus="due">
+                    <input type="datetime-local" id="detailsDueDateTime" />
+                </div>
+            </section>
+
+            <section class="toolbar date">
+                <div id="detailsReminder" class="mainTool reminder" data-reminderStatus="valid">
+                    <input type="datetime-local" id="detailsReminderDateTime" />
+                </div>
+            </section>
+
+            <section class="toolbar assigneeToolbar">
+                <div id="detailsAssignee" class="mainTool assignee">
+                    <select id="detailsAssigneeSelect">
+                        <option value="1">Username1</option>
+                        <option value="2">Username2</option>
+                    </select>
+                </div>
+            </section>
+
+            <section id="description">
+                <h3>Description:</h3>
+                <textarea id="detailsDescriptionText">
+                    Lorem ipsum sasjdsajdusahdjashjdasdjashdsa
+                </textarea>
+            </section>
+        </article>
+    </div>
+
+    <footer>
+        <button id="zoomOutButton" class="icon zoomOut"></button>
+        <button id="zoomInButton" class="icon zoomIn"></button>
+        <a href="analytics.html">Analytics</a>
+    </footer>
+
+</body>
+
+</html>
