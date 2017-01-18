@@ -30,12 +30,7 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-passport.use(new TwitterStrategy(credentials.twitter,
-function(token, tokenSecret, profile, done) {
-  console.log("Twitter user with id " + profile.id + " appeared!");
-  done(null, {message: 'Twitter user signed in!'});
-}
-));
+
 
 //var toDoList = new ToDoList();
 // toDoList.add(toDoItem1);
@@ -49,6 +44,7 @@ var http = require("http");
 var path = require('path');
 var cookies = require('cookie-parser');
 var sessions = require('express-session');
+var ejs = require("ejs");
 var app;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,6 +71,18 @@ var plip = connection.query(queryString, function(err, rows, fields) {
     }
 });
 
+var twitterUserName;
+var twitterProfileID;
+
+passport.use(new TwitterStrategy(credentials.twitter,
+function(token, tokenSecret, profile, done) {
+  twitterUserName = profile.username;
+  twitterProfileID = profile.id;
+  console.log("Twitter user with id " + profile.id + " appeared!" + profile.username);
+  done(null, {message: 'Twitter user signed in!'});
+}
+));
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //############################# HTTP SERVING code ####################################
@@ -95,6 +103,9 @@ app.use(passport.session());
 
 http.createServer(app).listen(port);
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 //Send the entry page if the client requests the root
 //TODO: send main page instead if already logged in
 app.get('/', function(req, res) {
@@ -108,12 +119,48 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/login-twitter',
 passport.authenticate('twitter', {failureRedirect: '/failure'}),
 function(req, res) {
-  res.redirect('/success');
+  console.log(twitterUserName + twitterProfileID);
+
+//Look in the DB if this user is known
+  queryString = "SELECT user.id from user WHERE user.username = ?;";
+  connection.query(queryString, twitterUserName, function(err, rows, fields) {
+    if (err) throw err;
+
+    var userId;
+
+    if (rows === null) {
+      //Create new user
+
+      queryString = "INSERT INTO USER (username, password)VALUES (?, ?);";
+      connection.query(queryString, [twitterUserName, "poepwachtwoord"], function(err, rows, fields) {
+        if (err) throw err;
+      });
+
+    } else { //Read user id
+      userId = rows[0].id;
+
+      //Register user as logged in user
+      var user = new loginItem.loggedInUser();
+      user.id = userId;
+      user.token = generateToken.generateToken();
+      console.log("Generated token for new user: " + user.token);
+      loggedInUsers.push(user);
+
+      res.render('redirect', {input: user.token});
+
+      //Redirect to main page, send token(?)
+    }
+    console.log(rows);
+
+
+  });
+
 }
 );
 
 app.get("/success", function (req, res) {
   console.log("Success!");
+  //console.log(res);
   res.send("User login with Twitter sucessfull.");
 });
 
