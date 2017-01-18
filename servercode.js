@@ -45,6 +45,12 @@ var path = require('path');
 var cookies = require('cookie-parser');
 var sessions = require('express-session');
 var ejs = require("ejs");
+
+exports.index = function(req, res) {
+    // send moment to your ejs
+    res.render('index', { moment: moment });
+}
+
 var app;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -425,7 +431,30 @@ app.get("/l+o+g+i+n+", function(req, res) {
 
 
 app.get('/m+a+i+n+', function(req, res) {
- 	res.sendFile(dirname + "/client/main.html");
+
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
+  var data = {};
+
+  if (query["token"] !== undefined) {
+    var list = [];
+
+    var userId = findFunctions.findId(query["token"], loggedInUsers);
+    var queryString = "SELECT todoitem.*, todoassignment.assigneeid, todoassignment.assigndate FROM todoitem JOIN todoassignment ON todoassignment.todoid = todoitem.id WHERE todoitem.owner = ? OR todoitem.id IN (SELECT todoid FROM todoassignment WHERE assigneeid = ?);"; // Select all todos that are owner by OR assigned to the current user.
+      connection.query(queryString, [userId, userId], function(err, rows, fields) {
+        if (err) throw err;
+
+
+        for (i = 0; i < rows.length; i++) {
+          list.push(toDoItem.createItemFromDBEntry(rows[i]));
+        }
+        console.log("Got request for a rendered ejs thingy");
+        res.render('main', {todos: list});
+      });
+  } else {
+     	res.sendFile(dirname + "/client/main.html");
+  }
+
 });
 
 

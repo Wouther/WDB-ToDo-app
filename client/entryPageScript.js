@@ -26,7 +26,7 @@ $("#loginButton").click(function() {
     if (data.status === 200) {
       console.log(data.token);
       window.localStorage.setItem("token", data.token);
-      window.location = '/main';
+      window.location = '/main?token=' + data.token;
     } else if (data.status === 401){
       console.log("Username not known by server.");
     } else if (data.status === 403) {
