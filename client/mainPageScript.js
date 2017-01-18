@@ -2,7 +2,7 @@ var shownToDoList = new ToDoList();
 var allToDosInMemory = new ToDoList();
 var allUsersInMemory = []; // json object with users, having fields 'id' and 'name'.
 var thisUserInMemory = []; // json object with data of currently logged in user
-var zoomLevel = 1; // Zoom value (1 = 100% = default)
+var zoomLevel = 100; // Zoom value (percentage, default = 100)
 
 //window.localStorage.setItem("token", "ashdgahs1231231212");
 console.log(window.localStorage.getItem("token"));
@@ -17,29 +17,41 @@ var returnToInlog = function() {
 //Set to -1 if no to do is focused, this is default on starting the page
 var currentActiveIndex = -1;
 
-//Get zoom value from server (cookie)
-var zoomGet = function() {
-    var queryString = "getcookies?" + "token="+ localStorage.getItem("token") + "&keys=zoomlevel";
+//Zoom page to current zoom level
+var zoomPage = function() {
+    console.log("Zooming page to current zoom level (" + zoomLevel + ").");
+    $("body").css({zoom: (zoomLevel / 100).toString()})
+}
 
+//Get zoom value from server (cookie) and zoom page to the new level.
+var zoomGet = function() {
+    // Get zoom level from server (cookie)
+    var queryString = "getcookies?" + "token="+ localStorage.getItem("token") + "&keys=zoomlevel";
     $.getJSON(queryString, function(data) {
       if (data.status === 200) {
           if ($.isEmptyObject(data.content)) { // Query successful but value not yet assigned in cookie
               zoomSet(zoomLevel); // Set to current local value
               console.log("Succesful query to server but zoom level not defined yet. Set to current local value (" + zoomLevel.toString() + ").");
           } else {
-              zoomLevel = parseFloat(data.content["zoomlevel"]); // Use value from server locally
+              zoomLevel = parseInt(data.content["zoomlevel"]); // Use value from server locally
               console.log("Succesfully got zoom level from server (new value = " + zoomLevel.toString() + ").");
           }
+
+          // Actually zoom the page
+          zoomPage();
       } else {
         console.log("Error in getting zoom level from server.");
       }
     });
 }
 
-//Set zoom value on server (cookie)
+//Set zoom value on server (cookie) and zoom page to the new level.
 var zoomSet = function(newZoomLevel) {
-    var queryString = "setcookies?" + "token="+ localStorage.getItem("token") + "&keys=zoomlevel&values=" + newZoomLevel.toString();
+    // Save new zoom level locally
+    zoomLevel = newZoomLevel;
 
+    // Store new zoom level on server (cookie)
+    var queryString = "setcookies?" + "token="+ localStorage.getItem("token") + "&keys=zoomlevel&values=" + newZoomLevel.toString();
     $.getJSON(queryString, function(data) {
       if (data.status === 200) {
         console.log("Succesfully set zoom level on server (new value = " + newZoomLevel.toString() + ").");
@@ -47,20 +59,14 @@ var zoomSet = function(newZoomLevel) {
         console.log("Error in setting zoom level on server.");
       }
     });
+
+    // Actually zoom the page
+    zoomPage();
 }
 
-//Zoom in
-var zoomIn = function() {
-    zoomLevel = zoomLevel + 0.1;
-    zoomSet(zoomLevel);
-    // TODO actually zoom
-}
-
-//Zoom out
-var zoomOut = function() {
-    zoomLevel = zoomLevel - 0.1;
-    zoomSet(zoomLevel);
-    // TODO actually zoom
+//Zoom relative to current zoom
+var zoomSetRelative = function(zoomOffset) {
+    zoomSet(zoomLevel + zoomOffset);
 }
 
 //REPRINTS THE todo list according to values in the ToDoList object
@@ -230,7 +236,7 @@ var setAssigneeHTML = function() {
 
 //Executed when document has finished loading
 $(document).ready(function() {
-    // Get zoom level from server (cookie)
+    // Get zoom level from server (cookie) and zoom page to that level
     zoomGet();
 
     // Get the currently logged in user's data from the server
@@ -426,12 +432,12 @@ $(document).ready(function() {
 
  	$("#zoomOutButton").click(function() {
  	 	console.log("Clicked zoom out button");
-        zoomOut();
+        zoomSetRelative(-10);
  	});
 
  	$("#zoomInButton").click(function() {
  	 	console.log("Clicked zoom in button");
-        zoomIn();
+        zoomSetRelative(10);
  	});
 
  	//Retrieve the list of todos from the server each 2 seconds
