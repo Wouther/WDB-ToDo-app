@@ -9,6 +9,7 @@
     "moment": "*",
     "mysql": "*",
     "passport": "^0.3.2",
+    "passport-twitter": "^1.0.4",
     "path": "*",
     "url": "*"
   },
