@@ -1,0 +1,2 @@
+Een voorbeeldje:
+\b(.)?t(.)?o(.)?d(.)?o(.)?s(.)?\b/g
