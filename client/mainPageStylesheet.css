@@ -64,6 +64,10 @@ body > header button {
         margin: 0 0.5em;
     }
 
+    body > footer {
+        width: calc(100% - 1em);
+    }
+
     #rightColumn::after, body > footer::after {
         clear: left;
         content: "";
@@ -119,13 +123,24 @@ body > header button {
 */
 
 body > footer {
-    padding-top: 0.5em;
     padding-bottom: 2em;
+    text-align: right;
 }
 
 body > footer > a {
-    position: absolute;
-    right: 1.5em;
+    margin: 0em 0.2em;
+}
+
+body > footer > button.zoomOut::before {
+    content: "\f010"; /* undo sign (counter-clockwise arrow) (fa-undo) */
+}
+
+body > footer > button.zoomIn::before {
+    content: "\f00e"; /* undo sign (counter-clockwise arrow) (fa-undo) */
+}
+
+body > footer > button.icon:hover {
+    animation-name: hover-iconbutton-lightbg;
 }
 
 /*
