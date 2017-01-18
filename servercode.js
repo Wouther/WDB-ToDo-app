@@ -6,10 +6,9 @@ var generateToken = require("./server_modules/generateToken.js");
 var toDoItem = require("./server_modules/toDoItem");
 var loginItem = require("./server_modules/loggedIn");
 var findFunctions = require("./server_modules/findFunctions");
+var credentials = require("./credentials.js");
 
 var loggedInUsers = [];
-
-
 
 var findToDoItemByID = function (idparam) {
   for (i = 0; i < todos.length; i++) {
@@ -19,6 +18,24 @@ var findToDoItemByID = function (idparam) {
   }
   return null;
 }
+
+var passport = require('passport');
+var TwitterStrategy = require('passport-twitter').Strategy;
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.use(new TwitterStrategy(credentials.twitter,
+function(token, tokenSecret, profile, done) {
+  console.log("Twitter user with id " + profile.id + " appeared!");
+  done(null, {message: 'Twitter user signed in!'});
+}
+));
 
 //var toDoList = new ToDoList();
 // toDoList.add(toDoItem1);
@@ -67,6 +84,10 @@ var dirname = path.dirname(require.main.filename);
 var port = process.argv[2];
 app = express();
 app.use(express.static(dirname + "/client"));
+app.use(cookies(credentials.cookieSecret));
+app.use(sessions(credentials.cookieSecret));
+app.use(passport.initialize());
+app.use(passport.session());
 http.createServer(app).listen(port);
 
 //Send the entry page if the client requests the root
@@ -74,6 +95,31 @@ http.createServer(app).listen(port);
 app.get('/', function(req, res) {
  	res.sendFile(dirname + "/client/entrypage.html");
 });
+
+///// TWITTER LOGIN SPULLEN
+
+app.get('/auth/twitter', passport.authenticate('twitter'));
+
+app.get('/login-twitter',
+passport.authenticate('twitter', {failureRedirect: '/failure'}),
+function(req, res) {
+  res.redirect('/succes');
+}
+);
+
+app.get("/success", function (req, res) {
+  console.log("Success!");
+  res.send("User login with Twitter sucessfull.");
+});
+
+app.get("/failure", function (req, res) {
+  console.log("Failure!");
+  res.send("User login with Twitter failed.");
+})
+
+
+
+/////// ANALYTICS
 
 app.get('/analytics', function(req, res) {
   var url_parts = url.parse(req.url, true);
