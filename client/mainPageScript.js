@@ -39,7 +39,13 @@ var zoomGet = function() {
 //Set zoom value on server (cookie) and zoom page to the new level.
 var zoomSet = function(newZoomLevel) {
     // Save new zoom level locally
-    zoomLevel = newZoomLevel;
+    if (newZoomLevel < 10) { // most zoomed out allowed
+        zoomLevel = 10;
+    } else if (newZoomLevel > 200) { // most zoomed in allowed
+        zoomLevel = 200;
+    } else {
+        zoomLevel = newZoomLevel;
+    }
 
     // Store new zoom level on cookie
     Cookies.set('zoomlevel', zoomLevel.toString());
