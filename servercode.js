@@ -124,7 +124,7 @@ app.get('/analytics', function(req, res) {
 });
 
 //Gets list of todos from server
-app.get("/todos", function(req, res) {
+app.get("/t+o+d+o+s+", function(req, res) {
 
   var url_parts = url.parse(req.url, true);
   var query = url_parts.query;
@@ -164,7 +164,7 @@ app.get("/todos", function(req, res) {
   }
 });
 
-app.get("/logout", function(req, res) {
+app.get("/l+o+g+o+u+t+", function(req, res) {
   var url_parts = url.parse(req.url, true);
   var query = url_parts.query;
   var data = {};
@@ -196,7 +196,7 @@ app.get("/logout", function(req, res) {
 });
 
 //Gets list of users from server (id and name only, for assignee dropdown menu)
-app.get("/users", function(req, res) {
+app.get("/u+s+e+r+s+", function(req, res) {
     var queryString = "SELECT id,name FROM user";
     var results = {};
     connection.query(queryString, function(err, rows, fields) {
@@ -213,7 +213,7 @@ app.get("/users", function(req, res) {
 });
 
 //Gets info of currently logged in user from server when passed a valid token, or HTTP status 401 (Unauthorized) if not logged in.
-app.get("/user", function(req, res) {
+app.get("/u+s+e+r+", function(req, res) {
       var url_parts = url.parse(req.url, true);
       var query = url_parts.query;
       var data = {};
@@ -254,7 +254,7 @@ app.get("/user", function(req, res) {
     }
 });
 
-app.get("/login", function(req, res) {
+app.get("/l+o+g+i+n+", function(req, res) {
   var url_parts = url.parse(req.url, true);
   var query = url_parts.query;
   var data = {};
@@ -326,12 +326,12 @@ app.get("/login", function(req, res) {
 });
 
 
-app.get('/main', function(req, res) {
+app.get('/m+a+i+n+', function(req, res) {
  	res.sendFile(dirname + "/client/main.html");
 });
 
 
-app.get("/addtodo", function(req, res) {
+app.get("/a+d+d+t+o+d+o+", function(req, res) {
 
   var url_parts = url.parse(req.url, true);
   var query = url_parts.query;
@@ -371,7 +371,7 @@ app.get("/addtodo", function(req, res) {
   }
 });
 
-app.get("/removetodo", function(req, res) {
+app.get("/r+e+m+o+v+e+t+o+d+o+", function(req, res) {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     var data = {};
@@ -388,7 +388,7 @@ app.get("/removetodo", function(req, res) {
 
 });
 
-app.get("/changetodo", function(req, res) {
+app.get("/c+h+a+n+g+e+t+o+d+o+", function(req, res) {
  	var url_parts = url.parse(req.url, true);
  	var query = url_parts.query;
   if (query["id"] !== undefined && query["token"] !== undefined) {
