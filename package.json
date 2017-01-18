@@ -9,12 +9,14 @@
     "http": "*",
     "url": "*",
     "path": "*",
-    "moment": "*"
+    "moment": "*",
+    "credentials": "*",
+    "cookie-parser": "*"
   },
   "devDependencies": {
   },
   "scripts": {
-    "start": "node servercode.js 80",
+    "start": "node servercode.js 1200",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
