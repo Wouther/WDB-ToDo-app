@@ -4,7 +4,10 @@
   "description": "To do app for the elderly.",
   "main": "servercode.js",
   "dependencies": {
+    "cookie-parser": "*",
+    "credentials": "*",
     "express": "^4.14.0",
+    "express-session": "^1.14.2",
     "http": "*",
     "moment": "*",
     "mysql": "*",
@@ -15,7 +18,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node servercode.js 80",
+    "start": "node servercode.js 1200",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

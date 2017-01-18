@@ -47,6 +47,8 @@ var express = require("express");
 var url = require("url");
 var http = require("http");
 var path = require('path');
+var cookies = require('cookie-parser');
+var sessions = require('express-session');
 var app;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,10 +86,13 @@ var dirname = path.dirname(require.main.filename);
 var port = process.argv[2];
 app = express();
 app.use(express.static(dirname + "/client"));
+
 app.use(cookies(credentials.cookieSecret));
 app.use(sessions(credentials.cookieSecret));
 app.use(passport.initialize());
 app.use(passport.session());
+//app.use(cookies("dfasdfsdf")); // credentials.cookieSecret does not work?
+
 http.createServer(app).listen(port);
 
 //Send the entry page if the client requests the root
@@ -103,7 +108,7 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/login-twitter',
 passport.authenticate('twitter', {failureRedirect: '/failure'}),
 function(req, res) {
-  res.redirect('/succes');
+  res.redirect('/success');
 }
 );
 
@@ -522,5 +527,75 @@ app.get("/c+h+a+n+g+e+t+o+d+o+", function(req, res) {
     console.log("Missing id parameter");
     res.json({status : 400, message: "Missing id parameter."});
     res.end;
+    }
+});
+
+app.get("/g+e+t+c+o+o+k+i+e+s*", function(req, res) {
+    console.log("Getting cookies...");
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+    if (query["token"] !== undefined) {
+        // Return cookies
+        var data = {};
+        var list = {};
+        if (query["keys"] !== undefined) { // Only requested cookies
+            query["keys"].split(" ").forEach(function(key) {
+                if (req.signedCookies[key] !== undefined) {
+                    list[key] = req.signedCookies[key];
+                }
+            });
+        } else { // All existing cookies
+            list = req.signedCookies;
+        }
+        data.content = list;
+        data.status = 200;
+        data.message = "Succes";
+        res.json(data);
+        res.end;
+    } else {
+        var data = {};
+        data.status = 400;
+        data.message = "Missing token parameter in query";
+        res.json(data);
+        res.end;
+        return;
+    }
+});
+
+app.get("/s+e+t+c+o+o+k+i+e+s*", function(req, res) {
+    console.log("Setting cookies...");
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+    if (query["token"] !== undefined && query["keys"] !== undefined && query["values"] !== undefined) {
+        // Parse keys and values from query
+        var keysArray = query["keys"].split(" ");
+        var valuesArray = (keysArray.length == 1) ? [query["values"]] : query["values"].split(" ");
+        if (keysArray.length != valuesArray.length) {
+            var data = {};
+            data.status = 400;
+            data.message = "Number of keys and values differ in query";
+            res.json(data);
+            res.end;
+            return;
+        }
+
+        // Create cookies by key/value pairs
+        for (var i = 0; i < keysArray.length; i++) {
+            res.cookie(keysArray[i], valuesArray[i], {signed: true});
+        }
+
+        // Send response
+        var data = {};
+        data.status = 200;
+        data.message = "Succes";
+        res.json(data);
+        res.end;
+    } else {
+        var data = {};
+        data.status = 400;
+        data.message = "Missing token, keys and/or values parameter in query";
+        res.json(data);
+        res.end;
+        return;
     }
 });
